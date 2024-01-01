@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SocketTool
@@ -13,6 +14,8 @@ namespace SocketTool
     internal class ServerSocket: SocketBase
     {
         Socket _listner;
+        public event EventHandler OnFailListenEvent;
+
 
         public ServerSocket( int headsize, int datalen_ofs, int datalen_len) : base(headsize, datalen_ofs, datalen_len) 
         {
@@ -48,17 +51,17 @@ namespace SocketTool
                 _remoteEP = new IPEndPoint(_ipAddress, portno);
                 checkParam();
 
-                // ソケットを作成
-                if (_listner == null)
+                if(_listner == null)
                 {
                     _listner = new Socket(_ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                     _listner.Bind(_remoteEP);
                 }
                 _listner.Listen(0);
-                _ = _listner.BeginAccept(new AsyncCallback(AcceptCallback), null);
+                _listner.BeginAccept(new AsyncCallback(AcceptCallback), null);
             }
             catch (Exception ex)
             {
+                OnFailListen();
                 OnException(ex);
             }
         }
@@ -66,6 +69,10 @@ namespace SocketTool
 
         public void AcceptCallback(IAsyncResult ar)
         {
+            if(_listner == null) 
+            {
+                return;
+            }
             try
             {
                 Socket socket = _listner.EndAccept(ar);
@@ -76,6 +83,31 @@ namespace SocketTool
                 OnException(ex);
             }
 
+        }
+
+
+        public void OnFailListen()
+        {
+            OnFailListenEvent?.Invoke(this, EventArgs.Empty);
+        }
+
+
+        public void StopListen()
+        {
+            if (_listner != null)
+            {
+                try
+                {
+                    _listner.Shutdown(SocketShutdown.Both);
+                    _listner.Close();
+                }
+                catch { }
+                finally
+                {
+                    _listner.Dispose();
+                    _listner = null;
+                }
+            }
         }
     }
 }

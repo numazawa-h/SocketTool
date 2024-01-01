@@ -32,6 +32,24 @@ namespace SocketTool
             _data_recv_cnt = -1;
         }
 
+        public void Stop()
+        {
+            _soc.Close(); ;
+            _head_recv_cnt = -1;
+            _data_size = 0;
+            _data_recv_cnt = -1;
+        }
+
+        public bool isServerSocket()
+        {
+            return _soc_base is ServerSocket;
+        }
+
+        public bool isClientSocket()
+        {
+            return _soc_base is ClientSocket;
+        }
+
         public void Send(byte[] head, byte[] data)
         {
             try
@@ -88,6 +106,7 @@ namespace SocketTool
             }
             catch (Exception ex) 
             { 
+                _this._soc_base.OnDisConnect(_this);
                 _this._soc_base.OnException(ex);
             }
         }
@@ -105,6 +124,7 @@ namespace SocketTool
             if (rcnt == 0)
             {
                 // 切断処理
+                _soc_base.OnDisConnect(this);
                 return;
             }
             _head_recv_cnt += rcnt;
@@ -123,6 +143,7 @@ namespace SocketTool
             if (rcnt == 0)
             {
                 // 切断処理
+                _soc_base.OnDisConnect(this);
                 return;
             }
             _data_recv_cnt += rcnt;
@@ -157,7 +178,7 @@ namespace SocketTool
 
          private void onRecv()
         {
-            _soc_base.OnRecv(_head, _data);
+            _soc_base.OnRecv(this, _head, _data);
         }
     }
 }

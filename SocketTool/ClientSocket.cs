@@ -11,6 +11,8 @@ namespace SocketTool
 {
     internal class ClientSocket: SocketBase
     {
+        public event EventHandler OnFailConnectEvent;
+
 
         public ClientSocket( int headsize, int datalen_ofs, int datalen_len) : base( headsize, datalen_ofs, datalen_len)
         {
@@ -42,9 +44,21 @@ namespace SocketTool
             }
             catch(Exception ex)
             {
+                OnFailConnect();
                 OnException(ex); 
             }
         }
+
+        public void StopConnect()
+        {
+
+        }
+
+        public void OnFailConnect()
+        {
+            OnFailConnectEvent?.Invoke(this, EventArgs.Empty);
+        }
+
 
     }
 }

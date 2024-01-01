@@ -25,9 +25,11 @@ namespace SocketTool.Properties
         public delegate void ConnectEventHandler(Object sender, ConnectEventArgs args);
         public event ConnectEventHandler OnAcceptEvent;
         public event ConnectEventHandler OnConnectEvent;
+        public event ConnectEventHandler OnDisConnectEvent;
 
         public delegate void RecvDataHandler(Object sender, RecvDataEventArgs args);
         public event RecvDataHandler OnRecvData;
+        
 
 
         public SocketBase( int headsize, int datalen_ofs, int datalen_bytes)
@@ -81,6 +83,11 @@ namespace SocketTool.Properties
             OnConnectEvent?.Invoke(this, new ConnectEventArgs(socket));
         }
 
+        public void OnDisConnect(SocketReadWrite socket)
+        {
+            var args = new ConnectEventArgs(socket);
+            OnDisConnectEvent?.Invoke(this, args);
+        }
 
         public void OnException(Exception e)
         {
@@ -88,22 +95,26 @@ namespace SocketTool.Properties
             OnExceptionEvent?.Invoke(this, args);
         }
 
-        public void OnRecv(byte[] head, byte[]data)
+
+        public void OnRecv(SocketReadWrite socket, byte[] head, byte[]data)
         {
-            var args = new RecvDataEventArgs(head, data);
+            var args = new RecvDataEventArgs(socket, head, data);
             OnRecvData?.Invoke(this, args);
         }
     }
     public class RecvDataEventArgs : EventArgs
     {
+        private SocketReadWrite _socket;
         private byte[] _head;
         private byte[] _data;
 
+        public SocketReadWrite Socket => _socket;
         public byte[] HeadBuff => _head;
         public byte[] DataBuff => _data;
 
-        public RecvDataEventArgs(byte[] head, byte[] data)
+        public RecvDataEventArgs(SocketReadWrite socket, byte[] head, byte[] data)
         {
+            _socket = socket;
             _head = head;
             _data = data;
         }
