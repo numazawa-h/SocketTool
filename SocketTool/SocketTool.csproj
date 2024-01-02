@@ -85,6 +85,12 @@
     <Compile Include="JsonCommDef.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CommForm\CommForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CommForm\CommForm.Designer.cs">
+      <DependentUpon>CommForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="SocketReadWrite.cs" />
     <Compile Include="ServerSocket.cs" />
     <Compile Include="SocketBase.cs" />
@@ -100,8 +106,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="CommForm\CommForm.resx">
+      <DependentUpon>CommForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Config\CommDef.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
