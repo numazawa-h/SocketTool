@@ -10,7 +10,7 @@ using System.Text.Unicode;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SocketTool
+namespace SocketTool.Config
 {
     public class Json
     {

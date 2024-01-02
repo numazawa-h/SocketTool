@@ -74,6 +74,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommData\CommDataBase.cs" />
+    <Compile Include="CommData\HeaderData.cs" />
+    <Compile Include="Config\JsonDataDef.cs" />
     <Compile Include="Socket\ClientSocket.cs" />
     <Compile Include="Form\Form1.cs">
       <SubType>Form</SubType>
@@ -109,6 +112,9 @@
     <EmbeddedResource Include="Form\CommForm.resx">
       <DependentUpon>CommForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Config\CommDataDef.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Config\CommDef.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

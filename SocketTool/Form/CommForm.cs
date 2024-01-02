@@ -1,4 +1,5 @@
-﻿using SocketTool.Properties;
+﻿using SocketTool.Config;
+using SocketTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,7 +22,6 @@ namespace SocketTool.CommForm
         ServerSocket recv_socket = new ServerSocket(4, 0, 1);
         ClientSocket send_socket = new ClientSocket(4, 0, 1);
 
-
         SocketReadWrite accept_socket = null;
         SocketReadWrite connect_socket = null;
 
@@ -38,7 +38,6 @@ namespace SocketTool.CommForm
                 _RESCOP_NO = value;
             }
         }
-
 
 
         public CommForm()

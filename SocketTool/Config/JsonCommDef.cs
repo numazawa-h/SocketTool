@@ -7,7 +7,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-namespace SocketTool
+namespace SocketTool.Config
 {
     internal class JsonCommDef:Json
     {
