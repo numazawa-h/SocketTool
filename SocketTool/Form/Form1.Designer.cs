@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.splitContainer = new System.Windows.Forms.SplitContainer();
+            this.commForm1 = new SocketTool.CommForm.CommForm();
             this.commForm2 = new SocketTool.CommForm.CommForm();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
-            this.commForm1 = new SocketTool.CommForm.CommForm();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -61,7 +61,17 @@
             this.splitContainer.SplitterDistance = 715;
             this.splitContainer.TabIndex = 19;
             // 
-            // CommForm2
+            // commForm1
+            // 
+            this.commForm1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.commForm1.Location = new System.Drawing.Point(0, 0);
+            this.commForm1.MinimumSize = new System.Drawing.Size(620, 0);
+            this.commForm1.Name = "commForm1";
+            this.commForm1.RESCOP_NO = 0;
+            this.commForm1.Size = new System.Drawing.Size(715, 720);
+            this.commForm1.TabIndex = 0;
+            // 
+            // commForm2
             // 
             this.commForm2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.commForm2.Location = new System.Drawing.Point(0, 0);
@@ -103,25 +113,17 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "電文";
             this.tabPage2.UseVisualStyleBackColor = true;
+            this.tabPage2.Click += new System.EventHandler(this.button1_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(646, 337);
+            this.button1.Location = new System.Drawing.Point(97, 175);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(117, 53);
-            this.button1.TabIndex = 14;
+            this.button1.Size = new System.Drawing.Size(107, 48);
+            this.button1.TabIndex = 0;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
-            // 
-            // commForm1
-            // 
-            this.commForm1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.commForm1.Location = new System.Drawing.Point(0, 0);
-            this.commForm1.MinimumSize = new System.Drawing.Size(620, 0);
-            this.commForm1.Name = "commForm1";
-            this.commForm1.RESCOP_NO = 0;
-            this.commForm1.Size = new System.Drawing.Size(715, 720);
-            this.commForm1.TabIndex = 0;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 

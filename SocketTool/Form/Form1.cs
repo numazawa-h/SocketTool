@@ -38,7 +38,6 @@ namespace SocketTool
             commForm2.SendData(head, data);
         }
 
-
     }
 
 }

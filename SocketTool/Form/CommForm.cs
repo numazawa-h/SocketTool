@@ -148,13 +148,11 @@ namespace SocketTool.CommForm
             }
             else
             {
-
-                if (accept_socket == null)
-                {
+                accept_socket?.Stop();
+                accept_socket = null;
                     lbl_Self_Status.Text = "切断";
                     lbl_Self_Status.ForeColor = Color.Black;
                     Application.DoEvents();
-                }
                 recv_socket.StopListen();
             }
         }
