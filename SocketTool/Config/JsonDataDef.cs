@@ -9,6 +9,22 @@ namespace SocketTool.Config
 {
     public class JsonDataDef: Json
     {
+        // シングルトン
+        static private JsonDataDef _instance = null;
+        static public JsonDataDef GetInstance()
+        {
+            if (_instance == null)
+            {
+                _instance = new JsonDataDef();
+            }
+            return _instance;
+        }
+        private JsonDataDef():base()
+        {
+
+        }
+
+
         protected Dictionary<string, DataDefine> _data_def = new Dictionary<string, DataDefine>();
 
         public override int ReadJson(string path)
@@ -16,10 +32,6 @@ namespace SocketTool.Config
             try
             {
                 int ret = base.ReadJson(path);
-                if (ret < 0)
-                {
-                    return ret;
-                }
 
                 _data_def.Clear();
                 foreach (JsonNode node in _json_root["datadef"].AsArray())
@@ -29,8 +41,7 @@ namespace SocketTool.Config
             }
             catch (Exception ex)
             {
-                OnException(new Exception($"json読み込み失敗{path}({ex.Message})")); ;
-                return -3;
+                throw new Exception($"JsonDataDef読み込み失敗{path}({ex.Message})"); ;
             }
             return 0;
         }

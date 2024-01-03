@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -25,12 +26,28 @@ namespace SocketTool
             InitializeComponent();
             this.commForm1.RESCOP_NO = 1;
             this.commForm2.RESCOP_NO = 2;
+        }
 
-
+        private void Form1_Load(object sender, EventArgs e)
+        {
             string wcd = System.AppDomain.CurrentDomain.BaseDirectory;
-            JsonDataDef datadef = new JsonDataDef();
-            datadef.ReadJson(wcd + "config\\CommDataDef.json");
-
+            try
+            {
+                JsonCommDef.GetInstance().ReadJson(wcd + "config\\CommDef.json");
+            }catch(Exception ex)
+            {
+                MessageBox.Show($"CommDef.jsonの読み込み失敗({ex.Message})");
+                this.Close();
+            }
+            try
+            {
+                JsonDataDef.GetInstance().ReadJson(wcd + "config\\CommDataDef.json");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"CommDataDef.jsonの読み込み失敗({ex.Message})");
+                this.Close();
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -60,6 +77,11 @@ namespace SocketTool
             commForm2.SendData(head, data);
         }
 
+        private void Form1_Activated(object sender, EventArgs e)
+        {
+            this.commForm1.Init();
+            this.commForm2.Init();
+        }
     }
 
 }

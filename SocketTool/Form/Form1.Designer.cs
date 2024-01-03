@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.splitContainer = new System.Windows.Forms.SplitContainer();
-            this.commForm1 = new SocketTool.CommForm.CommForm();
-            this.commForm2 = new SocketTool.CommForm.CommForm();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
+            this.commForm1 = new SocketTool.CommForm.CommForm();
+            this.commForm2 = new SocketTool.CommForm.CommForm();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -60,26 +60,6 @@
             this.splitContainer.Size = new System.Drawing.Size(1403, 720);
             this.splitContainer.SplitterDistance = 715;
             this.splitContainer.TabIndex = 19;
-            // 
-            // commForm1
-            // 
-            this.commForm1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.commForm1.Location = new System.Drawing.Point(0, 0);
-            this.commForm1.MinimumSize = new System.Drawing.Size(620, 0);
-            this.commForm1.Name = "commForm1";
-            this.commForm1.RESCOP_NO = 0;
-            this.commForm1.Size = new System.Drawing.Size(715, 720);
-            this.commForm1.TabIndex = 0;
-            // 
-            // commForm2
-            // 
-            this.commForm2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.commForm2.Location = new System.Drawing.Point(0, 0);
-            this.commForm2.MinimumSize = new System.Drawing.Size(660, 0);
-            this.commForm2.Name = "commForm2";
-            this.commForm2.RESCOP_NO = 2;
-            this.commForm2.Size = new System.Drawing.Size(684, 720);
-            this.commForm2.TabIndex = 0;
             // 
             // tabControl1
             // 
@@ -125,6 +105,26 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // commForm1
+            // 
+            this.commForm1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.commForm1.Location = new System.Drawing.Point(0, 0);
+            this.commForm1.MinimumSize = new System.Drawing.Size(620, 0);
+            this.commForm1.Name = "commForm1";
+            this.commForm1.RESCOP_NO = 0;
+            this.commForm1.Size = new System.Drawing.Size(715, 720);
+            this.commForm1.TabIndex = 0;
+            // 
+            // commForm2
+            // 
+            this.commForm2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.commForm2.Location = new System.Drawing.Point(0, 0);
+            this.commForm2.MinimumSize = new System.Drawing.Size(660, 0);
+            this.commForm2.Name = "commForm2";
+            this.commForm2.RESCOP_NO = 2;
+            this.commForm2.Size = new System.Drawing.Size(684, 720);
+            this.commForm2.TabIndex = 0;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
@@ -133,6 +133,8 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Activated += new System.EventHandler(this.Form1_Activated);
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();

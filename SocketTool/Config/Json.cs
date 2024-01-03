@@ -19,7 +19,7 @@ namespace SocketTool.Config
 
         public event ThreadExceptionEventHandler OnExceptionEvent;
 
-        public Json()
+        protected  Json()
         {
             _options = new JsonDocumentOptions
             {
@@ -32,24 +32,11 @@ namespace SocketTool.Config
 
         public virtual int ReadJson(string path)
         {
-            try
+            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
             {
-                using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
-                {
-                    _json_root = JsonNode.Parse(fs, null, _options);
-                };
-            }
-            catch (Exception ex){
-                OnException(new Exception($"json読み込み失敗{path}({ex.Message})"));;
-                return -1;
-            }
+                _json_root = JsonNode.Parse(fs, null, _options);
+            };
             return 0;
-        }
-
-        public void OnException(Exception e)
-        {
-            var args = new ThreadExceptionEventArgs(e);
-            OnExceptionEvent?.Invoke(this, args);
         }
 
     }

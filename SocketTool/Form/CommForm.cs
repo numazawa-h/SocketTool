@@ -17,7 +17,7 @@ namespace SocketTool.CommForm
 {
     public partial class CommForm : UserControl
     {
-        JsonCommDef _comm_def = new JsonCommDef();
+        JsonCommDef _comm_def = JsonCommDef.GetInstance();
 
         ServerSocket recv_socket = new ServerSocket(4, 0, 1);
         ClientSocket send_socket = new ClientSocket(4, 0, 1);
@@ -44,22 +44,6 @@ namespace SocketTool.CommForm
         {
             InitializeComponent();
 
-            _comm_def.OnExceptionEvent += OnExceptionHandler;
-            string wcd = System.AppDomain.CurrentDomain.BaseDirectory;
-            _comm_def.ReadJson(wcd + "Config\\CommDef.json");
-
-            this.cbx_Remorte_Machine.Items.Clear();
-            foreach (string name in _comm_def.GetRemoteList())
-            {
-                cbx_Remorte_Machine.Items.Add(name);
-            }
-
-            this.cbx_Self_Machine.Items.Clear();
-            foreach (string name in _comm_def.GetSelfList())
-            {
-                cbx_Self_Machine.Items.Add(name);
-            }
-
             recv_socket.OnExceptionEvent += OnExceptionHandler;
             recv_socket.OnRecvData += OnRecvDatahandler;
             recv_socket.OnFailListenEvent += OnFailListenHandler;
@@ -83,6 +67,22 @@ namespace SocketTool.CommForm
                 default:
                     this.grp_Comm.Text = "？？？系"; break;
             }
+        }
+
+        public void Init()
+        {
+            this.cbx_Remorte_Machine.Items.Clear();
+            foreach (string name in JsonCommDef.GetInstance().GetRemoteMachineList())
+            {
+                cbx_Remorte_Machine.Items.Add(name);
+            }
+
+            this.cbx_Self_Machine.Items.Clear();
+            foreach (string name in JsonCommDef.GetInstance().GetSelfMachineList())
+            {
+                cbx_Self_Machine.Items.Add(name);
+            }
+
         }
 
         public void SendData(byte[] head, byte[] data)

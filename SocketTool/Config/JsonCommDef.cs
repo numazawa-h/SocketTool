@@ -9,21 +9,34 @@ using System.Threading.Tasks;
 
 namespace SocketTool.Config
 {
-    internal class JsonCommDef:Json
+    public class JsonCommDef:Json
     {
+        // シングルトン
+        static private JsonCommDef _instance =null;
+        static public JsonCommDef GetInstance()
+        {
+            if(_instance == null)
+            {
+                _instance = new JsonCommDef();
+            }
+            return _instance;
+        }
+        private JsonCommDef() : base()
+        {
+
+        }
+
+
+
         protected Dictionary<string, JsonNode> _remort_addr = new  Dictionary<string, JsonNode>();
         protected Dictionary<string, JsonNode> _self_addr = new Dictionary<string, JsonNode>();
-
 
         public override int ReadJson(string path)
         {
             try
             {
-                int ret = base.ReadJson(path);
-                if(ret<0){
-                    return ret;
-                }
-
+                base.ReadJson(path);
+         
                 _remort_addr.Clear();
                 JsonNode remort = _json_root["remort"];
                 foreach(JsonNode node in remort.AsArray())
@@ -40,13 +53,12 @@ namespace SocketTool.Config
             }
             catch (Exception ex)
             {
-                OnException(new Exception($"json読み込み失敗{path}({ex.Message})")); ;
-                return -2;
+                throw new Exception($"JsonCommDef読み込み失敗{path}({ex.Message})"); ;
             }
             return 0;
         }
 
-        public List<string>GetRemoteList()
+        public List<string>GetRemoteMachineList()
         {
             List<string> ret = new List<string>();
             foreach(string key in _remort_addr.Keys)
@@ -56,7 +68,7 @@ namespace SocketTool.Config
             return ret;
         }
 
-        public List<string> GetSelfList()
+        public List<string> GetSelfMachineList()
         {
             List<string> ret = new List<string>();
             foreach (string key in _self_addr.Keys)
