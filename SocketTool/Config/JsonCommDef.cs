@@ -79,6 +79,10 @@ namespace SocketTool.Config
         }
 
 
+        public string GetRemoteMachineCode(string name, int no)
+        {
+            return _remort_addr[name]["id"].AsArray()[no - 1].ToString();
+        }
         public string GetRemoteIp(string name, int no)
         {
             return _remort_addr[name]["addr"].AsArray()[no - 1]["ip"].ToString();
@@ -86,6 +90,11 @@ namespace SocketTool.Config
         public string GetRemotePort(string name, int no)
         {
             return _remort_addr[name]["addr"].AsArray()[no - 1]["port"].ToString();
+        }
+
+        public string GetSelfMachineCode(string name)
+        {
+            return _self_addr[name]["id"].ToString();
         }
         public string GetSelfIp(string name)
         {

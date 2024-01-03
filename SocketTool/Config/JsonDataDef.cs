@@ -46,7 +46,10 @@ namespace SocketTool.Config
             return 0;
         }
 
-
+        public DataDefine GetDataDefine(string id)
+        {
+            return _data_def[id];
+        }
 
         public class FieldDefine
         {
@@ -94,17 +97,17 @@ namespace SocketTool.Config
 
             public string GetFldName(string id)
             {
-                return _fld_def_list["id"].Name;
+                return _fld_def_list[id].Name;
             }
 
             public int GetFldOffset(string id)
             {
-                return _fld_def_list["id"].Offset;
+                return _fld_def_list[id].Offset;
             }
 
             public int GetFldLength(string id)
             {
-                return _fld_def_list["id"].Length;
+                return _fld_def_list[id].Length;
             }
 
         }

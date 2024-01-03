@@ -1,4 +1,5 @@
-﻿using SocketTool.Config;
+﻿using SocketTool.CommData;
+using SocketTool.Config;
 using SocketTool.Properties;
 using System;
 using System.Collections.Generic;
@@ -17,25 +18,20 @@ namespace SocketTool.CommForm
 {
     public partial class CommForm : UserControl
     {
-        JsonCommDef _comm_def = JsonCommDef.GetInstance();
-
-        ServerSocket recv_socket = new ServerSocket(4, 0, 1);
-        ClientSocket send_socket = new ClientSocket(4, 0, 1);
+        CommData_Header commHeader = null;
+        ServerSocket recv_socket = null;
+        ClientSocket send_socket = null;
 
         SocketReadWrite accept_socket = null;
         SocketReadWrite connect_socket = null;
 
 
-        int _RESCOP_NO;
+        int _rescop_no = 0;
         public int RESCOP_NO
         {
             get
             {
-                return _RESCOP_NO;
-            }
-            set
-            {
-                _RESCOP_NO = value;
+                return _rescop_no;
             }
         }
 
@@ -43,23 +39,16 @@ namespace SocketTool.CommForm
         public CommForm()
         {
             InitializeComponent();
-
-            recv_socket.OnExceptionEvent += OnExceptionHandler;
-            recv_socket.OnRecvData += OnRecvDatahandler;
-            recv_socket.OnFailListenEvent += OnFailListenHandler;
-            recv_socket.OnAcceptEvent += OnAcceptEventHandler;
-            recv_socket.OnDisConnectEvent += OnDisConnectEventHandler;
-
-            send_socket.OnExceptionEvent += OnExceptionHandler;
-            send_socket.OnRecvData += OnRecvDatahandler;
-            send_socket.OnFailConnectEvent += OnFaiConnectHandler;
-            send_socket.OnConnectEvent += OnConnectEventHandler;
-            send_socket.OnDisConnectEvent += OnDisConnectEventHandler;
         }
 
 
         private void CommForm_Load(object sender, EventArgs e)
         {
+        }
+
+        public void Init(int rescop_no)
+        {
+            this._rescop_no = rescop_no;
             switch (this.RESCOP_NO)
             {
                 case 1: this.grp_Comm.Text = "１系"; break;
@@ -67,10 +56,7 @@ namespace SocketTool.CommForm
                 default:
                     this.grp_Comm.Text = "？？？系"; break;
             }
-        }
 
-        public void Init()
-        {
             this.cbx_Remorte_Machine.Items.Clear();
             foreach (string name in JsonCommDef.GetInstance().GetRemoteMachineList())
             {
@@ -83,11 +69,36 @@ namespace SocketTool.CommForm
                 cbx_Self_Machine.Items.Add(name);
             }
 
+            // ヘッダ情報セットアップ
+            commHeader = new CommData_Header();
+            int head_len = commHeader.Define.Length;
+            int datalen_ofs = commHeader.Define.GetFldOffset("dlen");
+            int datalen_bytes = commHeader.Define.GetFldLength("dlen");
+
+            // 受信ソケットセットアップ
+            recv_socket = new ServerSocket(head_len, datalen_ofs, datalen_bytes);
+            recv_socket.OnExceptionEvent += OnExceptionHandler;
+            recv_socket.OnRecvData += OnRecvDatahandler;
+            recv_socket.OnFailListenEvent += OnFailListenHandler;
+            recv_socket.OnAcceptEvent += OnAcceptEventHandler;
+            recv_socket.OnDisConnectEvent += OnDisConnectEventHandler;
+
+            // 送信ソケットセットアップ
+            send_socket = new ClientSocket(head_len, datalen_ofs, datalen_bytes);
+            send_socket.OnExceptionEvent += OnExceptionHandler;
+            send_socket.OnRecvData += OnRecvDatahandler;
+            send_socket.OnFailConnectEvent += OnFaiConnectHandler;
+            send_socket.OnConnectEvent += OnConnectEventHandler;
+            send_socket.OnDisConnectEvent += OnDisConnectEventHandler;
         }
 
-        public void SendData(byte[] head, byte[] data)
+        public void SendData(string dtype, byte[] data)
         {
-            connect_socket?.Send(head, data);
+            if(connect_socket != null)
+            {
+                commHeader.SetOnSend(dtype);
+                connect_socket.Send(commHeader.GetData(), data);
+            }
         }
 
         private void OnRecvDatahandler(object sender, RecvDataEventArgs args)
@@ -98,19 +109,46 @@ namespace SocketTool.CommForm
                 return;
             }
             StringBuilder sb = new StringBuilder();
+            int cnt = 0;
             sb.Append("[");
             foreach (byte b in args.HeadBuff)
             {
+                if(cnt > 0 && (cnt % 8) == 0)
+                {
+                    sb.Append(" ");
+                }
+                if (cnt > 0 && (cnt % 4) == 0)
+                {
+                    sb.Append(" ");
+                }
+                if (cnt > 0 && (cnt % 16) == 0)
+                {
+                    sb.Append("\r\n ");
+                }
                 sb.Append($"{b:X2}");
+                ++cnt;
             }
-            sb.Append(']'); ;
+            sb.Append("]\r\n");
+            cnt = 0;
             sb.Append("[");
             foreach (byte b in args.DataBuff)
             {
+                if (cnt > 0 && (cnt % 8) == 0)
+                {
+                    sb.Append(" ");
+                }
+                if (cnt > 0 && (cnt % 4) == 0)
+                {
+                    sb.Append(" ");
+                }
+                if (cnt > 0 && (cnt % 16) == 0)
+                {
+                    sb.Append("\r\n ");
+                }
                 sb.Append($"{b:X2}");
+                ++cnt;
             }
-            sb.Append(']'); ;
-            sb.Append("\n");
+            sb.Append("]\r\n");
 
             this.rtx_MsgList.Text += sb.ToString();
         }
@@ -118,20 +156,26 @@ namespace SocketTool.CommForm
 
         private void cbx_Remorte_Machine_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string addr = _comm_def.GetRemoteIp(cbx_Remorte_Machine.Text, this.RESCOP_NO);
-            string port = _comm_def.GetRemotePort(cbx_Remorte_Machine.Text, this.RESCOP_NO);
+            string addr = JsonCommDef.GetInstance().GetRemoteIp(cbx_Remorte_Machine.Text, this.RESCOP_NO);
+            string port = JsonCommDef.GetInstance().GetRemotePort(cbx_Remorte_Machine.Text, this.RESCOP_NO);
 
             this.txt_Remote_IpAddress.Text = addr;
             this.txt_Remote_PortNo.Text = port;
+
+            string dst = JsonCommDef.GetInstance().GetRemoteMachineCode(cbx_Remorte_Machine.Text, this.RESCOP_NO);
+            commHeader.SetDstMachineCode(dst);
         }
 
         private void cbx_Self_Machine_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string addr = _comm_def.GetSelfIp(cbx_Self_Machine.Text);
-            string port = _comm_def.GetSelfPort(cbx_Self_Machine.Text, this.RESCOP_NO);
+            string addr = JsonCommDef.GetInstance().GetSelfIp(cbx_Self_Machine.Text);
+            string port = JsonCommDef.GetInstance().GetSelfPort(cbx_Self_Machine.Text, this.RESCOP_NO);
 
             this.txt_Self_IpAddress.Text = addr;
             this.txt_Self_PortNo.Text = port;
+
+            string src = JsonCommDef.GetInstance().GetSelfMachineCode(cbx_Self_Machine.Text);
+            commHeader.SetSrcMachineCode(src);
         }
 
         private void chk_Self_AutoConnect_CheckedChanged(object sender, EventArgs e)

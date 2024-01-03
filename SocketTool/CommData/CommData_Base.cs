@@ -10,22 +10,33 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace SocketTool.CommData
 {
-    internal class CommDataBase
+    internal class CommData_Base
     {
-        DataDefine _define;
+        protected DataDefine _define;
+        public DataDefine Define { get { return _define; } }
+
         byte[] _data;
 
 
-        public CommDataBase(DataDefine def, byte[] data)
+        public CommData_Base(DataDefine def, byte[] data=null)
+        {
+            Init(def, data);
+        }
+
+        public CommData_Base()
+        {
+            _define = null;
+            _data = null;
+        }
+
+        protected void Init(DataDefine def, byte[] data = null)
         {
             _define = def;
             _data = data;
-        }
-
-        public CommDataBase(DataDefine def)
-        {
-            _define = def;
-            _data = new byte[def.Length];
+            if (data==null && def.Length > 0)
+            {
+                _data = new byte[def.Length];
+            }
         }
 
         public byte[] GetData()
@@ -44,6 +55,7 @@ namespace SocketTool.CommData
             Buffer.BlockCopy(_data, 0, val, 0, Math.Min(val.Length, _data.Length));
         }
 
+
         public FldValue GetFldValue(string id)
         {
             int ofs = _define.GetFldOffset(id);
@@ -52,21 +64,26 @@ namespace SocketTool.CommData
             byte[] val = new byte[len];
             Buffer.BlockCopy(_data, ofs, val, 0, len);
 
-            return new FldValue(val);
+            return new FldValue(val, id, this);
         }
 
-        public void SetFldValue(string id, long val)
+        public void SetFldValue(string id, byte[] dat)
         {
             int ofs = _define.GetFldOffset(id);
             int len = _define.GetFldLength(id);
+            Buffer.BlockCopy(dat, 0, _data, ofs, len);
         }
 
         public class FldValue
         {
+            CommData_Base _owner;
+            string _fld_id;
             byte[] _data;
 
-            public FldValue(byte[] data)
+            public FldValue(byte[] data, string fld_id="", CommData_Base owner = null)
             {
+                _owner = owner;
+                _fld_id = fld_id;
                 _data = data;
             }
 
@@ -166,6 +183,7 @@ namespace SocketTool.CommData
             {
                 FillData(0);
                 Buffer.BlockCopy(val, 0, _data, 0, Math.Min(val.Length, _data.Length));
+                _owner?.SetFldValue(_fld_id, _data);
                 return;
             }
 
@@ -181,9 +199,10 @@ namespace SocketTool.CommData
                 {
                     Array.Reverse(dat);
                 }
+
                 FillData(0);
                 Buffer.BlockCopy(dat, 4 - _data.Length, _data,0, _data.Length);
-
+                _owner?.SetFldValue(_fld_id, _data);
                 return;
             }
 
@@ -199,9 +218,10 @@ namespace SocketTool.CommData
                 {
                     Array.Reverse(dat);
                 }
+
                 FillData(0);
                 Buffer.BlockCopy(dat, 8 - _data.Length, _data, 0, _data.Length);
-
+                _owner?.SetFldValue(_fld_id, _data);
                 return;
             }
 
@@ -227,22 +247,24 @@ namespace SocketTool.CommData
 
                     _data[idx] = b;
                 }
-
+                _owner?.SetFldValue(_fld_id, _data);
                 return;
             }
 
             public void SetAsStringAsc(string val)
             {
                 byte[] dat = System.Text.Encoding.ASCII.GetBytes(val);
+
                 FillData(0);
                 Buffer.BlockCopy(dat, 0, _data, 0, Math.Min(_data.Length, dat.Length));
-
+                _owner?.SetFldValue(_fld_id, _data);
                 return;
             }
 
             public void SetAsDateTimeBcd(DateTime val)
             {
                 string dat = val.ToString("yyyyMMddHHmmss");
+
                 SetAsBcd(dat);
                 return;
             }

@@ -24,30 +24,16 @@ namespace SocketTool
         public Form1()
         {
             InitializeComponent();
-            this.commForm1.RESCOP_NO = 1;
-            this.commForm2.RESCOP_NO = 2;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string wcd = System.AppDomain.CurrentDomain.BaseDirectory;
-            try
-            {
-                JsonCommDef.GetInstance().ReadJson(wcd + "config\\CommDef.json");
-            }catch(Exception ex)
-            {
-                MessageBox.Show($"CommDef.jsonの読み込み失敗({ex.Message})");
-                this.Close();
-            }
-            try
-            {
-                JsonDataDef.GetInstance().ReadJson(wcd + "config\\CommDataDef.json");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"CommDataDef.jsonの読み込み失敗({ex.Message})");
-                this.Close();
-            }
+            this.commForm1.Init(1);
+            this.commForm2.Init(2);
+        }
+
+        private void Form1_Activated(object sender, EventArgs e)
+        {
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -56,7 +42,7 @@ namespace SocketTool
             byte[] data = new byte[] { 0x20, 0x23, 0x12, 0x31 };
 
 
-            CommData.CommDataBase.FldValue val = new CommData.CommDataBase.FldValue(data);
+            CommData.CommData_Base.FldValue val = new CommData.CommData_Base.FldValue(data);
             int i = val.GetAsInt();
             long lng = val.GetAsLong();
             string bcd = val.GetAsBcd();
@@ -74,14 +60,9 @@ namespace SocketTool
             val.SetAsStringAsc("12AB");
             str = val.GetAsBcd();
 
-            commForm2.SendData(head, data);
+            commForm2.SendData("0101", System.Array.Empty<byte>());
         }
 
-        private void Form1_Activated(object sender, EventArgs e)
-        {
-            this.commForm1.Init();
-            this.commForm2.Init();
-        }
     }
 
 }

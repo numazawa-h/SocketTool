@@ -111,7 +111,6 @@
             this.commForm1.Location = new System.Drawing.Point(0, 0);
             this.commForm1.MinimumSize = new System.Drawing.Size(620, 0);
             this.commForm1.Name = "commForm1";
-            this.commForm1.RESCOP_NO = 0;
             this.commForm1.Size = new System.Drawing.Size(715, 720);
             this.commForm1.TabIndex = 0;
             // 
@@ -121,7 +120,6 @@
             this.commForm2.Location = new System.Drawing.Point(0, 0);
             this.commForm2.MinimumSize = new System.Drawing.Size(660, 0);
             this.commForm2.Name = "commForm2";
-            this.commForm2.RESCOP_NO = 2;
             this.commForm2.Size = new System.Drawing.Size(684, 720);
             this.commForm2.TabIndex = 0;
             // 

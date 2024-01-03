@@ -135,8 +135,19 @@ namespace SocketTool
             {
                 // データ受信の準備
                 _data_size = GetDataLength( _head);
-                _data = new byte[_data_size];
+                if (_data_size == 0)
+                {
+                    _data = System.Array.Empty<byte>();
+                }
+                else
+                {
+                    _data = new byte[_data_size];
+                }
                 _data_recv_cnt = 0;
+                if (_data_size == 0)
+                {
+                    return;
+                }
             }
 
             int rcnt = _soc.Receive(_data, _data_recv_cnt, _data_size - _data_recv_cnt, SocketFlags.None);
