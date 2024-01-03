@@ -55,6 +55,7 @@ namespace SocketTool
             try
             {
                 _soc.Send(joinByteArray(head, data));
+                onSend(head, data);
             }
             catch (Exception e)
             {
@@ -190,6 +191,11 @@ namespace SocketTool
          private void onRecv()
         {
             _soc_base.OnRecv(this, _head, _data);
+        }
+
+        private void onSend(byte[] head, byte[] data)
+        {
+            _soc_base.OnSend(this, head, data);
         }
     }
 }

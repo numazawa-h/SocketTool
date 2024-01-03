@@ -29,17 +29,17 @@
         private void InitializeComponent()
         {
             this.splitContainer = new System.Windows.Forms.SplitContainer();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.commForm1 = new SocketTool.CommForm.CommForm();
+            this.commForm2 = new SocketTool.CommForm.CommForm();
+            this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
-            this.commForm1 = new SocketTool.CommForm.CommForm();
-            this.commForm2 = new SocketTool.CommForm.CommForm();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.SuspendLayout();
@@ -61,16 +61,34 @@
             this.splitContainer.SplitterDistance = 715;
             this.splitContainer.TabIndex = 19;
             // 
-            // tabControl1
+            // commForm1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1425, 773);
-            this.tabControl1.TabIndex = 20;
+            this.commForm1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.commForm1.Location = new System.Drawing.Point(0, 0);
+            this.commForm1.MinimumSize = new System.Drawing.Size(620, 0);
+            this.commForm1.Name = "commForm1";
+            this.commForm1.Size = new System.Drawing.Size(715, 720);
+            this.commForm1.TabIndex = 0;
+            // 
+            // commForm2
+            // 
+            this.commForm2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.commForm2.Location = new System.Drawing.Point(0, 0);
+            this.commForm2.MinimumSize = new System.Drawing.Size(660, 0);
+            this.commForm2.Name = "commForm2";
+            this.commForm2.Size = new System.Drawing.Size(684, 720);
+            this.commForm2.TabIndex = 0;
+            // 
+            // tabControl
+            // 
+            this.tabControl.Controls.Add(this.tabPage1);
+            this.tabControl.Controls.Add(this.tabPage2);
+            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl.Location = new System.Drawing.Point(0, 0);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(1425, 773);
+            this.tabControl.TabIndex = 20;
             // 
             // tabPage1
             // 
@@ -105,30 +123,12 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // commForm1
-            // 
-            this.commForm1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.commForm1.Location = new System.Drawing.Point(0, 0);
-            this.commForm1.MinimumSize = new System.Drawing.Size(620, 0);
-            this.commForm1.Name = "commForm1";
-            this.commForm1.Size = new System.Drawing.Size(715, 720);
-            this.commForm1.TabIndex = 0;
-            // 
-            // commForm2
-            // 
-            this.commForm2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.commForm2.Location = new System.Drawing.Point(0, 0);
-            this.commForm2.MinimumSize = new System.Drawing.Size(660, 0);
-            this.commForm2.Name = "commForm2";
-            this.commForm2.Size = new System.Drawing.Size(684, 720);
-            this.commForm2.TabIndex = 0;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1425, 773);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.tabControl);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Activated += new System.EventHandler(this.Form1_Activated);
@@ -137,7 +137,7 @@
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
             this.splitContainer.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
+            this.tabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -147,7 +147,7 @@
         #endregion
         private System.Windows.Forms.SplitContainer splitContainer;
         private CommForm.CommForm commForm2;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private CommForm.CommForm commForm1;

@@ -27,9 +27,10 @@ namespace SocketTool.Properties
         public event ConnectEventHandler OnConnectEvent;
         public event ConnectEventHandler OnDisConnectEvent;
 
-        public delegate void RecvDataHandler(Object sender, RecvDataEventArgs args);
-        public event RecvDataHandler OnRecvData;
-        
+        public delegate void CommDataHandler(Object sender, CommDataEventArgs args);
+        public event CommDataHandler OnSendData;
+        public event CommDataHandler OnRecvData;
+
 
 
         public SocketBase( int headsize, int datalen_ofs, int datalen_bytes)
@@ -96,27 +97,42 @@ namespace SocketTool.Properties
         }
 
 
-        public void OnRecv(SocketReadWrite socket, byte[] head, byte[]data)
+        public void OnSend(SocketReadWrite socket, byte[] head, byte[]data)
         {
-            var args = new RecvDataEventArgs(socket, head, data);
+            var args = new CommDataEventArgs(socket, head, data, 1);
+            OnSendData?.Invoke(this, args);
+        }
+        public void OnRecv(SocketReadWrite socket, byte[] head, byte[] data)
+        {
+            var args = new CommDataEventArgs(socket, head, data, 0);
             OnRecvData?.Invoke(this, args);
         }
     }
-    public class RecvDataEventArgs : EventArgs
+    public class CommDataEventArgs : EventArgs
     {
         private SocketReadWrite _socket;
         private byte[] _head;
         private byte[] _data;
+        private int _direction;
 
         public SocketReadWrite Socket => _socket;
         public byte[] HeadBuff => _head;
         public byte[] DataBuff => _data;
+        public int Direction => _direction;
 
-        public RecvDataEventArgs(SocketReadWrite socket, byte[] head, byte[] data)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="socket"></param>
+        /// <param name="head"></param>
+        /// <param name="data"></param>
+        /// <param name="direction">0..受信 1..送信</param>
+        public CommDataEventArgs(SocketReadWrite socket, byte[] head, byte[] data, int direction)
         {
             _socket = socket;
             _head = head;
             _data = data;
+            _direction = direction;
         }
     }
 

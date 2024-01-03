@@ -78,7 +78,8 @@ namespace SocketTool.CommForm
             // 受信ソケットセットアップ
             recv_socket = new ServerSocket(head_len, datalen_ofs, datalen_bytes);
             recv_socket.OnExceptionEvent += OnExceptionHandler;
-            recv_socket.OnRecvData += OnRecvDatahandler;
+            recv_socket.OnSendData += OnSendRecvDatahandler;
+            recv_socket.OnRecvData += OnSendRecvDatahandler;
             recv_socket.OnFailListenEvent += OnFailListenHandler;
             recv_socket.OnAcceptEvent += OnAcceptEventHandler;
             recv_socket.OnDisConnectEvent += OnDisConnectEventHandler;
@@ -86,7 +87,8 @@ namespace SocketTool.CommForm
             // 送信ソケットセットアップ
             send_socket = new ClientSocket(head_len, datalen_ofs, datalen_bytes);
             send_socket.OnExceptionEvent += OnExceptionHandler;
-            send_socket.OnRecvData += OnRecvDatahandler;
+            send_socket.OnSendData += OnSendRecvDatahandler;
+            send_socket.OnRecvData += OnSendRecvDatahandler;
             send_socket.OnFailConnectEvent += OnFaiConnectHandler;
             send_socket.OnConnectEvent += OnConnectEventHandler;
             send_socket.OnDisConnectEvent += OnDisConnectEventHandler;
@@ -101,11 +103,11 @@ namespace SocketTool.CommForm
             }
         }
 
-        private void OnRecvDatahandler(object sender, RecvDataEventArgs args)
+        private void OnSendRecvDatahandler(object sender, CommDataEventArgs args)
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new RecvDataHandler(OnRecvDatahandler), new object[] { sender, args });
+                this.Invoke(new CommDataHandler(OnSendRecvDatahandler), new object[] { sender, args });
                 return;
             }
             StringBuilder sb = new StringBuilder();
@@ -150,7 +152,18 @@ namespace SocketTool.CommForm
             }
             sb.Append("]\r\n");
 
-            this.rtx_MsgList.Text += sb.ToString();
+            rtx_MsgList.SelectionStart = rtx_MsgList.Text.Length;
+            rtx_MsgList.SelectionLength = 0;
+            if(args.Direction == 0)
+            {
+                rtx_MsgList.SelectionBackColor = Color.White;
+            }
+            else
+            {
+                rtx_MsgList.SelectionBackColor = Color.Cyan;
+            }
+            rtx_MsgList.Focus();
+            this.rtx_MsgList.AppendText( sb.ToString());
         }
 
 

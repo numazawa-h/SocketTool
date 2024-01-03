@@ -61,6 +61,9 @@ namespace SocketTool
             str = val.GetAsBcd();
 
             commForm2.SendData("0101", System.Array.Empty<byte>());
+            commForm1.SendData("0201", new byte[48]);
+
+            tabControl.SelectedIndex = 0;
         }
 
     }
