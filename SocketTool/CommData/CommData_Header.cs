@@ -16,13 +16,23 @@ namespace SocketTool.CommData
     internal class CommData_Header: CommData_Base
     {
         const string myid = "head";
-
         private int SeqNo = 0;
+
+
+        public string DataType => GetFldValue("dtype").GetAsBcd();
+
 
         public CommData_Header() : base()
         {
-            base.Init(JsonDataDef.GetInstance().GetDataDefine(myid));
+            base.Init(JsonDataDef.GetInstance().GetMessageDefine(myid));
         }
+
+        public CommData_Header(byte[] data) : base()
+        {
+            base.Init(JsonDataDef.GetInstance().GetMessageDefine(myid), data);
+        }
+
+
 
         public void SetDstMachineCode(string dst)
         {
@@ -46,7 +56,7 @@ namespace SocketTool.CommData
 
         public void SetOnSend(string dtype)
         {
-            int dlen = JsonDataDef.GetInstance().GetDataDefine(dtype).Length;
+            int dlen = JsonDataDef.GetInstance().GetMessageDefine(dtype).Length;
             this.GetFldValue("dtype").SetAsBcd(dtype);
             this.GetFldValue("dlen").SetAsInt(dlen);
             this.GetFldValue("alen").SetAsInt(dlen);

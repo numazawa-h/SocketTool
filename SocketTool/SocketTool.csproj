@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommData\CommData_Data.cs" />
     <Compile Include="CommData\CommData_Base.cs" />
     <Compile Include="CommData\CommData_Header.cs" />
     <Compile Include="Config\JsonDataDef.cs" />

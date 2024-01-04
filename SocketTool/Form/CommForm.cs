@@ -25,6 +25,7 @@ namespace SocketTool.CommForm
         SocketSendRecv accept_socket = null;
         SocketSendRecv connect_socket = null;
 
+        Color _back_color;
 
         int _rescop_no = 0;
         public int RESCOP_NO
@@ -39,6 +40,7 @@ namespace SocketTool.CommForm
         public CommForm()
         {
             InitializeComponent();
+            _back_color = this.BackColor;
         }
 
 
@@ -78,8 +80,8 @@ namespace SocketTool.CommForm
             // 受信ソケットセットアップ
             recv_socket = new ServerSocket(head_len, datalen_ofs, datalen_bytes);
             recv_socket.OnExceptionEvent += OnExceptionHandler;
-            recv_socket.OnSendData += OnSendRecvDatahandler;
-            recv_socket.OnRecvData += OnSendRecvDatahandler;
+            recv_socket.OnSendData += OnSendDatahandler;
+            recv_socket.OnRecvData += OnRecvDatahandler;
             recv_socket.OnFailListenEvent += OnFailListenHandler;
             recv_socket.OnAcceptEvent += OnAcceptEventHandler;
             recv_socket.OnDisConnectEvent += OnDisConnectEventHandler;
@@ -87,8 +89,8 @@ namespace SocketTool.CommForm
             // 送信ソケットセットアップ
             send_socket = new ClientSocket(head_len, datalen_ofs, datalen_bytes);
             send_socket.OnExceptionEvent += OnExceptionHandler;
-            send_socket.OnSendData += OnSendRecvDatahandler;
-            send_socket.OnRecvData += OnSendRecvDatahandler;
+            send_socket.OnSendData += OnSendDatahandler;
+            send_socket.OnRecvData += OnRecvDatahandler;
             send_socket.OnFailConnectEvent += OnFaiConnectHandler;
             send_socket.OnConnectEvent += OnConnectEventHandler;
             send_socket.OnDisConnectEvent += OnDisConnectEventHandler;
@@ -96,24 +98,62 @@ namespace SocketTool.CommForm
 
         public void SendData(string dtype, byte[] data)
         {
-            if(connect_socket != null)
+            if (connect_socket != null)
             {
                 commHeader.SetOnSend(dtype);
                 connect_socket.Send(commHeader.GetData(), data);
             }
         }
+        public void SendData(CommData_Data comm_data)
+        {
+            if (connect_socket != null)
+            {
+                commHeader.SetOnSend(comm_data.DataType);
+                connect_socket.Send(commHeader.GetData(), comm_data.GetData());
+            }
+        }
 
-        private void OnSendRecvDatahandler(object sender, CommDataEventArgs args)
+
+        private void OnSendDatahandler(object sender, CommDataEventArgs args)
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new CommDataHandler(OnSendRecvDatahandler), new object[] { sender, args });
+                this.Invoke(new CommDataHandler(OnSendDatahandler), new object[] { sender, args });
                 return;
             }
+            DisplaySendRecvData(args.HeadBuff, args.DataBuff, 1);
+        }
+
+        private void OnRecvDatahandler(object sender, CommDataEventArgs args)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new CommDataHandler(OnRecvDatahandler), new object[] { sender, args });
+                return;
+            }
+            CommData_Header header = new CommData_Header(args.HeadBuff);
+            string dtype =header.GetFldValue("dtype").GetAsBcd();
+            CommData_Data data = new CommData_Data(dtype, args.DataBuff);
+
+            if (dtype == "0202")
+            {
+                if(data.GetDataDiscription("mode-active") == "アクティブ")
+                {
+                    Form1 form = (Form1)this.ParentForm;
+                    form.SetCommActive(_rescop_no);
+                }
+            }
+
+            DisplaySendRecvData(args.HeadBuff, args.DataBuff, 0);
+        }
+
+
+        private void DisplaySendRecvData(byte[] head, byte[] data, int direction )
+        {
             StringBuilder sb = new StringBuilder();
             int cnt = 0;
             sb.Append("[");
-            foreach (byte b in args.HeadBuff)
+            foreach (byte b in head)
             {
                 if(cnt > 0 && (cnt % 8) == 0)
                 {
@@ -133,7 +173,7 @@ namespace SocketTool.CommForm
             sb.Append("]\r\n");
             cnt = 0;
             sb.Append("[");
-            foreach (byte b in args.DataBuff)
+            foreach (byte b in data)
             {
                 if (cnt > 0 && (cnt % 8) == 0)
                 {
@@ -154,7 +194,7 @@ namespace SocketTool.CommForm
 
             rtx_MsgList.SelectionStart = rtx_MsgList.Text.Length;
             rtx_MsgList.SelectionLength = 0;
-            if(args.Direction == 0)
+            if(direction == 0)
             {
                 rtx_MsgList.SelectionBackColor = Color.White;
             }
@@ -322,6 +362,7 @@ namespace SocketTool.CommForm
             }
             else
             {
+                this.BackColor = _back_color;
                 lbl_Remote_Status.Text = "切断";
                 lbl_Remote_Status.ForeColor = Color.Black;
                 connect_socket = null;

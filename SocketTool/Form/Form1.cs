@@ -1,4 +1,6 @@
-﻿using SocketTool.Config;
+﻿using SocketTool.CommData;
+using SocketTool.CommForm;
+using SocketTool.Config;
 using SocketTool.Properties;
 using System;
 using System.Collections.Generic;
@@ -20,10 +22,12 @@ namespace SocketTool
 {
     public partial class Form1 : Form
     {
+        Color back_color;
 
         public Form1()
         {
             InitializeComponent();
+            back_color = this.BackColor;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -34,6 +38,19 @@ namespace SocketTool
 
         private void Form1_Activated(object sender, EventArgs e)
         {
+        }
+
+        public void SetCommActive(int rescop_no)
+        {
+            if(rescop_no == 1) {
+                commForm1.BackColor = Color.MistyRose;
+                commForm2.BackColor = back_color;
+            }
+            if (rescop_no ==2)
+            {
+                commForm1.BackColor = back_color;
+                commForm2.BackColor = Color.MistyRose;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -59,11 +76,15 @@ namespace SocketTool
             str = val.GetAsBcd();
             val.SetAsStringAsc("12AB");
             str = val.GetAsBcd();
-
+            tabControl.SelectedIndex = 0;
+            Application.DoEvents();
             commForm2.SendData("0101", System.Array.Empty<byte>());
             commForm1.SendData("0201", new byte[48]);
 
-            tabControl.SelectedIndex = 0;
+            CommData_Data msg0202 = new CommData_Data("0202");
+            msg0202.GetFldValue("mode-active").SetAsInt(1);
+            commForm1.SendData(msg0202);
+
         }
 
     }

@@ -14,9 +14,12 @@
 			]
 		},
 		{ "id":"0001", "name":"肯定応答", "len":  0,"flds":[] },
-		{ "id":"0002", "name":"否定応答", "len": 48,"flds":[{ "id":"reson-nak", "name":"拒否理由", "ofs": 0, "len":4 },] },
+		{ "id":"0002", "name":"否定応答", "len": 48,"flds":[{ "id":"reson-nak", "ofs": 0, "len":4 },] },
 		{ "id":"0101", "name":"ヘルスチェック", "len":  0,"flds":[] },
 		{ "id":"0201", "name":"開始要求", "len": 48,"flds":[] },
-		{ "id":"0202", "name":"系切替", "len": 48,"flds":[{ "id":"mode-active", "name":"系切替モード", "ofs": 0, "len":4 },] },
-	]
+		{ "id":"0202", "name":"系切替", "len": 48,"flds":[{ "id":"mode-active", "ofs": 0, "len":2 },] },
+	],
+	"valdef":[
+		{ "id":"mode-active", "name":"系切替モード", "desc":{"0001":"アクティブ", "0002":"スタンバイ" } },
+	],
 }

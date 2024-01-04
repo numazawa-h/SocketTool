@@ -10,7 +10,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace SocketTool.CommData
 {
-    internal class CommData_Base
+    public class CommData_Base
     {
         protected CommMessageDefine _define;
         public CommMessageDefine commMessageDefine { get { return _define; } }
@@ -52,7 +52,7 @@ namespace SocketTool.CommData
 
         public void SetData(byte[] val)
         {
-            Buffer.BlockCopy(_data, 0, val, 0, Math.Min(val.Length, _data.Length));
+            Buffer.BlockCopy(val, 0, _data, 0, Math.Min(val.Length, _data.Length));
         }
 
 

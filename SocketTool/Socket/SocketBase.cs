@@ -99,12 +99,12 @@ namespace SocketTool.Properties
 
         public void OnSend(SocketSendRecv socket, byte[] head, byte[]data)
         {
-            var args = new CommDataEventArgs(socket, head, data, 1);
+            var args = new CommDataEventArgs(socket, head, data);
             OnSendData?.Invoke(this, args);
         }
         public void OnRecv(SocketSendRecv socket, byte[] head, byte[] data)
         {
-            var args = new CommDataEventArgs(socket, head, data, 0);
+            var args = new CommDataEventArgs(socket, head, data);
             OnRecvData?.Invoke(this, args);
         }
     }
@@ -113,26 +113,16 @@ namespace SocketTool.Properties
         private SocketSendRecv _socket;
         private byte[] _head;
         private byte[] _data;
-        private int _direction;
 
         public SocketSendRecv Socket => _socket;
         public byte[] HeadBuff => _head;
         public byte[] DataBuff => _data;
-        public int Direction => _direction;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="socket"></param>
-        /// <param name="head"></param>
-        /// <param name="data"></param>
-        /// <param name="direction">0..受信 1..送信</param>
-        public CommDataEventArgs(SocketSendRecv socket, byte[] head, byte[] data, int direction)
+        public CommDataEventArgs(SocketSendRecv socket, byte[] head, byte[] data)
         {
             _socket = socket;
             _head = head;
             _data = data;
-            _direction = direction;
         }
     }
 

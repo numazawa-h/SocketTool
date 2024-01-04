@@ -23,9 +23,10 @@ namespace SocketTool.Config
         {
 
         }
-
-
         protected Dictionary<string, CommMessageDefine> _data_def = new Dictionary<string, CommMessageDefine>();
+
+        protected Dictionary<string, DataDiscriptionDefine> _data_desc_def = new Dictionary<string, DataDiscriptionDefine>();
+
 
         public override int ReadJson(string path)
         {
@@ -38,17 +39,33 @@ namespace SocketTool.Config
                 {
                     _data_def.Add(node["id"].ToString(), new CommMessageDefine(node) );
                 }
+                foreach (JsonNode node in _json_root["valdef"].AsArray())
+                {
+                    _data_desc_def.Add(node["id"].ToString(), new DataDiscriptionDefine(node));
+                }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex)            {
                 throw new Exception($"JsonDataDef読み込み失敗{path}({ex.Message})"); ;
             }
             return 0;
         }
 
-        public CommMessageDefine GetDataDefine(string id)
+        public CommMessageDefine GetMessageDefine(string id)
         {
             return _data_def[id];
+        }
+
+
+        public string GetValueDescription(string fldid, string val)
+        {
+            string description = "？？？";
+            DataDiscriptionDefine def = null;
+            _data_desc_def.TryGetValue(fldid, out def);
+            if (def != null)
+            {
+                description = def[val];
+            }
+            return description;
         }
 
         public class FieldDefine
@@ -65,7 +82,7 @@ namespace SocketTool.Config
             public FieldDefine(JsonNode def)
             {
                 _id = def["id"].ToString();
-                _name = def["name"].ToString();
+  //              _name = def["name"].ToString();
                 _ofs = def["ofs"].GetValue<int>();
                 _bytelen = def["len"].GetValue<int>();
             }
@@ -111,5 +128,45 @@ namespace SocketTool.Config
             }
 
         }
+
+        public class DataDiscriptionDefine
+        {
+            string _id;
+            string _name;
+
+            public string FldId { get { return _id; } }
+
+            public string FldName { get { return _name; } }    
+
+            Dictionary<string, string> _desc_def = new Dictionary<string, string>();
+
+            public DataDiscriptionDefine(JsonNode def)
+            {
+                _id = def["id"].ToString();
+                _name = def["name"].ToString();
+
+                JsonNode desc_list = def["desc"];
+
+                foreach ( KeyValuePair<string, JsonNode> pair in (JsonObject)desc_list)
+                {
+                    _desc_def.Add(pair.Key, pair.Value.ToString());
+                }
+            }
+
+            public string this[string val] { 
+                get {
+                    string desc = "？？？";
+                    _desc_def.TryGetValue(val, out desc);
+                    return desc; 
+                } 
+            }
+
+            public string[] Values()
+            {
+                return _desc_def.Keys.ToArray<string>();
+            }
+
+        }
+
     }
 }
