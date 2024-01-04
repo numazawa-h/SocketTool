@@ -12,7 +12,7 @@ namespace SocketTool.Properties
         private static ReaderWriterLockSlim _locker = new ReaderWriterLockSlim();
 
 
-        private List<SocketReadWrite> _socket_list = new List<SocketReadWrite>();
+        private List<SocketSendRecv> _socket_list = new List<SocketSendRecv>();
         protected IPAddress _ipAddress;
         protected IPEndPoint _remoteEP;
         public int _header_size;
@@ -51,7 +51,7 @@ namespace SocketTool.Properties
             return 0;
         }
 
-        protected void AddSocketList(SocketReadWrite handler)
+        protected void AddSocketList(SocketSendRecv handler)
         {
             _locker.EnterWriteLock();
             try
@@ -67,7 +67,7 @@ namespace SocketTool.Properties
 
         protected void OnAccept(Socket soc)
         {
-            SocketReadWrite socket = new SocketReadWrite(soc, this);
+            SocketSendRecv socket = new SocketSendRecv(soc, this);
             socket.StartRecv();
             AddSocketList(socket);
 
@@ -77,14 +77,14 @@ namespace SocketTool.Properties
 
         protected void OnConnect(Socket soc)
         {
-            SocketReadWrite socket = new SocketReadWrite(soc, this);
+            SocketSendRecv socket = new SocketSendRecv(soc, this);
             socket.StartRecv();
             AddSocketList(socket);
 
             OnConnectEvent?.Invoke(this, new ConnectEventArgs(socket));
         }
 
-        public void OnDisConnect(SocketReadWrite socket)
+        public void OnDisConnect(SocketSendRecv socket)
         {
             var args = new ConnectEventArgs(socket);
             OnDisConnectEvent?.Invoke(this, args);
@@ -97,12 +97,12 @@ namespace SocketTool.Properties
         }
 
 
-        public void OnSend(SocketReadWrite socket, byte[] head, byte[]data)
+        public void OnSend(SocketSendRecv socket, byte[] head, byte[]data)
         {
             var args = new CommDataEventArgs(socket, head, data, 1);
             OnSendData?.Invoke(this, args);
         }
-        public void OnRecv(SocketReadWrite socket, byte[] head, byte[] data)
+        public void OnRecv(SocketSendRecv socket, byte[] head, byte[] data)
         {
             var args = new CommDataEventArgs(socket, head, data, 0);
             OnRecvData?.Invoke(this, args);
@@ -110,12 +110,12 @@ namespace SocketTool.Properties
     }
     public class CommDataEventArgs : EventArgs
     {
-        private SocketReadWrite _socket;
+        private SocketSendRecv _socket;
         private byte[] _head;
         private byte[] _data;
         private int _direction;
 
-        public SocketReadWrite Socket => _socket;
+        public SocketSendRecv Socket => _socket;
         public byte[] HeadBuff => _head;
         public byte[] DataBuff => _data;
         public int Direction => _direction;
@@ -127,7 +127,7 @@ namespace SocketTool.Properties
         /// <param name="head"></param>
         /// <param name="data"></param>
         /// <param name="direction">0..受信 1..送信</param>
-        public CommDataEventArgs(SocketReadWrite socket, byte[] head, byte[] data, int direction)
+        public CommDataEventArgs(SocketSendRecv socket, byte[] head, byte[] data, int direction)
         {
             _socket = socket;
             _head = head;
@@ -138,11 +138,11 @@ namespace SocketTool.Properties
 
     public class ConnectEventArgs: EventArgs
     {
-        private SocketReadWrite _socket;
+        private SocketSendRecv _socket;
 
-        public SocketReadWrite Socket => _socket;
+        public SocketSendRecv Socket => _socket;
 
-        public ConnectEventArgs(SocketReadWrite socket)
+        public ConnectEventArgs(SocketSendRecv socket)
         {
             _socket = socket;
         }

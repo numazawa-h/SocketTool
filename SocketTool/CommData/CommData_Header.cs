@@ -35,7 +35,7 @@ namespace SocketTool.CommData
 
         public void SetDataType(string dtype)
         {
-            int dlen = this.Define.Length;
+            int dlen = this.commMessageDefine.Length;
             this.GetFldValue("dtype").SetAsBcd(dtype);
             this.GetFldValue("dlen").SetAsInt(dlen);
             this.GetFldValue("alen").SetAsInt(dlen);

@@ -25,7 +25,7 @@ namespace SocketTool.Config
         }
 
 
-        protected Dictionary<string, DataDefine> _data_def = new Dictionary<string, DataDefine>();
+        protected Dictionary<string, CommMessageDefine> _data_def = new Dictionary<string, CommMessageDefine>();
 
         public override int ReadJson(string path)
         {
@@ -36,7 +36,7 @@ namespace SocketTool.Config
                 _data_def.Clear();
                 foreach (JsonNode node in _json_root["datadef"].AsArray())
                 {
-                    _data_def.Add(node["id"].ToString(), new DataDefine(node) );
+                    _data_def.Add(node["id"].ToString(), new CommMessageDefine(node) );
                 }
             }
             catch (Exception ex)
@@ -46,7 +46,7 @@ namespace SocketTool.Config
             return 0;
         }
 
-        public DataDefine GetDataDefine(string id)
+        public CommMessageDefine GetDataDefine(string id)
         {
             return _data_def[id];
         }
@@ -71,7 +71,7 @@ namespace SocketTool.Config
             }
         }
 
-        public class DataDefine
+        public class CommMessageDefine
         {
             string _id;
             string _name;
@@ -83,7 +83,7 @@ namespace SocketTool.Config
 
             Dictionary<string, FieldDefine> _fld_def_list = new Dictionary<string, FieldDefine>();
 
-            public DataDefine(JsonNode def)
+            public CommMessageDefine(JsonNode def)
             {
                 _id = def["id"].ToString();
                 _name = def["name"].ToString();

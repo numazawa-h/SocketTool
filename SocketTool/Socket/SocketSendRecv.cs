@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace SocketTool
 {
-    public class SocketReadWrite
+    public class SocketSendRecv
     {
         protected SocketBase _soc_base;
         protected Socket _soc;
@@ -22,7 +22,7 @@ namespace SocketTool
 
 
 
-        public SocketReadWrite(Socket soc, SocketBase soc_base)
+        public SocketSendRecv(Socket soc, SocketBase soc_base)
         {
             _soc_base = soc_base;
             _soc = soc;
@@ -82,7 +82,7 @@ namespace SocketTool
             Task.Run(() => recvProc(this));
         }
 
-        static private void recvProc(SocketReadWrite _this)
+        static private void recvProc(SocketSendRecv _this)
         {
             try
             {

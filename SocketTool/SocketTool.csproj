@@ -94,7 +94,7 @@
     <Compile Include="Form\CommForm.Designer.cs">
       <DependentUpon>CommForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Socket\SocketReadWrite.cs" />
+    <Compile Include="Socket\SocketSendRecv.cs" />
     <Compile Include="Socket\ServerSocket.cs" />
     <Compile Include="Socket\SocketBase.cs" />
     <EmbeddedResource Include="Form\Form1.resx">

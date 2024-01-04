@@ -22,8 +22,8 @@ namespace SocketTool.CommForm
         ServerSocket recv_socket = null;
         ClientSocket send_socket = null;
 
-        SocketReadWrite accept_socket = null;
-        SocketReadWrite connect_socket = null;
+        SocketSendRecv accept_socket = null;
+        SocketSendRecv connect_socket = null;
 
 
         int _rescop_no = 0;
@@ -71,9 +71,9 @@ namespace SocketTool.CommForm
 
             // ヘッダ情報セットアップ
             commHeader = new CommData_Header();
-            int head_len = commHeader.Define.Length;
-            int datalen_ofs = commHeader.Define.GetFldOffset("dlen");
-            int datalen_bytes = commHeader.Define.GetFldLength("dlen");
+            int head_len = commHeader.commMessageDefine.Length;
+            int datalen_ofs = commHeader.commMessageDefine.GetFldOffset("dlen");
+            int datalen_bytes = commHeader.commMessageDefine.GetFldLength("dlen");
 
             // 受信ソケットセットアップ
             recv_socket = new ServerSocket(head_len, datalen_ofs, datalen_bytes);

@@ -12,17 +12,13 @@ namespace SocketTool.CommData
 {
     internal class CommData_Base
     {
-        protected DataDefine _define;
-        public DataDefine Define { get { return _define; } }
+        protected CommMessageDefine _define;
+        public CommMessageDefine commMessageDefine { get { return _define; } }
 
         byte[] _data;
 
 
-
-
-
-
-        public CommData_Base(DataDefine def, byte[] data=null)
+        public CommData_Base(CommMessageDefine def, byte[] data=null)
         {
             Init(def, data);
         }
@@ -33,7 +29,7 @@ namespace SocketTool.CommData
             _data = null;
         }
 
-        protected void Init(DataDefine def, byte[] data = null)
+        protected void Init(CommMessageDefine def, byte[] data = null)
         {
             _define = def;
             _data = data;
