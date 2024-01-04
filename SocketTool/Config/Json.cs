@@ -17,8 +17,6 @@ namespace SocketTool.Config
         protected JsonDocumentOptions _options;
         protected JsonNode _json_root;
 
-        public event ThreadExceptionEventHandler OnExceptionEvent;
-
         protected  Json()
         {
             _options = new JsonDocumentOptions

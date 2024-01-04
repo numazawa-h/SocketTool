@@ -31,17 +31,25 @@
             this.grp_Comm = new System.Windows.Forms.GroupBox();
             this.lbl_Remote_Status = new System.Windows.Forms.Label();
             this.lbl_Self_Status = new System.Windows.Forms.Label();
-            this.cbx_Self_Machine = new System.Windows.Forms.ComboBox();
-            this.chk_Remote_AutoConnect = new System.Windows.Forms.CheckBox();
+            this.chk_Remort_AutoConnect = new System.Windows.Forms.CheckBox();
             this.txt_Self_IpAddress = new System.Windows.Forms.TextBox();
-            this.txt_Remote_IpAddress = new System.Windows.Forms.TextBox();
-            this.txt_Remote_PortNo = new System.Windows.Forms.TextBox();
-            this.cbx_Remorte_Machine = new System.Windows.Forms.ComboBox();
+            this.txt_Remort_IpAddress = new System.Windows.Forms.TextBox();
+            this.txt_Remort_PortNo = new System.Windows.Forms.TextBox();
             this.chk_Self_AutoConnect = new System.Windows.Forms.CheckBox();
             this.txt_Self_PortNo = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.rtx_MsgList = new System.Windows.Forms.RichTextBox();
+            this.chk_Self_Ack = new System.Windows.Forms.CheckBox();
+            this.chk_Self_Health = new System.Windows.Forms.CheckBox();
+            this.txt_Self_Health_Interval = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txt_Remort_Health_Interval = new System.Windows.Forms.TextBox();
+            this.chk_Remort_Health = new System.Windows.Forms.CheckBox();
+            this.chk_Remort_Ack = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.grp_Comm.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -49,14 +57,22 @@
             // 
             // grp_Comm
             // 
+            this.grp_Comm.Controls.Add(this.label4);
+            this.grp_Comm.Controls.Add(this.label3);
+            this.grp_Comm.Controls.Add(this.label2);
+            this.grp_Comm.Controls.Add(this.txt_Remort_Health_Interval);
+            this.grp_Comm.Controls.Add(this.chk_Remort_Health);
+            this.grp_Comm.Controls.Add(this.chk_Remort_Ack);
+            this.grp_Comm.Controls.Add(this.label1);
+            this.grp_Comm.Controls.Add(this.txt_Self_Health_Interval);
+            this.grp_Comm.Controls.Add(this.chk_Self_Health);
+            this.grp_Comm.Controls.Add(this.chk_Self_Ack);
             this.grp_Comm.Controls.Add(this.lbl_Remote_Status);
             this.grp_Comm.Controls.Add(this.lbl_Self_Status);
-            this.grp_Comm.Controls.Add(this.cbx_Self_Machine);
-            this.grp_Comm.Controls.Add(this.chk_Remote_AutoConnect);
+            this.grp_Comm.Controls.Add(this.chk_Remort_AutoConnect);
             this.grp_Comm.Controls.Add(this.txt_Self_IpAddress);
-            this.grp_Comm.Controls.Add(this.txt_Remote_IpAddress);
-            this.grp_Comm.Controls.Add(this.txt_Remote_PortNo);
-            this.grp_Comm.Controls.Add(this.cbx_Remorte_Machine);
+            this.grp_Comm.Controls.Add(this.txt_Remort_IpAddress);
+            this.grp_Comm.Controls.Add(this.txt_Remort_PortNo);
             this.grp_Comm.Controls.Add(this.chk_Self_AutoConnect);
             this.grp_Comm.Controls.Add(this.txt_Self_PortNo);
             this.grp_Comm.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -88,28 +104,17 @@
             this.lbl_Self_Status.TabIndex = 18;
             this.lbl_Self_Status.Text = "切断";
             // 
-            // cbx_Self_Machine
+            // chk_Remort_AutoConnect
             // 
-            this.cbx_Self_Machine.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbx_Self_Machine.FormattingEnabled = true;
-            this.cbx_Self_Machine.Location = new System.Drawing.Point(17, 30);
-            this.cbx_Self_Machine.Name = "cbx_Self_Machine";
-            this.cbx_Self_Machine.Size = new System.Drawing.Size(573, 32);
-            this.cbx_Self_Machine.TabIndex = 17;
-            this.cbx_Self_Machine.SelectedIndexChanged += new System.EventHandler(this.cbx_Self_Machine_SelectedIndexChanged);
-            // 
-            // chk_Remote_AutoConnect
-            // 
-            this.chk_Remote_AutoConnect.AutoSize = true;
-            this.chk_Remote_AutoConnect.Font = new System.Drawing.Font("MS UI Gothic", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.chk_Remote_AutoConnect.Location = new System.Drawing.Point(498, 165);
-            this.chk_Remote_AutoConnect.Name = "chk_Remote_AutoConnect";
-            this.chk_Remote_AutoConnect.Size = new System.Drawing.Size(86, 27);
-            this.chk_Remote_AutoConnect.TabIndex = 16;
-            this.chk_Remote_AutoConnect.Text = "接続";
-            this.chk_Remote_AutoConnect.UseVisualStyleBackColor = true;
-            this.chk_Remote_AutoConnect.CheckedChanged += new System.EventHandler(this.chk_Remote_AutoConnect_CheckedChanged);
+            this.chk_Remort_AutoConnect.AutoSize = true;
+            this.chk_Remort_AutoConnect.Font = new System.Drawing.Font("MS UI Gothic", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.chk_Remort_AutoConnect.Location = new System.Drawing.Point(498, 165);
+            this.chk_Remort_AutoConnect.Name = "chk_Remort_AutoConnect";
+            this.chk_Remort_AutoConnect.Size = new System.Drawing.Size(86, 27);
+            this.chk_Remort_AutoConnect.TabIndex = 16;
+            this.chk_Remort_AutoConnect.Text = "接続";
+            this.chk_Remort_AutoConnect.UseVisualStyleBackColor = true;
+            this.chk_Remort_AutoConnect.CheckedChanged += new System.EventHandler(this.chk_Remote_AutoConnect_CheckedChanged);
             // 
             // txt_Self_IpAddress
             // 
@@ -119,32 +124,21 @@
             this.txt_Self_IpAddress.Size = new System.Drawing.Size(212, 31);
             this.txt_Self_IpAddress.TabIndex = 7;
             // 
-            // txt_Remote_IpAddress
+            // txt_Remort_IpAddress
             // 
-            this.txt_Remote_IpAddress.Location = new System.Drawing.Point(20, 165);
-            this.txt_Remote_IpAddress.Margin = new System.Windows.Forms.Padding(6);
-            this.txt_Remote_IpAddress.Name = "txt_Remote_IpAddress";
-            this.txt_Remote_IpAddress.Size = new System.Drawing.Size(212, 31);
-            this.txt_Remote_IpAddress.TabIndex = 10;
+            this.txt_Remort_IpAddress.Location = new System.Drawing.Point(20, 165);
+            this.txt_Remort_IpAddress.Margin = new System.Windows.Forms.Padding(6);
+            this.txt_Remort_IpAddress.Name = "txt_Remort_IpAddress";
+            this.txt_Remort_IpAddress.Size = new System.Drawing.Size(212, 31);
+            this.txt_Remort_IpAddress.TabIndex = 10;
             // 
-            // txt_Remote_PortNo
+            // txt_Remort_PortNo
             // 
-            this.txt_Remote_PortNo.Location = new System.Drawing.Point(244, 165);
-            this.txt_Remote_PortNo.Margin = new System.Windows.Forms.Padding(6);
-            this.txt_Remote_PortNo.Name = "txt_Remote_PortNo";
-            this.txt_Remote_PortNo.Size = new System.Drawing.Size(130, 31);
-            this.txt_Remote_PortNo.TabIndex = 9;
-            // 
-            // cbx_Remorte_Machine
-            // 
-            this.cbx_Remorte_Machine.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbx_Remorte_Machine.FormattingEnabled = true;
-            this.cbx_Remorte_Machine.Location = new System.Drawing.Point(17, 124);
-            this.cbx_Remorte_Machine.Name = "cbx_Remorte_Machine";
-            this.cbx_Remorte_Machine.Size = new System.Drawing.Size(576, 32);
-            this.cbx_Remorte_Machine.TabIndex = 14;
-            this.cbx_Remorte_Machine.SelectedIndexChanged += new System.EventHandler(this.cbx_Remorte_Machine_SelectedIndexChanged);
+            this.txt_Remort_PortNo.Location = new System.Drawing.Point(244, 165);
+            this.txt_Remort_PortNo.Margin = new System.Windows.Forms.Padding(6);
+            this.txt_Remort_PortNo.Name = "txt_Remort_PortNo";
+            this.txt_Remort_PortNo.Size = new System.Drawing.Size(130, 31);
+            this.txt_Remort_PortNo.TabIndex = 9;
             // 
             // chk_Self_AutoConnect
             // 
@@ -182,7 +176,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 207);
             this.panel2.Name = "panel2";
-            this.panel2.Padding = new System.Windows.Forms.Padding(20, 5, 10, 10);
+            this.panel2.Padding = new System.Windows.Forms.Padding(20, 5, 20, 10);
             this.panel2.Size = new System.Drawing.Size(620, 586);
             this.panel2.TabIndex = 21;
             // 
@@ -191,9 +185,107 @@
             this.rtx_MsgList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtx_MsgList.Location = new System.Drawing.Point(20, 5);
             this.rtx_MsgList.Name = "rtx_MsgList";
-            this.rtx_MsgList.Size = new System.Drawing.Size(590, 571);
+            this.rtx_MsgList.Size = new System.Drawing.Size(580, 571);
             this.rtx_MsgList.TabIndex = 13;
             this.rtx_MsgList.Text = "";
+            // 
+            // chk_Self_Ack
+            // 
+            this.chk_Self_Ack.AutoSize = true;
+            this.chk_Self_Ack.Font = new System.Drawing.Font("ＭＳ ゴシック", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.chk_Self_Ack.Location = new System.Drawing.Point(115, 31);
+            this.chk_Self_Ack.Name = "chk_Self_Ack";
+            this.chk_Self_Ack.Size = new System.Drawing.Size(130, 27);
+            this.chk_Self_Ack.TabIndex = 20;
+            this.chk_Self_Ack.Text = "肯定応答";
+            this.chk_Self_Ack.UseVisualStyleBackColor = true;
+            // 
+            // chk_Self_Health
+            // 
+            this.chk_Self_Health.AutoSize = true;
+            this.chk_Self_Health.Font = new System.Drawing.Font("ＭＳ ゴシック", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.chk_Self_Health.Location = new System.Drawing.Point(277, 31);
+            this.chk_Self_Health.Name = "chk_Self_Health";
+            this.chk_Self_Health.Size = new System.Drawing.Size(196, 27);
+            this.chk_Self_Health.TabIndex = 21;
+            this.chk_Self_Health.Text = "ヘルスチェック";
+            this.chk_Self_Health.UseVisualStyleBackColor = true;
+            // 
+            // txt_Self_Health_Interval
+            // 
+            this.txt_Self_Health_Interval.Location = new System.Drawing.Point(498, 23);
+            this.txt_Self_Health_Interval.Name = "txt_Self_Health_Interval";
+            this.txt_Self_Health_Interval.Size = new System.Drawing.Size(67, 31);
+            this.txt_Self_Health_Interval.TabIndex = 22;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label1.Location = new System.Drawing.Point(571, 33);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(31, 21);
+            this.label1.TabIndex = 23;
+            this.label1.Text = "秒";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label2.Location = new System.Drawing.Point(571, 127);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(31, 21);
+            this.label2.TabIndex = 27;
+            this.label2.Text = "秒";
+            // 
+            // txt_Remort_Health_Interval
+            // 
+            this.txt_Remort_Health_Interval.Location = new System.Drawing.Point(498, 117);
+            this.txt_Remort_Health_Interval.Name = "txt_Remort_Health_Interval";
+            this.txt_Remort_Health_Interval.Size = new System.Drawing.Size(67, 31);
+            this.txt_Remort_Health_Interval.TabIndex = 26;
+            // 
+            // chk_Remort_Health
+            // 
+            this.chk_Remort_Health.AutoSize = true;
+            this.chk_Remort_Health.Font = new System.Drawing.Font("ＭＳ ゴシック", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.chk_Remort_Health.Location = new System.Drawing.Point(277, 127);
+            this.chk_Remort_Health.Name = "chk_Remort_Health";
+            this.chk_Remort_Health.Size = new System.Drawing.Size(196, 27);
+            this.chk_Remort_Health.TabIndex = 25;
+            this.chk_Remort_Health.Text = "ヘルスチェック";
+            this.chk_Remort_Health.UseVisualStyleBackColor = true;
+            // 
+            // chk_Remort_Ack
+            // 
+            this.chk_Remort_Ack.AutoSize = true;
+            this.chk_Remort_Ack.Font = new System.Drawing.Font("ＭＳ ゴシック", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.chk_Remort_Ack.Location = new System.Drawing.Point(115, 129);
+            this.chk_Remort_Ack.Name = "chk_Remort_Ack";
+            this.chk_Remort_Ack.Size = new System.Drawing.Size(130, 27);
+            this.chk_Remort_Ack.TabIndex = 24;
+            this.chk_Remort_Ack.Text = "肯定応答";
+            this.chk_Remort_Ack.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label3.Location = new System.Drawing.Point(16, 130);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(73, 21);
+            this.label3.TabIndex = 28;
+            this.label3.Text = "送信側";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label4.Location = new System.Drawing.Point(16, 40);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(73, 21);
+            this.label4.TabIndex = 29;
+            this.label4.Text = "受信側";
             // 
             // CommForm
             // 
@@ -218,16 +310,24 @@
         private System.Windows.Forms.GroupBox grp_Comm;
         private System.Windows.Forms.Label lbl_Remote_Status;
         private System.Windows.Forms.Label lbl_Self_Status;
-        private System.Windows.Forms.ComboBox cbx_Self_Machine;
-        private System.Windows.Forms.CheckBox chk_Remote_AutoConnect;
+        private System.Windows.Forms.CheckBox chk_Remort_AutoConnect;
         private System.Windows.Forms.TextBox txt_Self_IpAddress;
-        private System.Windows.Forms.TextBox txt_Remote_IpAddress;
-        private System.Windows.Forms.TextBox txt_Remote_PortNo;
-        private System.Windows.Forms.ComboBox cbx_Remorte_Machine;
+        private System.Windows.Forms.TextBox txt_Remort_IpAddress;
+        private System.Windows.Forms.TextBox txt_Remort_PortNo;
         private System.Windows.Forms.CheckBox chk_Self_AutoConnect;
         private System.Windows.Forms.TextBox txt_Self_PortNo;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.RichTextBox rtx_MsgList;
+        private System.Windows.Forms.CheckBox chk_Self_Ack;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txt_Remort_Health_Interval;
+        private System.Windows.Forms.CheckBox chk_Remort_Health;
+        private System.Windows.Forms.CheckBox chk_Remort_Ack;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txt_Self_Health_Interval;
+        private System.Windows.Forms.CheckBox chk_Self_Health;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
     }
 }

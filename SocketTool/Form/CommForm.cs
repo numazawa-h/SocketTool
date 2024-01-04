@@ -59,18 +59,7 @@ namespace SocketTool.CommForm
                     this.grp_Comm.Text = "？？？系"; break;
             }
 
-            this.cbx_Remorte_Machine.Items.Clear();
-            foreach (string name in JsonCommDef.GetInstance().GetRemoteMachineList())
-            {
-                cbx_Remorte_Machine.Items.Add(name);
-            }
-
-            this.cbx_Self_Machine.Items.Clear();
-            foreach (string name in JsonCommDef.GetInstance().GetSelfMachineList())
-            {
-                cbx_Self_Machine.Items.Add(name);
-            }
-
+            
             // ヘッダ情報セットアップ
             commHeader = new CommData_Header();
             int head_len = commHeader.commMessageDefine.Length;
@@ -94,7 +83,38 @@ namespace SocketTool.CommForm
             send_socket.OnFailConnectEvent += OnFaiConnectHandler;
             send_socket.OnConnectEvent += OnConnectEventHandler;
             send_socket.OnDisConnectEvent += OnDisConnectEventHandler;
+
+            // 初期表示(受信側)
+            this.chk_Self_Ack.Checked = Config.JsonCommDef.GetInstance().GetRecvAckChk(rescop_no);
+            int interval1 = Config.JsonCommDef.GetInstance().GetRecvHealthInterval(rescop_no);
+            this.chk_Self_Health.Checked = interval1 > 0;
+            this.txt_Self_Health_Interval.Text = interval1.ToString();
+            this.chk_Self_AutoConnect.Checked = Config.JsonCommDef.GetInstance().GetRecvConnectChk(rescop_no);
+
+            // 初期表示(送信側)
+            this.chk_Remort_Ack.Checked = Config.JsonCommDef.GetInstance().GetSendAckChk(rescop_no);
+            int interval2 = Config.JsonCommDef.GetInstance().GetSendHealthInterval(rescop_no);
+            this.chk_Remort_Health.Checked = interval2 > 0;
+            this.txt_Remort_Health_Interval.Text = interval2.ToString();
+            this.chk_Remort_AutoConnect.Checked = Config.JsonCommDef.GetInstance().GetSendConnectChk(rescop_no);
+
+
         }
+
+        public void OnSelfMachineChange(string iaddress, string portno, string mashine_code)
+        {
+            this.txt_Self_IpAddress.Text = iaddress;
+            this.txt_Self_PortNo.Text = portno;
+            this.commHeader.SetSrcMachineCode(mashine_code);
+        }
+
+        public void OnRemortMachineChange(string iaddress, string portno, string mashine_code)
+        {
+            this.txt_Remort_IpAddress.Text = iaddress;
+            this.txt_Remort_PortNo.Text = portno;
+            this.commHeader.SetDstMachineCode(mashine_code);
+        }
+
 
         public void SendData(string dtype, byte[] data)
         {
@@ -140,7 +160,7 @@ namespace SocketTool.CommForm
                 if(data.GetDataDiscription("mode-active") == "アクティブ")
                 {
                     Form1 form = (Form1)this.ParentForm;
-                    form.SetCommActive(_rescop_no);
+                    form.OnActiveReceived(_rescop_no);
                 }
             }
 
@@ -207,36 +227,14 @@ namespace SocketTool.CommForm
         }
 
 
-        private void cbx_Remorte_Machine_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string addr = JsonCommDef.GetInstance().GetRemoteIp(cbx_Remorte_Machine.Text, this.RESCOP_NO);
-            string port = JsonCommDef.GetInstance().GetRemotePort(cbx_Remorte_Machine.Text, this.RESCOP_NO);
-
-            this.txt_Remote_IpAddress.Text = addr;
-            this.txt_Remote_PortNo.Text = port;
-
-            string dst = JsonCommDef.GetInstance().GetRemoteMachineCode(cbx_Remorte_Machine.Text, this.RESCOP_NO);
-            commHeader.SetDstMachineCode(dst);
-        }
-
-        private void cbx_Self_Machine_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string addr = JsonCommDef.GetInstance().GetSelfIp(cbx_Self_Machine.Text);
-            string port = JsonCommDef.GetInstance().GetSelfPort(cbx_Self_Machine.Text, this.RESCOP_NO);
-
-            this.txt_Self_IpAddress.Text = addr;
-            this.txt_Self_PortNo.Text = port;
-
-            string src = JsonCommDef.GetInstance().GetSelfMachineCode(cbx_Self_Machine.Text);
-            commHeader.SetSrcMachineCode(src);
-        }
-
-        private void chk_Self_AutoConnect_CheckedChanged(object sender, EventArgs e)
+        private async void chk_Self_AutoConnect_CheckedChanged(object sender, EventArgs e)
         {
             if (this.chk_Self_AutoConnect.Checked)
             {
                 if (accept_socket == null)
                 {
+                    await Task.Delay(1000);
+
                     lbl_Self_Status.Text = "接続待ち...";
                     lbl_Self_Status.ForeColor = Color.DeepPink;
                     recv_socket.Listen(txt_Self_IpAddress.Text, txt_Self_PortNo.Text);
@@ -253,14 +251,16 @@ namespace SocketTool.CommForm
             }
         }
 
-        private void chk_Remote_AutoConnect_CheckedChanged(object sender, EventArgs e)
+        private async void chk_Remote_AutoConnect_CheckedChanged(object sender, EventArgs e)
         {
-            if (this.chk_Remote_AutoConnect.Checked)
+            if (this.chk_Remort_AutoConnect.Checked)
             {
+                await Task.Delay(1000);
+
                 this.lbl_Remote_Status.Text = "接続中...";
                 lbl_Remote_Status.ForeColor = Color.DeepPink;
                 Application.DoEvents();
-                send_socket.Connect(txt_Remote_IpAddress.Text, txt_Remote_PortNo.Text);
+                send_socket.Connect(txt_Remort_IpAddress.Text, txt_Remort_PortNo.Text);
             }
             else
             {
@@ -304,13 +304,13 @@ namespace SocketTool.CommForm
             this.lbl_Remote_Status.Text = "切断";
             this.lbl_Remote_Status.ForeColor = Color.Black;
             connect_socket = null;
-            if (chk_Remote_AutoConnect.Checked)
+            if (chk_Remort_AutoConnect.Checked)
             {
                 await Task.Delay(10000);
                 lbl_Remote_Status.Text = "接続中...";
                 lbl_Remote_Status.ForeColor = Color.DeepPink;
                 Application.DoEvents();
-                send_socket.Connect(txt_Remote_IpAddress.Text, txt_Remote_PortNo.Text);
+                send_socket.Connect(txt_Remort_IpAddress.Text, txt_Remort_PortNo.Text);
             }
         }
 
@@ -366,12 +366,12 @@ namespace SocketTool.CommForm
                 lbl_Remote_Status.Text = "切断";
                 lbl_Remote_Status.ForeColor = Color.Black;
                 connect_socket = null;
-                if (chk_Remote_AutoConnect.Checked)
+                if (chk_Remort_AutoConnect.Checked)
                 {
                     lbl_Remote_Status.Text = "接続中...";
                     lbl_Remote_Status.ForeColor = Color.DeepPink;
                     Application.DoEvents();
-                    send_socket.Connect(txt_Remote_IpAddress.Text, txt_Remote_PortNo.Text);
+                    send_socket.Connect(txt_Remort_IpAddress.Text, txt_Remort_PortNo.Text);
                 }
             }
         }

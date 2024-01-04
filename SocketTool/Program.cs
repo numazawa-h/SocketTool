@@ -13,11 +13,20 @@ namespace SocketTool
         /// アプリケーションのメイン エントリ ポイントです。
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+
+            if (args.Length > 0)
+            {
+                JsonCommDef.GetInstance().SetInit_machine_no(args[0]);
+                if (args.Length > 1)
+                {
+                    JsonCommDef.GetInstance().SetInit_segment_no(args[1]);
+                }
+            }
             string wcd = System.AppDomain.CurrentDomain.BaseDirectory;
             try
             {
@@ -37,6 +46,7 @@ namespace SocketTool
                 MessageBox.Show($"CommDataDef.jsonの読み込み失敗({ex.Message})");
                 return;
             }
+
 
             Application.Run(new Form1());
         }

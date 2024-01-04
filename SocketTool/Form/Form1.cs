@@ -34,15 +34,36 @@ namespace SocketTool
         {
             this.commForm1.Init(1);
             this.commForm2.Init(2);
+
+            this.cbx_Remort_Machine.Items.Clear();
+            foreach (string name in JsonCommDef.GetInstance().GetRemoteMachineList())
+            {
+                cbx_Remort_Machine.Items.Add(name);
+            }
+            cbx_Remort_Machine.Text = JsonCommDef.GetInstance().InitRemortMachineName;
+
+            this.cbx_Self_Machine.Items.Clear();
+            foreach (string name in JsonCommDef.GetInstance().GetSelfMachineList())
+            {
+                cbx_Self_Machine.Items.Add(name);
+            }
+            cbx_Self_Machine.Text = JsonCommDef.GetInstance().InitSelfMachineName;
         }
 
-        private void Form1_Activated(object sender, EventArgs e)
+
+        public void OnRecvConnect()
         {
+            cbx_Remort_Machine.Enabled = false;
+
         }
 
-        public void SetCommActive(int rescop_no)
+        /// <summary>
+        /// 系切替通知(アクティブ)を受信した時の処理
+        /// </summary>
+        /// <param name="rescop_no">受信した系( 1..１系、2..２系)</param>
+        public void OnActiveReceived(int rescop_no)
         {
-            if(rescop_no == 1) {
+            if (rescop_no == 1) {
                 commForm1.BackColor = Color.MistyRose;
                 commForm2.BackColor = back_color;
             }
@@ -52,6 +73,34 @@ namespace SocketTool
                 commForm2.BackColor = Color.MistyRose;
             }
         }
+
+
+
+        private void cbx_Remort_Machine_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string addr1 = JsonCommDef.GetInstance().GetRemoteIp(cbx_Remort_Machine.Text, 1);
+            string port1 = JsonCommDef.GetInstance().GetRemotePort(cbx_Remort_Machine.Text, 1);
+            string addr2 = JsonCommDef.GetInstance().GetRemoteIp(cbx_Remort_Machine.Text, 2);
+            string port2 = JsonCommDef.GetInstance().GetRemotePort(cbx_Remort_Machine.Text, 2);
+            string dst1 = JsonCommDef.GetInstance().GetRemoteMachineCode(cbx_Remort_Machine.Text, 1);
+            string dst2 = JsonCommDef.GetInstance().GetRemoteMachineCode(cbx_Remort_Machine.Text, 2);
+
+            this.commForm1.OnRemortMachineChange(addr1, port1, dst1);
+            this.commForm2.OnRemortMachineChange(addr2, port2, dst2);
+        }
+
+        private void cbx_Self_Machine_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string addr = JsonCommDef.GetInstance().GetSelfIp(cbx_Self_Machine.Text);
+            string port1 = JsonCommDef.GetInstance().GetSelfPort(cbx_Self_Machine.Text, 1);
+            string port2 = JsonCommDef.GetInstance().GetSelfPort(cbx_Self_Machine.Text, 2);
+            string src = JsonCommDef.GetInstance().GetSelfMachineCode(cbx_Self_Machine.Text);
+
+            this.commForm1.OnSelfMachineChange(addr, port1, src);
+            this.commForm2.OnSelfMachineChange(addr, port2, src);
+
+        }
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -86,7 +135,6 @@ namespace SocketTool
             commForm1.SendData(msg0202);
 
         }
-
     }
 
 }
