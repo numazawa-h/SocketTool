@@ -18,6 +18,10 @@ namespace SocketTool.CommData
         byte[] _data;
 
 
+
+
+
+
         public CommData_Base(DataDefine def, byte[] data=null)
         {
             Init(def, data);
