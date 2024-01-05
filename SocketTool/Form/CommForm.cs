@@ -91,7 +91,6 @@ namespace SocketTool.CommForm
             this.chk_Self_AutoConnect.Checked = Config.JsonCommDef.GetInstance().GetRecvConnectChk(rescop_no);
 
             // 初期表示(送信側)
-            this.chk_Remort_Ack.Checked = Config.JsonCommDef.GetInstance().GetSendAckChk(rescop_no);
             int interval2 = Config.JsonCommDef.GetInstance().GetSendHealthInterval(rescop_no);
             this.chk_Remort_Health.Checked = interval2 > 0;
             this.txt_Remort_Health_Interval.Text = interval2.ToString();
@@ -165,13 +164,25 @@ namespace SocketTool.CommForm
             }
             CommData_Header header = new CommData_Header(args.HeadBuff);
             CommData_Data data = new CommData_Data(header.DataType, args.DataBuff);
-            if(data.isActiveMessage())
+            DisplaySendRecvData(header, data, 0);
+
+            if (data.isActiveMessage())
             {
                 Form1 form = (Form1)this.ParentForm;
                 form.OnActiveReceived(_rescop_no);
             }
- 
-            DisplaySendRecvData(header, data, 0);
+
+            if (this.chk_Self_Ack.Checked)
+            {
+                if (data.isNeadAck())
+                {
+                    SendData(CommData_Data.DTYPE_Ack, System.Array.Empty<byte>());
+                }
+                if (data.isNeadNak())
+                {
+                    SendData(CommData_Data.DTYPE_Nak, System.Array.Empty<byte>());
+                }
+            }
         }
 
 

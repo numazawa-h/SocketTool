@@ -13,7 +13,7 @@ namespace SocketTool.CommData
         public const string DTYPE_Nak = "0002";                 // 否定応答
         public const string DTYPE_HealthCheck = "0101";         // ヘルスチェック
         public const string DTYPE_Start = "0201";               // 開始要求
-        public const string DTYPE_ActiveChange = "0202";        // 系切替通知\
+        public const string DTYPE_ActiveChange = "0202";        // 系切替通知
 
         string _dtype;
 
@@ -40,6 +40,17 @@ namespace SocketTool.CommData
                 return GetDataDiscription("mode-active") == "アクティブ";
             }
 
+            return false;
+        }
+
+        public bool isNeadAck()
+        {
+            if (_dtype == DTYPE_Ack) return false;
+            if (_dtype == DTYPE_Nak) return false;
+            return true;
+        }
+        public bool isNeadNak()
+        {
             return false;
         }
 

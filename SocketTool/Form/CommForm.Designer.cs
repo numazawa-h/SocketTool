@@ -35,7 +35,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txt_Remort_Health_Interval = new System.Windows.Forms.TextBox();
             this.chk_Remort_Health = new System.Windows.Forms.CheckBox();
-            this.chk_Remort_Ack = new System.Windows.Forms.CheckBox();
             this.chk_Self_Ack = new System.Windows.Forms.CheckBox();
             this.lbl_Remote_Status = new System.Windows.Forms.Label();
             this.lbl_Self_Status = new System.Windows.Forms.Label();
@@ -66,7 +65,6 @@
             this.grp_Comm.Controls.Add(this.label2);
             this.grp_Comm.Controls.Add(this.txt_Remort_Health_Interval);
             this.grp_Comm.Controls.Add(this.chk_Remort_Health);
-            this.grp_Comm.Controls.Add(this.chk_Remort_Ack);
             this.grp_Comm.Controls.Add(this.chk_Self_Ack);
             this.grp_Comm.Controls.Add(this.lbl_Remote_Status);
             this.grp_Comm.Controls.Add(this.lbl_Self_Status);
@@ -109,7 +107,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label2.Location = new System.Drawing.Point(571, 127);
+            this.label2.Location = new System.Drawing.Point(412, 128);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(31, 21);
             this.label2.TabIndex = 27;
@@ -117,7 +115,7 @@
             // 
             // txt_Remort_Health_Interval
             // 
-            this.txt_Remort_Health_Interval.Location = new System.Drawing.Point(498, 117);
+            this.txt_Remort_Health_Interval.Location = new System.Drawing.Point(339, 121);
             this.txt_Remort_Health_Interval.Name = "txt_Remort_Health_Interval";
             this.txt_Remort_Health_Interval.Size = new System.Drawing.Size(67, 31);
             this.txt_Remort_Health_Interval.TabIndex = 26;
@@ -126,24 +124,13 @@
             // 
             this.chk_Remort_Health.AutoSize = true;
             this.chk_Remort_Health.Font = new System.Drawing.Font("ＭＳ ゴシック", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.chk_Remort_Health.Location = new System.Drawing.Point(277, 127);
+            this.chk_Remort_Health.Location = new System.Drawing.Point(115, 126);
             this.chk_Remort_Health.Name = "chk_Remort_Health";
             this.chk_Remort_Health.Size = new System.Drawing.Size(196, 27);
             this.chk_Remort_Health.TabIndex = 25;
             this.chk_Remort_Health.Text = "ヘルスチェック";
             this.chk_Remort_Health.UseVisualStyleBackColor = true;
             this.chk_Remort_Health.CheckedChanged += new System.EventHandler(this.chk_Remort_Health_CheckedChanged);
-            // 
-            // chk_Remort_Ack
-            // 
-            this.chk_Remort_Ack.AutoSize = true;
-            this.chk_Remort_Ack.Font = new System.Drawing.Font("ＭＳ ゴシック", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.chk_Remort_Ack.Location = new System.Drawing.Point(115, 129);
-            this.chk_Remort_Ack.Name = "chk_Remort_Ack";
-            this.chk_Remort_Ack.Size = new System.Drawing.Size(130, 27);
-            this.chk_Remort_Ack.TabIndex = 24;
-            this.chk_Remort_Ack.Text = "肯定応答";
-            this.chk_Remort_Ack.UseVisualStyleBackColor = true;
             // 
             // chk_Self_Ack
             // 
@@ -334,7 +321,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txt_Remort_Health_Interval;
         private System.Windows.Forms.CheckBox chk_Remort_Health;
-        private System.Windows.Forms.CheckBox chk_Remort_Ack;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel3;

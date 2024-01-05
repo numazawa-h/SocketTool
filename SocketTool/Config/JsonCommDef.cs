@@ -52,12 +52,12 @@ namespace SocketTool.Config
                 if(_machine_no == null) _machine_no = initdis["自装置番号"].ToString();
                 if(_segment_no == null) _segment_no = initdis["監視制御局番号"].ToString();
                 _ack_chk[0] = initdis["１系"]["受信側"]["肯定応答"].GetValue<int>();
-                _ack_chk[1] = initdis["１系"]["送信側"]["肯定応答"].GetValue<int>();
+                _ack_chk[1] = 0;
                 _ack_chk[2] = initdis["２系"]["受信側"]["肯定応答"].GetValue<int>();
-                _ack_chk[3] = initdis["２系"]["送信側"]["肯定応答"].GetValue<int>();
-                _health_interval[0] = initdis["１系"]["受信側"]["ヘルスチェック"].GetValue<int>();
+                _ack_chk[3] = 0;
+                _health_interval[0] = 0;
                 _health_interval[1] = initdis["１系"]["送信側"]["ヘルスチェック"].GetValue<int>();
-                _health_interval[2] = initdis["２系"]["受信側"]["ヘルスチェック"].GetValue<int>();
+                _health_interval[2] = 0;
                 _health_interval[3] = initdis["２系"]["送信側"]["ヘルスチェック"].GetValue<int>();
                 _connect_chk[0] = initdis["１系"]["受信側"]["接続"].GetValue<int>();
                 _connect_chk[1] = initdis["１系"]["送信側"]["接続"].GetValue<int>();
