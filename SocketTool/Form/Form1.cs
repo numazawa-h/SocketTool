@@ -22,7 +22,9 @@ namespace SocketTool
 {
     public partial class Form1 : Form
     {
-        Color back_color;
+        Color back_color;       // アクティブ側の色を戻す為に保存しておく
+
+        private int active_rescop_no = 0;
 
         public Form1()
         {
@@ -60,21 +62,58 @@ namespace SocketTool
         /// <summary>
         /// 系切替通知(アクティブ)を受信した時の処理
         /// </summary>
-        /// <param name="rescop_no">受信した系( 1..１系、2..２系)</param>
+        /// <param name="rescop_no">系( 1..１系アクティブ、2..２系アクティブ、0..両系スタンバイ)</param>
         public void OnActiveReceived(int rescop_no)
         {
-            if (rescop_no == 1) {
+            this.active_rescop_no = 0;
+
+            if (rescop_no == 1)
+            {
                 commForm1.BackColor = Color.MistyRose;
                 commForm2.BackColor = back_color;
+                active_rescop_no = rescop_no;
             }
-            if (rescop_no ==2)
+            if (rescop_no == 2)
             {
                 commForm1.BackColor = back_color;
                 commForm2.BackColor = Color.MistyRose;
+                active_rescop_no = rescop_no;
             }
         }
 
 
+        /// <summary>
+        /// 系切替通知(アクティブ)を受信した時の処理
+        /// </summary>
+        /// <param name="rescop_no">系( 1..１系アクティブ、2..２系アクティブ、0..両系スタンバイ)</param>
+        public void OnDisconnect(int rescop_no)
+        {
+            if(rescop_no == this.active_rescop_no)
+            {
+                active_rescop_no =0;
+                if (rescop_no == 1)
+                {
+                    commForm1.BackColor = back_color;
+                }
+                if (rescop_no == 2)
+                {
+                    commForm2.BackColor = back_color;
+                }
+            }
+        }
+
+
+        public void Send(string dtype, byte[] dat)
+        {
+            if(this.active_rescop_no == 1)
+            {
+                commForm1.SendData(dtype, dat);
+            }
+            if (this.active_rescop_no == 2)
+            {
+                commForm2.SendData(dtype, dat);
+            }
+        }
 
         private void cbx_Remort_Machine_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -98,7 +137,8 @@ namespace SocketTool
 
             int ret1 = this.commForm1.OnSelfMachineChange(addr, port1, src);
             int ret2 = this.commForm2.OnSelfMachineChange(addr, port2, src);
-            if(ret1 == -1 || ret2 == -1){
+            if (ret1 == -1 || ret2 == -1)
+            {
                 MessageBox.Show("接続中に対象装置を変更することはできません");
             }
         }
@@ -117,7 +157,7 @@ namespace SocketTool
             byte[] bytes = val.GetAsByte();
             DateTime dt = val.GetAsDateTimeBcd();
 
-            val.SetAsByte(new byte[] {0x31,0x32, 041, 0x42});
+            val.SetAsByte(new byte[] { 0x31, 0x32, 041, 0x42 });
             string str = val.GetAsStringAsc();
             val.SetAsInt(539169329);
             str = val.GetAsBcd();
@@ -136,6 +176,59 @@ namespace SocketTool
             CommData.CommData_Data msg0202 = new CommData_Data(CommData_Data.DTYPE_ActiveChange);
             msg0202.GetFldValue("mode-active").SetAsInt(1);
             commForm1.SendData(msg0202);
+
+        }
+
+        private void Form1_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                // ドラッグ中のファイルやディレクトリの取得
+                string[] drags = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                foreach (string d in drags)
+                {
+                    if (!System.IO.File.Exists(d))
+                    {
+                        // ファイル以外であればイベント・ハンドラを抜ける
+                        return;
+                    }
+                }
+                e.Effect = DragDropEffects.Copy;
+            }
+        }
+
+        private void Form1_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            foreach( string path in files)
+            {
+                string dtype = null;
+                byte[] dat = System.Array.Empty<byte>();
+                string fname = System.IO.Path.GetFileName(path);
+                if (fname.Substring(4, 1) == "_")
+                {
+                    try
+                    {
+                        dtype = fname.Substring(0, 4);
+                        using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                        {
+                            dat = new byte[fs.Length];
+                            fs.Read(dat, 0, dat.Length);
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+
+                    }
+                }
+                if (dtype != null)
+                {
+                     this.Send(dtype, dat);
+                }
+
+
+            }
 
         }
     }

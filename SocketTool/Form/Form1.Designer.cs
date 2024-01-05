@@ -31,12 +31,12 @@
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.cbx_Self_Machine = new System.Windows.Forms.ComboBox();
+            this.cbx_Remort_Machine = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.cbx_Remort_Machine = new System.Windows.Forms.ComboBox();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.cbx_Self_Machine = new System.Windows.Forms.ComboBox();
             this.commForm1 = new SocketTool.CommForm.CommForm();
             this.commForm2 = new SocketTool.CommForm.CommForm();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -45,9 +45,9 @@
             this.splitContainer.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer
@@ -91,6 +91,43 @@
             this.tabPage1.Text = "通信";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.splitContainer);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(3, 74);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(1251, 783);
+            this.panel2.TabIndex = 20;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.cbx_Self_Machine);
+            this.panel1.Controls.Add(this.cbx_Remort_Machine);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1251, 71);
+            this.panel1.TabIndex = 1;
+            // 
+            // cbx_Self_Machine
+            // 
+            this.cbx_Self_Machine.FormattingEnabled = true;
+            this.cbx_Self_Machine.Location = new System.Drawing.Point(15, 13);
+            this.cbx_Self_Machine.Name = "cbx_Self_Machine";
+            this.cbx_Self_Machine.Size = new System.Drawing.Size(583, 32);
+            this.cbx_Self_Machine.TabIndex = 16;
+            this.cbx_Self_Machine.SelectedIndexChanged += new System.EventHandler(this.cbx_Self_Machine_SelectedIndexChanged);
+            // 
+            // cbx_Remort_Machine
+            // 
+            this.cbx_Remort_Machine.FormattingEnabled = true;
+            this.cbx_Remort_Machine.Location = new System.Drawing.Point(626, 13);
+            this.cbx_Remort_Machine.Name = "cbx_Remort_Machine";
+            this.cbx_Remort_Machine.Size = new System.Drawing.Size(604, 32);
+            this.cbx_Remort_Machine.TabIndex = 15;
+            this.cbx_Remort_Machine.SelectedIndexChanged += new System.EventHandler(this.cbx_Remort_Machine_SelectedIndexChanged);
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.button1);
@@ -113,43 +150,6 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.cbx_Self_Machine);
-            this.panel1.Controls.Add(this.cbx_Remort_Machine);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(3, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1251, 71);
-            this.panel1.TabIndex = 1;
-            // 
-            // cbx_Remort_Machine
-            // 
-            this.cbx_Remort_Machine.FormattingEnabled = true;
-            this.cbx_Remort_Machine.Location = new System.Drawing.Point(626, 13);
-            this.cbx_Remort_Machine.Name = "cbx_Remort_Machine";
-            this.cbx_Remort_Machine.Size = new System.Drawing.Size(604, 32);
-            this.cbx_Remort_Machine.TabIndex = 15;
-            this.cbx_Remort_Machine.SelectedIndexChanged += new System.EventHandler(this.cbx_Remort_Machine_SelectedIndexChanged);
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.splitContainer);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(3, 74);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1251, 783);
-            this.panel2.TabIndex = 20;
-            // 
-            // cbx_Self_Machine
-            // 
-            this.cbx_Self_Machine.FormattingEnabled = true;
-            this.cbx_Self_Machine.Location = new System.Drawing.Point(15, 13);
-            this.cbx_Self_Machine.Name = "cbx_Self_Machine";
-            this.cbx_Self_Machine.Size = new System.Drawing.Size(583, 32);
-            this.cbx_Self_Machine.TabIndex = 16;
-            this.cbx_Self_Machine.SelectedIndexChanged += new System.EventHandler(this.cbx_Self_Machine_SelectedIndexChanged);
-            // 
             // commForm1
             // 
             this.commForm1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -170,6 +170,7 @@
             // 
             // Form1
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1273, 907);
@@ -177,15 +178,17 @@
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
             this.splitContainer.ResumeLayout(false);
             this.tabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

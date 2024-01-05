@@ -29,6 +29,7 @@ namespace SocketTool.CommForm
         Color _back_color;
 
         int _rescop_no = 0;
+
         public int RESCOP_NO
         {
             get
@@ -203,14 +204,14 @@ namespace SocketTool.CommForm
 
             
             this.rtx_MsgList.AppendText(GetCMessageDiscription(header, data, direction));
- //           this.rtx_MsgList.AppendText(dump_message(header, data ));
+        //    this.rtx_MsgList.AppendText(dump_message(header, data ));
         }
 
         private string GetCMessageDiscription(CommData_Header header, CommData_Data data, int direction)
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append(adjust($"{header.RecvDateTime:yyyy/MM/dd HH:mm:ss}", 20));
+            sb.Append(adjust($"{header.RecvDateTime:MM/dd HH:mm:ss}", 15));
             sb.Append(data.Name);
             if(data.DataType == CommData_Data.DTYPE_ActiveChange)
             {
@@ -451,6 +452,8 @@ namespace SocketTool.CommForm
                 this.Invoke(new ConnectEventHandler(OnDisConnectEventHandler), new object[] { sender, args });
                 return;
             }
+
+
             if (args.Socket.isServerSocket())
             {
                 lbl_Self_Status.Text = "切断";
@@ -466,7 +469,9 @@ namespace SocketTool.CommForm
             }
             else
             {
-                this.BackColor = _back_color;
+                Form1 form = (Form1)this.ParentForm;
+                form.OnDisconnect(this.RESCOP_NO);
+
                 lbl_Remote_Status.Text = "切断";
                 lbl_Remote_Status.ForeColor = Color.Black;
                 connect_socket = null;
