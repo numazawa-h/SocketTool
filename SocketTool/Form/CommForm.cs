@@ -234,7 +234,6 @@ namespace SocketTool.CommForm
         private async void chk_Self_AutoConnect_CheckedChanged(object sender, EventArgs e)
         {
             this.statusStrip.Items.Clear();
-            this.statusStrip.Items.Add("");
             if (this.chk_Self_AutoConnect.Checked)
             {
                 if (accept_socket == null)
