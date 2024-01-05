@@ -21,10 +21,13 @@ namespace SocketTool.Config
         }
         private JsonDataDef():base()
         {
-
         }
+
+
+        // 通信メッセージ定義
         protected Dictionary<string, CommMessageDefine> _data_def = new Dictionary<string, CommMessageDefine>();
 
+        // データの説明コメント定義
         protected Dictionary<string, DataDiscriptionDefine> _data_desc_def = new Dictionary<string, DataDiscriptionDefine>();
 
 
@@ -39,6 +42,7 @@ namespace SocketTool.Config
                 {
                     _data_def.Add(node["id"].ToString(), new CommMessageDefine(node) );
                 }
+                _data_desc_def.Clear();
                 foreach (JsonNode node in _json_root["valdef"].AsArray())
                 {
                     _data_desc_def.Add(node["id"].ToString(), new DataDiscriptionDefine(node));
@@ -50,9 +54,9 @@ namespace SocketTool.Config
             return 0;
         }
 
-        public CommMessageDefine GetMessageDefine(string id)
+        public CommMessageDefine GetMessageDefine(string dtype)
         {
-            return _data_def[id];
+            return _data_def[dtype];
         }
 
 
@@ -68,33 +72,14 @@ namespace SocketTool.Config
             return description;
         }
 
-        public class FieldDefine
-        {
-            string _id;
-            string _name;
-            int _ofs;
-            int _bytelen;
-            public string Id { get { return _id; } }
-            public string Name { get { return _name; } }
-            public int Length { get { return _bytelen; } }
-            public int Offset { get { return _ofs; } }
-
-            public FieldDefine(JsonNode def)
-            {
-                _id = def["id"].ToString();
-  //              _name = def["name"].ToString();
-                _ofs = def["ofs"].GetValue<int>();
-                _bytelen = def["len"].GetValue<int>();
-            }
-        }
 
         public class CommMessageDefine
         {
-            string _id;
+            string _dtype;
             string _name;
             int _data_len;
 
-            public string Id { get { return _id; } }
+            public string DType { get { return _dtype; } }
             public string Name { get { return _name; } }
             public int Length {  get { return _data_len; } }
 
@@ -102,7 +87,7 @@ namespace SocketTool.Config
 
             public CommMessageDefine(JsonNode def)
             {
-                _id = def["id"].ToString();
+                _dtype = def["id"].ToString();
                 _name = def["name"].ToString();
                 _data_len = def["len"].GetValue<int>();
 
@@ -127,6 +112,26 @@ namespace SocketTool.Config
                 return _fld_def_list[id].Length;
             }
 
+        }
+
+        public class FieldDefine
+        {
+            string _id;
+            string _name;
+            int _ofs;
+            int _bytelen;
+            public string Id { get { return _id; } }
+            public string Name { get { return _name; } }
+            public int Length { get { return _bytelen; } }
+            public int Offset { get { return _ofs; } }
+
+            public FieldDefine(JsonNode def)
+            {
+                _id = def["id"].ToString();
+                _name = def["name"].ToString();
+                _ofs = def["ofs"].GetValue<int>();
+                _bytelen = def["len"].GetValue<int>();
+            }
         }
 
         public class DataDiscriptionDefine
