@@ -133,12 +133,19 @@ namespace SocketTool.CommForm
                 connect_socket.Send(commHeader.GetData(), data);
             }
         }
-        public void SendData(CommData.CommData_Data comm_data)
+        public void SendData(CommData_Data comm_data)
         {
             if (connect_socket != null)
             {
                 commHeader.SetOnSend(comm_data.DataType);
                 connect_socket.Send(commHeader.GetData(), comm_data.GetData());
+            }
+        }
+        public void SendData(byte[] hed, byte[] dat)
+        {
+            if (connect_socket != null)
+            {
+                connect_socket.Send(hed, dat);
             }
         }
 
@@ -204,7 +211,7 @@ namespace SocketTool.CommForm
 
             
             this.rtx_MsgList.AppendText(GetCMessageDiscription(header, data, direction));
-        //    this.rtx_MsgList.AppendText(dump_message(header, data ));
+//          this.rtx_MsgList.AppendText(dump_message(header, data ));
         }
 
         private string GetCMessageDiscription(CommData_Header header, CommData_Data data, int direction)
@@ -216,7 +223,7 @@ namespace SocketTool.CommForm
             if(data.DataType == CommData_Data.DTYPE_ActiveChange)
             {
                 sb.Append("(");
-                sb.Append(data.GetDataDiscription("mode-active"));
+                sb.Append(data.GetDataDiscription("active-change"));
                 sb.Append(")");
             }
 

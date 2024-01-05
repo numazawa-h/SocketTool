@@ -7,11 +7,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -102,7 +105,11 @@ namespace SocketTool
             }
         }
 
-
+        /// <summary>
+        /// 通常の送信
+        /// </summary>
+        /// <param name="dtype">データ種別</param>
+        /// <param name="dat">データ(バイト配列)</param>
         public void Send(string dtype, byte[] dat)
         {
             if(this.active_rescop_no == 1)
@@ -112,6 +119,24 @@ namespace SocketTool
             if (this.active_rescop_no == 2)
             {
                 commForm2.SendData(dtype, dat);
+            }
+        }
+
+        /// <summary>
+        /// ヘッダ指定送信
+        /// </summary>
+        /// <remarks>異常ヘッダを送信したい時などに使用する</remarks>
+        /// <param name="hed">ヘッダ(バイト配列)</param>
+        /// <param name="dat">データ(バイト配列)</param>
+        public void Send(byte[]hed, byte[] dat)
+        {
+            if (this.active_rescop_no == 1)
+            {
+                commForm1.SendData(hed, dat);
+            }
+            if (this.active_rescop_no == 2)
+            {
+                commForm2.SendData(hed, dat);
             }
         }
 
@@ -174,7 +199,8 @@ namespace SocketTool
             commForm1.SendData(CommData_Data.DTYPE_Start, new byte[48]);
 
             CommData.CommData_Data msg0202 = new CommData_Data(CommData_Data.DTYPE_ActiveChange);
-            msg0202.GetFldValue("mode-active").SetAsInt(1);
+            msg0202.GetFldValue("active-change").SetAsInt(1);
+            string fldname = JsonDataDef.GetInstance().GetMessageDefine(CommData_Data.DTYPE_ActiveChange).GetFldName("active-change");
             commForm1.SendData(msg0202);
 
         }
@@ -204,20 +230,61 @@ namespace SocketTool
             foreach( string path in files)
             {
                 string dtype = null;
+                byte[] hed = System.Array.Empty<byte>();
                 byte[] dat = System.Array.Empty<byte>();
+
                 string fname = System.IO.Path.GetFileName(path);
                 if (fname.Substring(4, 1) == "_")
                 {
                     try
                     {
                         dtype = fname.Substring(0, 4);
-                        using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                        string file_ext = Path.GetExtension(path);
+                        if (file_ext == ".bin")
                         {
-                            dat = new byte[fs.Length];
-                            fs.Read(dat, 0, dat.Length);
+                            using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                            {
+                                dat = new byte[fs.Length];
+                                fs.Read(dat, 0, dat.Length);
+                            }
+                        }
+                        if (file_ext == ".txt")
+                        {
+                            foreach (string lin in File.ReadLines(path))
+                            {
+                                var matchs = Regex.Matches(lin, @"\[[0-9,a-f,A-F ]*\]");
+                                if (matchs.Count >0)
+                                {
+                                    dat = parse_bcd(matchs[0].Value);
+                                }
+                                break;      // 最初の一行だけ処理する
+                            }
                         }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        string file_ext = Path.GetExtension(path);
+                        if (file_ext == ".txt")
+                        {
+                            foreach (string lin in File.ReadLines(path))
+                            {
+                                var matchs = Regex.Matches(lin, @"\[[0-9,a-f,A-F ]*\]");
+                                if (matchs.Count > 1)
+                                {
+                                    hed = parse_bcd(matchs[0].Value);
+                                    dat = parse_bcd(matchs[1].Value);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
                     {
 
                     }
@@ -226,11 +293,39 @@ namespace SocketTool
                 {
                      this.Send(dtype, dat);
                 }
-
+                if( hed.Length >0 && dat.Length > 0 )
+                {
+                    this.Send(hed, dat);
+                }
 
             }
 
         }
+        private byte[] parse_bcd(string bcd)
+        {
+            bcd = bcd.Replace("[", string.Empty);
+            bcd = bcd.Replace(" ", string.Empty);
+            bcd = bcd.Replace("]", string.Empty);
+
+            if ((bcd.Length % 2) == 1)
+            {
+                return System.Array.Empty<byte>();
+            }
+
+            int byte_size = bcd.Length / 2;
+            byte[] buf = new byte[byte_size];
+
+            int buf_idx = 0;
+            for (int idx = 0; idx < byte_size; idx += 2)
+            {
+                string w = bcd.Substring(idx, 2);
+                buf[buf_idx] = Convert.ToByte(w, 16);
+                buf_idx++;
+            }
+
+            return buf;
+        }
     }
+
 
 }

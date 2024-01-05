@@ -59,21 +59,21 @@ namespace SocketTool.CommData
         }
 
 
-        public FldValue GetFldValue(string id)
+        public FldValue GetFldValue(string fldid)
         {
-            int ofs = _define.GetFldOffset(id);
-            int len = _define.GetFldLength(id);
+            int ofs = _define.GetFldOffset(fldid);
+            int len = _define.GetFldLength(fldid);
 
             byte[] val = new byte[len];
             Buffer.BlockCopy(_data, ofs, val, 0, len);
 
-            return new FldValue(val, id, this);
+            return new FldValue(val, fldid, this);
         }
 
-        public void SetFldValue(string id, byte[] dat)
+        public void SetFldValue(string fldid, byte[] dat)
         {
-            int ofs = _define.GetFldOffset(id);
-            int len = _define.GetFldLength(id);
+            int ofs = _define.GetFldOffset(fldid);
+            int len = _define.GetFldLength(fldid);
             Buffer.BlockCopy(dat, 0, _data, ofs, len);
         }
 

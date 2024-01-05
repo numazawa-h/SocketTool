@@ -37,7 +37,7 @@ namespace SocketTool.CommData
         {
             if(_dtype == DTYPE_ActiveChange)
             {
-                return GetDataDiscription("mode-active") == "アクティブ";
+                return GetDataDiscription("active-change") == "アクティブ";
             }
 
             return false;

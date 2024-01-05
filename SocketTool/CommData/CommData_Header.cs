@@ -20,7 +20,7 @@ namespace SocketTool.CommData
 
 
         public string DataType => GetFldValue("dtype").GetAsBcd();
-        public DateTime RecvDateTime => GetFldValue("time").GetAsDateTimeBcd();
+        public DateTime RecvDateTime => GetFldValue("sdatm").GetAsDateTimeBcd();
 
 
         public CommData_Header() : base()
@@ -74,7 +74,7 @@ namespace SocketTool.CommData
                     this.GetFldValue("seqno").SetAsInt(SeqNo++);
                     break;
             }
-            this.GetFldValue("time").SetAsDateTimeBcd(DateTime.Now);
+            this.GetFldValue("sdatm").SetAsDateTimeBcd(DateTime.Now);
         }
 
 
