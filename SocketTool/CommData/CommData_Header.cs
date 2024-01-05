@@ -20,6 +20,7 @@ namespace SocketTool.CommData
 
 
         public string DataType => GetFldValue("dtype").GetAsBcd();
+        public DateTime RecvDateTime => GetFldValue("time").GetAsDateTimeBcd();
 
 
         public CommData_Header() : base()
@@ -66,7 +67,7 @@ namespace SocketTool.CommData
             switch (dtype)
             {
                 // ヘルスチェックはシーケンス番号０
-                case "0101":
+                case CommData_Data.DTYPE_HealthCheck:
                     this.GetFldValue("seqno").SetAsInt(0);
                     break;
                 default:

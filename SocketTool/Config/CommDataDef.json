@@ -5,19 +5,19 @@
 				{ "id":"src",  "name": "送信元",      "ofs": 4, "len": 4 },
 				{ "id":"seqno","name": "送信通番",    "ofs": 8, "len": 4 },
 				{ "id":"dtype","name": "データ種別",  "ofs":12, "len": 2 },
-				{ "id":"time", "name": "送信日時",    "ofs":14, "len":14 },		// BCD形式
-				{ "id":"dlen", "name": "データ長",    "ofs":28, "len": 2 },
-				{ "id":"alen", "name": "全データ長",  "ofs":30, "len": 4 },
-				{ "id":"bnum", "name": "ブロック番号","ofs":34, "len": 2 },
-				{ "id":"bend", "name": "最終フラグ",  "ofs":36, "len": 2 },
-				{ "id":"bcnt", "name": "ブロック数",  "ofs":38, "len": 2 },
+				{ "id":"time", "name": "送信日時",    "ofs":14, "len": 7 },		// BCD形式
+				{ "id":"dlen", "name": "データ長",    "ofs":22, "len": 2 },
+				{ "id":"alen", "name": "全データ長",  "ofs":24, "len": 4 },
+				{ "id":"bnum", "name": "ブロック番号","ofs":28, "len": 2 },
+				{ "id":"bend", "name": "最終フラグ",  "ofs":30, "len": 2 },
+				{ "id":"bcnt", "name": "ブロック数",  "ofs":32, "len": 2 },
 			]
 		},
 		{ "id":"0001", "name":"肯定応答", "len":  0,"flds":[] },
-		{ "id":"0002", "name":"否定応答", "len": 48,"flds":[{ "id":"reson-nak", "ofs": 0, "len":4 },] },
+		{ "id":"0002", "name":"否定応答", "len": 48,"flds":[{ "id":"reson-nak", "name":"否定理由", "ofs": 0, "len":4 },] },
 		{ "id":"0101", "name":"ヘルスチェック", "len":  0,"flds":[] },
 		{ "id":"0201", "name":"開始要求", "len": 48,"flds":[] },
-		{ "id":"0202", "name":"系切替", "len": 48,"flds":[{ "id":"mode-active", "ofs": 0, "len":2 },] },
+		{ "id":"0202", "name":"系切替", "len": 48,"flds":[{ "id":"mode-active", "name":"アクティブ", "ofs": 0, "len":2 },] },
 	],
 	"valdef":[
 		{ "id":"mode-active", "name":"系切替モード", "desc":{"0001":"アクティブ", "0002":"スタンバイ" } },

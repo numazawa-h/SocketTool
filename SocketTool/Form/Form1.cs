@@ -96,9 +96,11 @@ namespace SocketTool
             string port2 = JsonCommDef.GetInstance().GetSelfPort(cbx_Self_Machine.Text, 2);
             string src = JsonCommDef.GetInstance().GetSelfMachineCode(cbx_Self_Machine.Text);
 
-            this.commForm1.OnSelfMachineChange(addr, port1, src);
-            this.commForm2.OnSelfMachineChange(addr, port2, src);
-
+            int ret1 = this.commForm1.OnSelfMachineChange(addr, port1, src);
+            int ret2 = this.commForm2.OnSelfMachineChange(addr, port2, src);
+            if(ret1 == -1 || ret2 == -1){
+                MessageBox.Show("接続中に対象装置を変更することはできません");
+            }
         }
 
 
@@ -127,10 +129,11 @@ namespace SocketTool
             str = val.GetAsBcd();
             tabControl.SelectedIndex = 0;
             Application.DoEvents();
-            commForm2.SendData("0101", System.Array.Empty<byte>());
-            commForm1.SendData("0201", new byte[48]);
 
-            CommData_Data msg0202 = new CommData_Data("0202");
+            commForm2.SendData(CommData_Data.DTYPE_HealthCheck, System.Array.Empty<byte>());
+            commForm1.SendData(CommData_Data.DTYPE_Start, new byte[48]);
+
+            CommData.CommData_Data msg0202 = new CommData_Data(CommData_Data.DTYPE_ActiveChange);
             msg0202.GetFldValue("mode-active").SetAsInt(1);
             commForm1.SendData(msg0202);
 

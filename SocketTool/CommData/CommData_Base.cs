@@ -15,6 +15,9 @@ namespace SocketTool.CommData
         protected CommMessageDefine _define;
         public CommMessageDefine commMessageDefine { get { return _define; } }
 
+        public string Name {  get { return _define.Name; } }
+        public string DType { get { return _define.DType; } }
+
         byte[] _data;
 
 

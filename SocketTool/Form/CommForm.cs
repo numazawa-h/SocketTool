@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static SocketTool.Properties.SocketBase;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace SocketTool.CommForm
 {
@@ -99,24 +100,28 @@ namespace SocketTool.CommForm
 
         }
 
-        public void OnSelfMachineChange(string iaddress, string portno, string mashine_code)
+        public int OnSelfMachineChange(string iaddress, string portno, string mashine_code)
         {
             if(accept_socket !=null || connect_socket != null){
-                MessageBox.Show("接続中に対象装置を変更することはできません");
+                return -1;
             }
             this.txt_Self_IpAddress.Text = iaddress;
             this.txt_Self_PortNo.Text = portno;
             this.commHeader.SetSrcMachineCode(mashine_code);
+
+            return 0;
         }
 
-        public void OnRemortMachineChange(string iaddress, string portno, string mashine_code)
+        public int OnRemortMachineChange(string iaddress, string portno, string mashine_code)
         {
             if (accept_socket != null || connect_socket!= null){
-                MessageBox.Show("接続中に対象装置を変更することはできません");
+                return -1;
             }
             this.txt_Remort_IpAddress.Text = iaddress;
             this.txt_Remort_PortNo.Text = portno;
             this.commHeader.SetDstMachineCode(mashine_code);
+
+            return 0;
         }
 
 
@@ -128,7 +133,7 @@ namespace SocketTool.CommForm
                 connect_socket.Send(commHeader.GetData(), data);
             }
         }
-        public void SendData(CommData_Data comm_data)
+        public void SendData(CommData.CommData_Data comm_data)
         {
             if (connect_socket != null)
             {
@@ -145,7 +150,10 @@ namespace SocketTool.CommForm
                 this.Invoke(new CommDataHandler(OnSendDatahandler), new object[] { sender, args });
                 return;
             }
-            DisplaySendRecvData(args.HeadBuff, args.DataBuff, 1);
+            CommData_Header header = new CommData_Header(args.HeadBuff);
+            CommData_Data data = new CommData_Data(header.DataType, args.DataBuff);
+
+            DisplaySendRecvData(header, data, 1);
         }
 
         private void OnRecvDatahandler(object sender, CommDataEventArgs args)
@@ -156,48 +164,73 @@ namespace SocketTool.CommForm
                 return;
             }
             CommData_Header header = new CommData_Header(args.HeadBuff);
-            string dtype =header.GetFldValue("dtype").GetAsBcd();
-            CommData_Data data = new CommData_Data(dtype, args.DataBuff);
-
-            if (dtype == "0202")
+            CommData_Data data = new CommData_Data(header.DataType, args.DataBuff);
+            if(data.isActiveMessage())
             {
-                if(data.GetDataDiscription("mode-active") == "アクティブ")
-                {
-                    Form1 form = (Form1)this.ParentForm;
-                    form.OnActiveReceived(_rescop_no);
-                }
+                Form1 form = (Form1)this.ParentForm;
+                form.OnActiveReceived(_rescop_no);
             }
-
-            DisplaySendRecvData(args.HeadBuff, args.DataBuff, 0);
+ 
+            DisplaySendRecvData(header, data, 0);
         }
 
 
-        private void DisplaySendRecvData(byte[] head, byte[] data, int direction )
+        private void DisplaySendRecvData(CommData_Header header, CommData_Data data, int direction )
         {
+
+            rtx_MsgList.SelectionStart = rtx_MsgList.Text.Length;
+            rtx_MsgList.SelectionLength = 0;
+            if(direction == 0)
+            {
+                rtx_MsgList.SelectionBackColor = Color.White;
+            }
+            else
+            {
+                rtx_MsgList.SelectionBackColor = Color.Cyan;
+            }
+            rtx_MsgList.Focus();
+
+            
+            this.rtx_MsgList.AppendText(GetCMessageDiscription(header, data, direction));
+ //           this.rtx_MsgList.AppendText(dump_message(header, data ));
+        }
+
+        private string GetCMessageDiscription(CommData_Header header, CommData_Data data, int direction)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(adjust($"{header.RecvDateTime:yyyy/MM/dd HH:mm:ss}", 20));
+            sb.Append(data.Name);
+            if(data.DataType == CommData_Data.DTYPE_ActiveChange)
+            {
+                sb.Append("(");
+                sb.Append(data.GetDataDiscription("mode-active"));
+                sb.Append(")");
+            }
+
+            return adjust(sb.ToString(), 80)+"\r\n";
+        }
+
+        private string adjust(string msg, int byte_size)
+        {
+            int str_size = Encoding.GetEncoding("shift_jis").GetByteCount(msg);
+            if(byte_size > str_size) 
+            {
+                msg += new string(' ', byte_size- str_size);
+            }
+
+            return msg;
+        }
+
+        private string dump_message(CommData_Header header, CommData_Data data)
+        {
+            byte[] hed = header.GetData();
+            byte[] dat = data.GetData();
+
             StringBuilder sb = new StringBuilder();
             int cnt = 0;
             sb.Append("[");
-            foreach (byte b in head)
-            {
-                if(cnt > 0 && (cnt % 8) == 0)
-                {
-                    sb.Append(" ");
-                }
-                if (cnt > 0 && (cnt % 4) == 0)
-                {
-                    sb.Append(" ");
-                }
-                if (cnt > 0 && (cnt % 16) == 0)
-                {
-                    sb.Append("\r\n ");
-                }
-                sb.Append($"{b:X2}");
-                ++cnt;
-            }
-            sb.Append("]\r\n");
-            cnt = 0;
-            sb.Append("[");
-            foreach (byte b in data)
+            foreach (byte b in hed)
             {
                 if (cnt > 0 && (cnt % 8) == 0)
                 {
@@ -215,21 +248,29 @@ namespace SocketTool.CommForm
                 ++cnt;
             }
             sb.Append("]\r\n");
-
-            rtx_MsgList.SelectionStart = rtx_MsgList.Text.Length;
-            rtx_MsgList.SelectionLength = 0;
-            if(direction == 0)
+            cnt = 0;
+            sb.Append("[");
+            foreach (byte b in dat)
             {
-                rtx_MsgList.SelectionBackColor = Color.White;
+                if (cnt > 0 && (cnt % 8) == 0)
+                {
+                    sb.Append(" ");
+                }
+                if (cnt > 0 && (cnt % 4) == 0)
+                {
+                    sb.Append(" ");
+                }
+                if (cnt > 0 && (cnt % 16) == 0)
+                {
+                    sb.Append("\r\n ");
+                }
+                sb.Append($"{b:X2}");
+                ++cnt;
             }
-            else
-            {
-                rtx_MsgList.SelectionBackColor = Color.Cyan;
-            }
-            rtx_MsgList.Focus();
-            this.rtx_MsgList.AppendText( sb.ToString());
+            sb.Append("]\r\n");
+            
+            return sb.ToString();
         }
-
 
         private async void chk_Self_AutoConnect_CheckedChanged(object sender, EventArgs e)
         {

@@ -252,6 +252,7 @@
             // rtx_MsgList
             // 
             this.rtx_MsgList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtx_MsgList.Font = new System.Drawing.Font("ＭＳ ゴシック", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.rtx_MsgList.Location = new System.Drawing.Point(20, 5);
             this.rtx_MsgList.Name = "rtx_MsgList";
             this.rtx_MsgList.Size = new System.Drawing.Size(580, 571);
@@ -272,9 +273,9 @@
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 9);
+            this.statusStrip.Location = new System.Drawing.Point(0, 25);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(620, 38);
+            this.statusStrip.Size = new System.Drawing.Size(620, 22);
             this.statusStrip.TabIndex = 23;
             this.statusStrip.Text = "statusStrip1";
             // 
