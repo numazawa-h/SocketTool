@@ -6,6 +6,8 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using SocketTool.Properties;
+using System.Threading;
+using System.Diagnostics;
 
 namespace SocketTool
 {
@@ -37,15 +39,29 @@ namespace SocketTool
                 checkParam();
 
                 Socket socket = new Socket(this._ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-                socket.Connect(_remoteEP);
+                socket.BeginConnect(_remoteEP,  new AsyncCallback(ConnectCallback), socket);
 
-                OnConnect(socket);
 
             }
             catch(Exception ex)
             {
                 OnFailConnect();
                 OnException(ex); 
+            }
+        }
+
+        private void ConnectCallback(IAsyncResult ar)
+        {
+            try
+            {
+                Socket socket = (Socket)ar.AsyncState;
+                socket.EndConnect(ar);
+                OnConnect(socket);
+            }
+            catch (Exception ex)
+            {
+                OnFailConnect();
+                OnException(ex);
             }
         }
 

@@ -29,6 +29,13 @@
         private void InitializeComponent()
         {
             this.grp_Comm = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txt_Remort_Health_Interval = new System.Windows.Forms.TextBox();
+            this.chk_Remort_Health = new System.Windows.Forms.CheckBox();
+            this.chk_Remort_Ack = new System.Windows.Forms.CheckBox();
+            this.chk_Self_Ack = new System.Windows.Forms.CheckBox();
             this.lbl_Remote_Status = new System.Windows.Forms.Label();
             this.lbl_Self_Status = new System.Windows.Forms.Label();
             this.chk_Remort_AutoConnect = new System.Windows.Forms.CheckBox();
@@ -40,19 +47,14 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.rtx_MsgList = new System.Windows.Forms.RichTextBox();
-            this.chk_Self_Ack = new System.Windows.Forms.CheckBox();
-            this.chk_Self_Health = new System.Windows.Forms.CheckBox();
-            this.txt_Self_Health_Interval = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txt_Remort_Health_Interval = new System.Windows.Forms.TextBox();
-            this.chk_Remort_Health = new System.Windows.Forms.CheckBox();
-            this.chk_Remort_Ack = new System.Windows.Forms.CheckBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.grp_Comm.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // grp_Comm
@@ -63,9 +65,6 @@
             this.grp_Comm.Controls.Add(this.txt_Remort_Health_Interval);
             this.grp_Comm.Controls.Add(this.chk_Remort_Health);
             this.grp_Comm.Controls.Add(this.chk_Remort_Ack);
-            this.grp_Comm.Controls.Add(this.label1);
-            this.grp_Comm.Controls.Add(this.txt_Self_Health_Interval);
-            this.grp_Comm.Controls.Add(this.chk_Self_Health);
             this.grp_Comm.Controls.Add(this.chk_Self_Ack);
             this.grp_Comm.Controls.Add(this.lbl_Remote_Status);
             this.grp_Comm.Controls.Add(this.lbl_Self_Status);
@@ -83,6 +82,76 @@
             this.grp_Comm.TabIndex = 19;
             this.grp_Comm.TabStop = false;
             this.grp_Comm.Text = "２系";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label4.Location = new System.Drawing.Point(16, 40);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(73, 21);
+            this.label4.TabIndex = 29;
+            this.label4.Text = "受信側";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label3.Location = new System.Drawing.Point(16, 130);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(73, 21);
+            this.label3.TabIndex = 28;
+            this.label3.Text = "送信側";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label2.Location = new System.Drawing.Point(571, 127);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(31, 21);
+            this.label2.TabIndex = 27;
+            this.label2.Text = "秒";
+            // 
+            // txt_Remort_Health_Interval
+            // 
+            this.txt_Remort_Health_Interval.Location = new System.Drawing.Point(498, 117);
+            this.txt_Remort_Health_Interval.Name = "txt_Remort_Health_Interval";
+            this.txt_Remort_Health_Interval.Size = new System.Drawing.Size(67, 31);
+            this.txt_Remort_Health_Interval.TabIndex = 26;
+            // 
+            // chk_Remort_Health
+            // 
+            this.chk_Remort_Health.AutoSize = true;
+            this.chk_Remort_Health.Font = new System.Drawing.Font("ＭＳ ゴシック", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.chk_Remort_Health.Location = new System.Drawing.Point(277, 127);
+            this.chk_Remort_Health.Name = "chk_Remort_Health";
+            this.chk_Remort_Health.Size = new System.Drawing.Size(196, 27);
+            this.chk_Remort_Health.TabIndex = 25;
+            this.chk_Remort_Health.Text = "ヘルスチェック";
+            this.chk_Remort_Health.UseVisualStyleBackColor = true;
+            // 
+            // chk_Remort_Ack
+            // 
+            this.chk_Remort_Ack.AutoSize = true;
+            this.chk_Remort_Ack.Font = new System.Drawing.Font("ＭＳ ゴシック", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.chk_Remort_Ack.Location = new System.Drawing.Point(115, 129);
+            this.chk_Remort_Ack.Name = "chk_Remort_Ack";
+            this.chk_Remort_Ack.Size = new System.Drawing.Size(130, 27);
+            this.chk_Remort_Ack.TabIndex = 24;
+            this.chk_Remort_Ack.Text = "肯定応答";
+            this.chk_Remort_Ack.UseVisualStyleBackColor = true;
+            // 
+            // chk_Self_Ack
+            // 
+            this.chk_Self_Ack.AutoSize = true;
+            this.chk_Self_Ack.Font = new System.Drawing.Font("ＭＳ ゴシック", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.chk_Self_Ack.Location = new System.Drawing.Point(115, 31);
+            this.chk_Self_Ack.Name = "chk_Self_Ack";
+            this.chk_Self_Ack.Size = new System.Drawing.Size(130, 27);
+            this.chk_Self_Ack.TabIndex = 20;
+            this.chk_Self_Ack.Text = "肯定応答";
+            this.chk_Self_Ack.UseVisualStyleBackColor = true;
             // 
             // lbl_Remote_Status
             // 
@@ -189,108 +258,36 @@
             this.rtx_MsgList.TabIndex = 13;
             this.rtx_MsgList.Text = "";
             // 
-            // chk_Self_Ack
+            // panel3
             // 
-            this.chk_Self_Ack.AutoSize = true;
-            this.chk_Self_Ack.Font = new System.Drawing.Font("ＭＳ ゴシック", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.chk_Self_Ack.Location = new System.Drawing.Point(115, 31);
-            this.chk_Self_Ack.Name = "chk_Self_Ack";
-            this.chk_Self_Ack.Size = new System.Drawing.Size(130, 27);
-            this.chk_Self_Ack.TabIndex = 20;
-            this.chk_Self_Ack.Text = "肯定応答";
-            this.chk_Self_Ack.UseVisualStyleBackColor = true;
+            this.panel3.Controls.Add(this.statusStrip);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel3.Location = new System.Drawing.Point(0, 746);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(620, 47);
+            this.panel3.TabIndex = 23;
             // 
-            // chk_Self_Health
+            // statusStrip
             // 
-            this.chk_Self_Health.AutoSize = true;
-            this.chk_Self_Health.Font = new System.Drawing.Font("ＭＳ ゴシック", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.chk_Self_Health.Location = new System.Drawing.Point(277, 31);
-            this.chk_Self_Health.Name = "chk_Self_Health";
-            this.chk_Self_Health.Size = new System.Drawing.Size(196, 27);
-            this.chk_Self_Health.TabIndex = 21;
-            this.chk_Self_Health.Text = "ヘルスチェック";
-            this.chk_Self_Health.UseVisualStyleBackColor = true;
+            this.statusStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel});
+            this.statusStrip.Location = new System.Drawing.Point(0, 9);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(620, 38);
+            this.statusStrip.TabIndex = 23;
+            this.statusStrip.Text = "statusStrip1";
             // 
-            // txt_Self_Health_Interval
+            // toolStripStatusLabel
             // 
-            this.txt_Self_Health_Interval.Location = new System.Drawing.Point(498, 23);
-            this.txt_Self_Health_Interval.Name = "txt_Self_Health_Interval";
-            this.txt_Self_Health_Interval.Size = new System.Drawing.Size(67, 31);
-            this.txt_Self_Health_Interval.TabIndex = 22;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label1.Location = new System.Drawing.Point(571, 33);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(31, 21);
-            this.label1.TabIndex = 23;
-            this.label1.Text = "秒";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label2.Location = new System.Drawing.Point(571, 127);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(31, 21);
-            this.label2.TabIndex = 27;
-            this.label2.Text = "秒";
-            // 
-            // txt_Remort_Health_Interval
-            // 
-            this.txt_Remort_Health_Interval.Location = new System.Drawing.Point(498, 117);
-            this.txt_Remort_Health_Interval.Name = "txt_Remort_Health_Interval";
-            this.txt_Remort_Health_Interval.Size = new System.Drawing.Size(67, 31);
-            this.txt_Remort_Health_Interval.TabIndex = 26;
-            // 
-            // chk_Remort_Health
-            // 
-            this.chk_Remort_Health.AutoSize = true;
-            this.chk_Remort_Health.Font = new System.Drawing.Font("ＭＳ ゴシック", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.chk_Remort_Health.Location = new System.Drawing.Point(277, 127);
-            this.chk_Remort_Health.Name = "chk_Remort_Health";
-            this.chk_Remort_Health.Size = new System.Drawing.Size(196, 27);
-            this.chk_Remort_Health.TabIndex = 25;
-            this.chk_Remort_Health.Text = "ヘルスチェック";
-            this.chk_Remort_Health.UseVisualStyleBackColor = true;
-            // 
-            // chk_Remort_Ack
-            // 
-            this.chk_Remort_Ack.AutoSize = true;
-            this.chk_Remort_Ack.Font = new System.Drawing.Font("ＭＳ ゴシック", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.chk_Remort_Ack.Location = new System.Drawing.Point(115, 129);
-            this.chk_Remort_Ack.Name = "chk_Remort_Ack";
-            this.chk_Remort_Ack.Size = new System.Drawing.Size(130, 27);
-            this.chk_Remort_Ack.TabIndex = 24;
-            this.chk_Remort_Ack.Text = "肯定応答";
-            this.chk_Remort_Ack.UseVisualStyleBackColor = true;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label3.Location = new System.Drawing.Point(16, 130);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(73, 21);
-            this.label3.TabIndex = 28;
-            this.label3.Text = "送信側";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label4.Location = new System.Drawing.Point(16, 40);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(73, 21);
-            this.label4.TabIndex = 29;
-            this.label4.Text = "受信側";
+            this.toolStripStatusLabel.Name = "toolStripStatusLabel";
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 28);
             // 
             // CommForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.MinimumSize = new System.Drawing.Size(620, 0);
@@ -301,6 +298,10 @@
             this.grp_Comm.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -324,10 +325,10 @@
         private System.Windows.Forms.TextBox txt_Remort_Health_Interval;
         private System.Windows.Forms.CheckBox chk_Remort_Health;
         private System.Windows.Forms.CheckBox chk_Remort_Ack;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txt_Self_Health_Interval;
-        private System.Windows.Forms.CheckBox chk_Self_Health;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
     }
 }

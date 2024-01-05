@@ -87,8 +87,6 @@ namespace SocketTool.CommForm
             // 初期表示(受信側)
             this.chk_Self_Ack.Checked = Config.JsonCommDef.GetInstance().GetRecvAckChk(rescop_no);
             int interval1 = Config.JsonCommDef.GetInstance().GetRecvHealthInterval(rescop_no);
-            this.chk_Self_Health.Checked = interval1 > 0;
-            this.txt_Self_Health_Interval.Text = interval1.ToString();
             this.chk_Self_AutoConnect.Checked = Config.JsonCommDef.GetInstance().GetRecvConnectChk(rescop_no);
 
             // 初期表示(送信側)
@@ -103,6 +101,9 @@ namespace SocketTool.CommForm
 
         public void OnSelfMachineChange(string iaddress, string portno, string mashine_code)
         {
+            if(accept_socket !=null || connect_socket != null){
+                MessageBox.Show("接続中に対象装置を変更することはできません");
+            }
             this.txt_Self_IpAddress.Text = iaddress;
             this.txt_Self_PortNo.Text = portno;
             this.commHeader.SetSrcMachineCode(mashine_code);
@@ -110,6 +111,9 @@ namespace SocketTool.CommForm
 
         public void OnRemortMachineChange(string iaddress, string portno, string mashine_code)
         {
+            if (accept_socket != null || connect_socket!= null){
+                MessageBox.Show("接続中に対象装置を変更することはできません");
+            }
             this.txt_Remort_IpAddress.Text = iaddress;
             this.txt_Remort_PortNo.Text = portno;
             this.commHeader.SetDstMachineCode(mashine_code);
@@ -229,30 +233,36 @@ namespace SocketTool.CommForm
 
         private async void chk_Self_AutoConnect_CheckedChanged(object sender, EventArgs e)
         {
+            this.statusStrip.Items.Clear();
+            this.statusStrip.Items.Add("");
             if (this.chk_Self_AutoConnect.Checked)
             {
                 if (accept_socket == null)
                 {
-                    await Task.Delay(1000);
+                    await Task.Delay(500);
 
                     lbl_Self_Status.Text = "接続待ち...";
                     lbl_Self_Status.ForeColor = Color.DeepPink;
+                    Application.DoEvents();
+
                     recv_socket.Listen(txt_Self_IpAddress.Text, txt_Self_PortNo.Text);
                 }
             }
             else
             {
+                lbl_Self_Status.Text = "切断";
+                lbl_Self_Status.ForeColor = Color.Black;
+                Application.DoEvents();
+
+                recv_socket.StopListen();
                 accept_socket?.Stop();
                 accept_socket = null;
-                    lbl_Self_Status.Text = "切断";
-                    lbl_Self_Status.ForeColor = Color.Black;
-                    Application.DoEvents();
-                recv_socket.StopListen();
             }
         }
 
         private async void chk_Remote_AutoConnect_CheckedChanged(object sender, EventArgs e)
         {
+            this.statusStrip.Items.Clear();
             if (this.chk_Remort_AutoConnect.Checked)
             {
                 await Task.Delay(1000);
@@ -260,6 +270,7 @@ namespace SocketTool.CommForm
                 this.lbl_Remote_Status.Text = "接続中...";
                 lbl_Remote_Status.ForeColor = Color.DeepPink;
                 Application.DoEvents();
+
                 send_socket.Connect(txt_Remort_IpAddress.Text, txt_Remort_PortNo.Text);
             }
             else
@@ -267,6 +278,7 @@ namespace SocketTool.CommForm
                 lbl_Remote_Status.Text = "切断";
                 lbl_Remote_Status.ForeColor = Color.Black;
                 Application.DoEvents();
+
                 connect_socket?.Stop();
                 connect_socket = null;
             }
@@ -280,7 +292,20 @@ namespace SocketTool.CommForm
                 this.Invoke(new ThreadExceptionEventHandler(OnExceptionHandler), new object[] { sender, args });
                 return;
             }
-            MessageBox.Show(args.Exception.Message);
+            this.statusStrip.Items.Clear();
+            if (args.Exception.Message.Length > 30)
+            {
+                this.statusStrip.Items.Add("！");
+                this.statusStrip.Items[0].ForeColor = Color.Red;
+                this.statusStrip.Items.Add(args.Exception.Message.Substring(0, Math.Min(50, args.Exception.Message.Length))+"..");
+                this.statusStrip.Items[1].ForeColor = Color.Red;
+            }
+            else
+            {
+                this.statusStrip.Items.Add(args.Exception.Message);
+                this.statusStrip.Items[0].ForeColor = Color.Red;
+            }
+            Application.DoEvents();
         }
 
         private void OnFailListenHandler(object sender, EventArgs args)
@@ -303,13 +328,15 @@ namespace SocketTool.CommForm
             }
             this.lbl_Remote_Status.Text = "切断";
             this.lbl_Remote_Status.ForeColor = Color.Black;
+            Application.DoEvents();
+            await Task.Delay(5000);
             connect_socket = null;
             if (chk_Remort_AutoConnect.Checked)
             {
-                await Task.Delay(10000);
                 lbl_Remote_Status.Text = "接続中...";
                 lbl_Remote_Status.ForeColor = Color.DeepPink;
                 Application.DoEvents();
+                await Task.Delay(500);
                 send_socket.Connect(txt_Remort_IpAddress.Text, txt_Remort_PortNo.Text);
             }
         }
@@ -340,7 +367,7 @@ namespace SocketTool.CommForm
             lbl_Remote_Status.ForeColor = Color.Red;
         }
 
-        private void OnDisConnectEventHandler(object sender, ConnectEventArgs args)
+        private async void OnDisConnectEventHandler(object sender, ConnectEventArgs args)
         {
             if (this.InvokeRequired)
             {
@@ -356,7 +383,7 @@ namespace SocketTool.CommForm
                 {
                     lbl_Self_Status.Text = "接続待ち...";
                     lbl_Self_Status.ForeColor = Color.DeepPink;
-                    Application.DoEvents();
+                    await Task.Delay(10);
                     recv_socket.Listen(txt_Self_IpAddress.Text, txt_Self_PortNo.Text);
                 }
             }
@@ -370,7 +397,7 @@ namespace SocketTool.CommForm
                 {
                     lbl_Remote_Status.Text = "接続中...";
                     lbl_Remote_Status.ForeColor = Color.DeepPink;
-                    Application.DoEvents();
+                    await Task.Delay(10);
                     send_socket.Connect(txt_Remort_IpAddress.Text, txt_Remort_PortNo.Text);
                 }
             }
