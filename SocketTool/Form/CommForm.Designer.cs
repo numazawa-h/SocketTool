@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.grp_Comm = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -50,6 +51,7 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.timer_health = new System.Windows.Forms.Timer(this.components);
             this.grp_Comm.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -130,6 +132,7 @@
             this.chk_Remort_Health.TabIndex = 25;
             this.chk_Remort_Health.Text = "ヘルスチェック";
             this.chk_Remort_Health.UseVisualStyleBackColor = true;
+            this.chk_Remort_Health.CheckedChanged += new System.EventHandler(this.chk_Remort_Health_CheckedChanged);
             // 
             // chk_Remort_Ack
             // 
@@ -282,7 +285,13 @@
             // toolStripStatusLabel
             // 
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 28);
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 12);
+            // 
+            // timer_health
+            // 
+            this.timer_health.Enabled = true;
+            this.timer_health.Interval = 1000;
+            this.timer_health.Tick += new System.EventHandler(this.OnHealthCheckTimer);
             // 
             // CommForm
             // 
@@ -331,5 +340,6 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
+        private System.Windows.Forms.Timer timer_health;
     }
 }

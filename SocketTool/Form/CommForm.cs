@@ -324,6 +324,13 @@ namespace SocketTool.CommForm
             }
         }
 
+        private void OnHealthCheckTimer(object sender, EventArgs e)
+        {
+            if (this.chk_Remort_Health.Checked)
+            {
+                SendData(CommData_Data.DTYPE_HealthCheck, System.Array.Empty<byte>());
+            }
+        }
 
         private void OnExceptionHandler(object sender, ThreadExceptionEventArgs args)
         {
@@ -440,6 +447,25 @@ namespace SocketTool.CommForm
                     await Task.Delay(10);
                     send_socket.Connect(txt_Remort_IpAddress.Text, txt_Remort_PortNo.Text);
                 }
+            }
+        }
+
+        private void chk_Remort_Health_CheckedChanged(object sender, EventArgs e)
+        {
+            if(chk_Remort_Health.Checked)
+            {
+                int interval = -1;
+                if( int.TryParse(txt_Remort_Health_Interval.Text, out interval))
+                {
+                    this.timer_health.Interval = interval* 1000;
+                    this.timer_health.Enabled = true;
+                    this.txt_Remort_Health_Interval.Enabled = false;
+                }
+            }
+            else
+            {
+                this.timer_health.Enabled = false;
+                this.txt_Remort_Health_Interval.Enabled = true;
             }
         }
     }
