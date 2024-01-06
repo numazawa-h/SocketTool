@@ -214,10 +214,16 @@ namespace SocketTool
             tabControl.SelectedIndex = 0;
             Application.DoEvents();
 
+            CommData_Data msg0501 = new CommData_Data(CommData_Data.DTYPE_NP);
+            msg0501.GetFldValue("carno").SetAsInt(123);
+            byte[] image = new byte[] { 1, 2, 3, 4, };
+            msg0501.AddData(image);
+            commForm2.SendData(msg0501);
+
             commForm2.SendData(CommData_Data.DTYPE_HealthCheck, System.Array.Empty<byte>());
             commForm1.SendData(CommData_Data.DTYPE_Start, new byte[48]);
 
-            CommData.CommData_Data msg0202 = new CommData_Data(CommData_Data.DTYPE_ActiveChange);
+            CommData_Data msg0202 = new CommData_Data(CommData_Data.DTYPE_ActiveChange);
             msg0202.GetFldValue("active-change").SetAsInt(1);
             string fldname = JsonDataDef.GetInstance().GetMessageDefine(CommData_Data.DTYPE_ActiveChange).GetFldName("active-change");
             commForm1.SendData(msg0202);
@@ -280,7 +286,7 @@ namespace SocketTool
                             }
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception )
                     {
 
                     }
@@ -303,7 +309,7 @@ namespace SocketTool
                             }
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
 
                     }

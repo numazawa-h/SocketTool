@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+using static SocketTool.CommData.CommData_Base;
 
 namespace SocketTool.Config
 {
@@ -24,6 +25,10 @@ namespace SocketTool.Config
         {
         }
 
+        // 画面のメッセージリストにダンプを表示するか否か
+        private bool _message_dump = false;
+        public bool isMessage_Dump { get { return _message_dump; } }
+
         // 通信メッセージ定義
         protected Dictionary<string, CommMessageDefine> _message_def = new Dictionary<string, CommMessageDefine>();
 
@@ -37,6 +42,14 @@ namespace SocketTool.Config
             {
                 int ret = base.ReadJson(path);
 
+                if (_json_root.AsObject().ContainsKey("message-dump"))
+                {
+                    _message_dump = (_json_root["message-dump"].GetValue<int>() == 1);
+                }
+                else
+                {
+                    _message_dump = false;
+                }
                 _values_def.Clear();
                 foreach (JsonObject def in _json_root["values-def"].AsArray())
                 {
@@ -63,12 +76,10 @@ namespace SocketTool.Config
 
         public string GetValueDescription(string fldid, string val)
         {
-            if(_values_def.ContainsKey(fldid) && _values_def[fldid].Values.Contains<string>(val))
+            if (_values_def.ContainsKey(fldid))
             {
                 return _values_def[fldid][val];
             }
-
-            //TODO:未完
 
             return "？？？";
         }
@@ -80,25 +91,37 @@ namespace SocketTool.Config
             string _dtype;
             string _name;
             int _data_len;
+            int _data_minlen;
 
             public string DType { get { return _dtype; } }
             public string Name { get { return _name; } }
             public int Length {  get { return _data_len; } }
+            public int MinLength { get { return _data_minlen; } }
 
             Dictionary<string, FieldDefine> _fld_def_list = new Dictionary<string, FieldDefine>();
+            public Dictionary<string, FieldDefine> Fld_List { get {  return _fld_def_list; } }  
 
             public CommMessageDefine(JsonObject def)
             {
                 _dtype = def["id"].ToString();
                 _name = def["name"].ToString();
                 _data_len = def["len"].GetValue<int>();
+                if (def.ContainsKey("minlen"))
+                {
+                    _data_minlen = def["minlen"].GetValue<int>();
+                }
+                else
+                {
+                    _data_minlen = 0;
+                }
 
-                foreach(JsonObject obj in def["flds"].AsArray())
+                foreach (JsonObject obj in def["flds"].AsArray())
                 {
                     _fld_def_list.Add(obj["id"].ToString(), new FieldDefine(obj));
                 }
             }
 
+  
             public string GetFldName(string fldid)
             {
                 return _fld_def_list[fldid].FldName;
@@ -122,16 +145,24 @@ namespace SocketTool.Config
             string _name;
             int _ofs;
             int _bytelen;
+            bool _disp_desc;
             public string FldId { get { return _id; } }
             public string FldName { get { return _name; } }
             public int FldLength { get { return _bytelen; } }
             public int FldOffset { get { return _ofs; } }
+            public bool isDispDesc {  get { return _disp_desc; } }
 
             public FieldDefine(JsonObject def)
             {
                 _id = def["id"].ToString();
                 _ofs = def["ofs"].GetValue<int>();
                 _bytelen = def["len"].GetValue<int>();
+
+                if (def.ContainsKey("disp"))
+                {
+                    _disp_desc = def["disp"].GetValue<int>() ==1;
+                }
+
                 if (def.ContainsKey("name"))
                 {
                     _name = def["name"].ToString();
@@ -148,6 +179,16 @@ namespace SocketTool.Config
                     }
                 }
             }
+
+            /// <summary>
+            /// データ長変更
+            /// </summary>
+            /// <remarks>可変長データの時、後から設定する</remarks>
+            /// <param name="len"></param>
+            public void SetFldLength(int len)
+            {
+                _bytelen = len;
+            }
         }
 
 
@@ -161,7 +202,7 @@ namespace SocketTool.Config
             public string FldName { get { return _name; } }
 
             Dictionary<string, string> _values_def = new Dictionary<string, string>();
-            Dictionary<string, string> _format_def = new Dictionary<string, string>();
+            JsonObject _format_def = new JsonObject();
 
             public ValuesDefine(JsonObject def)
             {
@@ -175,6 +216,10 @@ namespace SocketTool.Config
                         _values_def.Add(pair.Key, pair.Value.ToString());
                     }
                 }
+                if (def.ContainsKey("format"))
+                {
+                    _format_def = def["format"].AsObject();
+                }
             }
 
             public string this[string val]
@@ -187,9 +232,17 @@ namespace SocketTool.Config
                     }
                     else
                     {
-                        //TODO:format対応
-                        return "？？？";
+                        if (_format_def.ContainsKey("type"))
+                        {
+                            if (_format_def["type"].ToString() == "int")
+                            {
+                                FldValue fld = new FldValue(val);
+                                string fmt = _format_def["fmt"].ToString();
+                                return string.Format(fmt, fld.GetAsInt());
+                            }
+                        }
                     }
+                    return "？？？";
                 }
             }
             public string[] Values

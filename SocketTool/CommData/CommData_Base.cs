@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SocketTool.Config;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -10,7 +11,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace SocketTool.CommData
 {
-    public class CommData_Base
+    public class CommData_Base 
     {
         protected CommMessageDefine _define;
         public CommMessageDefine commMessageDefine { get { return _define; } }
@@ -32,14 +33,76 @@ namespace SocketTool.CommData
             _data = null;
         }
 
-        protected void Init(CommMessageDefine def, byte[] data = null)
+        protected void Init(CommMessageDefine def, byte[] dat = null)
         {
             _define = def;
-            _data = data;
-            if (data==null && def.Length > 0)
+            _data = dat;
+
+            if (dat != null)
             {
-                _data = new byte[def.Length];
+                // データ生成済ならその長さでコピー
+                _data = new byte[dat.Length];
+                Buffer.BlockCopy(dat, 0, _data, 0, _data.Length);
+
             }
+            else
+            {
+                if (def.Length == 0)
+                {
+                    // データ部なしメッセージ
+                    _data = System.Array.Empty<byte>(); 
+                }
+                if (def.Length > 0)
+                {
+                    // 固定長メッセージ
+                    _data = new byte[def.Length];
+                }
+                if (def.Length < 0)
+                {
+                    // 可変長メッセージ
+                    if (def.MinLength > 0)
+                    {
+                        // 固定部分ありならその部分のみ生成
+                        _data = new byte[def.MinLength];
+                    }
+                    else
+                    {
+                        // 固定部分がなければ空で生成
+                        _data = System.Array.Empty<byte>();
+                    }
+                }
+            }
+        }
+
+        public string GetMessageDesc()
+        {
+            StringBuilder sb = new StringBuilder();
+            bool isFirst = true;
+            foreach (string key in _define.Fld_List.Keys)
+            {
+                FieldDefine fld = _define.Fld_List[key];
+                if (fld.isDispDesc)
+                {
+                    if (isFirst)
+                    {
+                        isFirst = false;
+                        sb.Append("(");
+                    }
+                    else
+                    {
+                        sb.Append(",");
+                    }
+
+                    FldValue fldval = GetFldValue(fld.FldId);
+                    sb.Append(fldval.GetDesc());
+                }
+            }
+            if (isFirst == false)
+            {
+                sb.Append(")");
+            }
+
+            return sb.ToString();
         }
 
         public byte[] GetData()
@@ -58,23 +121,52 @@ namespace SocketTool.CommData
             Buffer.BlockCopy(val, 0, _data, 0, Math.Min(val.Length, _data.Length));
         }
 
+        public void AddData(byte[] val)
+        {
+            byte[] _tmp = new byte[_data.Length + val.Length];
+            Buffer.BlockCopy(_data, 0, _tmp, 0, _data.Length);
+            Buffer.BlockCopy(val, 0, _tmp, _data.Length, val.Length);
+            _data = _tmp;
+        }
 
         public FldValue GetFldValue(string fldid)
         {
-            int ofs = _define.GetFldOffset(fldid);
-            int len = _define.GetFldLength(fldid);
+            byte[] val;
+            try
+            {
+                int ofs = _define.GetFldOffset(fldid);
+                int len = _define.GetFldLength(fldid);
 
-            byte[] val = new byte[len];
-            Buffer.BlockCopy(_data, ofs, val, 0, len);
+                if(len > 0)
+                {
+                    val = new byte[len];
+                    Buffer.BlockCopy(_data, ofs, val, 0, len);
+                }
+                else
+                {
+                    val =System.Array.Empty<byte>();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{fldid}の取得で例外発生({ex.Message})");
+            }
 
             return new FldValue(val, fldid, this);
         }
 
         public void SetFldValue(string fldid, byte[] dat)
         {
-            int ofs = _define.GetFldOffset(fldid);
-            int len = _define.GetFldLength(fldid);
-            Buffer.BlockCopy(dat, 0, _data, ofs, len);
+            try
+            {
+                int ofs = _define.GetFldOffset(fldid);
+                int len = _define.GetFldLength(fldid);
+                Buffer.BlockCopy(dat, 0, _data, ofs, len);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{fldid}の設定で例外発生({ex.Message})");
+            }
         }
 
         public class FldValue
@@ -89,6 +181,19 @@ namespace SocketTool.CommData
                 _fld_id = fld_id;
                 _data = data;
             }
+            public FldValue(string bcd, string fld_id = "", CommData_Base owner = null)
+            {
+                _owner = owner;
+                _fld_id = fld_id;
+                _data = new byte[(int)Math.Ceiling((double)bcd.Length /2)];
+                SetAsBcd(bcd);
+            }
+
+            public string GetDesc()
+            {
+                string desc =JsonDataDef.GetInstance().GetValueDescription(_fld_id, GetAsBcd());
+                return desc;
+            }
 
             public byte[] GetAsByte()
             {
@@ -97,9 +202,9 @@ namespace SocketTool.CommData
 
             public int GetAsInt()
             {
-                if (_data.Length > 4)
+                if (_data.Length > 4 || _data.Length < 1 )
                 {
-                    return -1;
+                    return 0;
                 }
 
                 byte[] val = new byte[4];
@@ -115,9 +220,9 @@ namespace SocketTool.CommData
 
             public long GetAsLong()
             {
-                if (_data.Length > 8)
+                if (_data.Length > 8 || _data.Length < 1)
                 {
-                    return -1;
+                    return 0;
                 }
 
                 byte[] val = new byte[8];
@@ -138,8 +243,8 @@ namespace SocketTool.CommData
                 {
                     int b1 = b >> 4;
                     int b2 = b & 0x0f;
-                    sb.Append(b1);
-                    sb.Append(b2);
+                    sb.Append($"{b1:X}");
+                    sb.Append($"{b2:X}");
                 }
 
                 return sb.ToString();
@@ -192,7 +297,7 @@ namespace SocketTool.CommData
 
             public void SetAsInt(int val)
             {
-                if (_data.Length > 4)
+                if (_data.Length > 4 || _data.Length < 1)
                 {
                     return;
                 }
@@ -211,7 +316,7 @@ namespace SocketTool.CommData
 
             public void SetAsLong(long val)
             {
-                if (_data.Length > 8)
+                if (_data.Length > 8 || _data.Length < 1)
                 {
                     return;
                 }
@@ -236,19 +341,8 @@ namespace SocketTool.CommData
                     int ofs = idx * 2;
                     if (ofs >= val.Length) break;
 
-                    byte b = 0;
-                    byte[] dat;
-                    string d1 = val.Substring(idx*2, 1);
-                    dat = System.Text.Encoding.ASCII.GetBytes(d1);
-                    b = (byte)(dat[0] << 4);
-                    if(ofs+1 < val.Length)
-                    {
-                        string d2 = val.Substring(idx * 2 + 1, 1);
-                        dat = System.Text.Encoding.ASCII.GetBytes(d2);
-                        b |= (byte)(dat[0] & 0x0f);
-                    }
-
-                    _data[idx] = b;
+                    string d = val.Substring(ofs, 2);
+                    _data[idx] = Convert.ToByte(d, 16);
                 }
                 _owner?.SetFldValue(_fld_id, _data);
                 return;

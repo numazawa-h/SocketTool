@@ -14,6 +14,7 @@ namespace SocketTool.CommData
         public const string DTYPE_HealthCheck = "0101";         // ヘルスチェック
         public const string DTYPE_Start = "0201";               // 開始要求
         public const string DTYPE_ActiveChange = "0202";        // 系切替通知
+        public const string DTYPE_NP = "0501";                  // NP認識
 
         string _dtype;
 

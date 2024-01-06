@@ -129,7 +129,7 @@ namespace SocketTool.CommForm
         {
             if (connect_socket != null)
             {
-                commHeader.SetOnSend(dtype);
+                commHeader.SetOnSend(dtype, data.Length);
                 connect_socket.Send(commHeader.GetData(), data);
             }
         }
@@ -137,7 +137,7 @@ namespace SocketTool.CommForm
         {
             if (connect_socket != null)
             {
-                commHeader.SetOnSend(comm_data.DataType);
+                commHeader.SetOnSend(comm_data.DataType, comm_data.GetData().Length);
                 connect_socket.Send(commHeader.GetData(), comm_data.GetData());
             }
         }
@@ -234,7 +234,10 @@ namespace SocketTool.CommForm
 
 
             this.rtx_MsgList.AppendText(GetCMessageDiscription(header, data, direction));
-            //          this.rtx_MsgList.AppendText(dump_message(header, data ));
+            if (JsonDataDef.GetInstance().isMessage_Dump)
+            {
+                this.rtx_MsgList.AppendText(dump_message(header, data ));
+            }
             OnUpdateMsgList();
         }
 
@@ -244,12 +247,7 @@ namespace SocketTool.CommForm
 
             sb.Append(adjust($"{header.RecvDateTime:MM/dd HH:mm:ss}", 15));
             sb.Append(data.Name);
-            if(data.DataType == CommData_Data.DTYPE_ActiveChange)
-            {
-                sb.Append("(");
-                sb.Append(data.GetDataDiscription("active-change"));
-                sb.Append(")");
-            }
+            sb.Append(data.GetMessageDesc());
 
             return adjust(sb.ToString(), 80)+"\r\n";
         }
@@ -385,7 +383,7 @@ namespace SocketTool.CommForm
                     this.timer_health.Enabled = false;
                     this.txt_Remort_Health_Interval.Enabled = true;
                 }
-            }catch(Exception ex)
+            }catch(Exception )
             {
                 chk_Remort_Health.Checked = false;
             }

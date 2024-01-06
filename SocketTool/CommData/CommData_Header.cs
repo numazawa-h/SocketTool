@@ -48,21 +48,15 @@ namespace SocketTool.CommData
         {
             int dlen = this.commMessageDefine.Length;
             this.GetFldValue("dtype").SetAsBcd(dtype);
-            this.GetFldValue("dlen").SetAsInt(dlen);
-            this.GetFldValue("alen").SetAsInt(dlen);
-            this.GetFldValue("bnum").SetAsInt(1);
-            this.GetFldValue("bend").SetAsInt(1);
-            this.GetFldValue("bcnt").SetAsInt(1);
         }
 
-        public void SetOnSend(string dtype)
+        public void SetOnSend(string dtype, int dlen, int bnum =1, int bcnt =1)
         {
-            int dlen = JsonDataDef.GetInstance().GetMessageDefine(dtype).Length;
             this.GetFldValue("dtype").SetAsBcd(dtype);
             this.GetFldValue("dlen").SetAsInt(dlen);
             this.GetFldValue("alen").SetAsInt(dlen);
             this.GetFldValue("bnum").SetAsInt(1);
-            this.GetFldValue("bend").SetAsInt(1);
+            this.GetFldValue("bend").SetAsInt((bnum ==bcnt)?1:0);
             this.GetFldValue("bcnt").SetAsInt(1);
             switch (dtype)
             {
