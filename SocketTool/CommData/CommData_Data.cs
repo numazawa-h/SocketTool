@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static SocketTool.Config.JsonDataDef;
 
 namespace SocketTool.CommData
 {
@@ -61,6 +62,34 @@ namespace SocketTool.CommData
             return Config.JsonDataDef.GetInstance().GetValueDescription(fldid, val);
         }
 
+        public string GetMsgDiscription()
+        {
+            StringBuilder sb = new StringBuilder();
+            bool isFirst = true;
+            foreach (string key in _define.Fld_List.Keys)
+            {
+                FieldDefine fld = _define.Fld_List[key];
+                if (fld.isDispDesc)
+                {
+                    if (isFirst)
+                    {
+                        isFirst = false;
+                        sb.Append("(");
+                    }
+                    else
+                    {
+                        sb.Append(",");
+                    }
+                    sb.Append(GetDataDiscription(fld.FldId));
+                }
+            }
+            if (isFirst == false)
+            {
+                sb.Append(")");
+            }
+
+            return sb.ToString();
+        }
 
     }
 }

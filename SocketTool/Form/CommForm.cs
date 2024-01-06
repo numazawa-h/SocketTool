@@ -247,7 +247,7 @@ namespace SocketTool.CommForm
 
             sb.Append(adjust($"{header.RecvDateTime:MM/dd HH:mm:ss}", 15));
             sb.Append(data.Name);
-            sb.Append(data.GetMessageDesc());
+            sb.Append(data.GetMsgDiscription());
 
             return adjust(sb.ToString(), 80)+"\r\n";
         }

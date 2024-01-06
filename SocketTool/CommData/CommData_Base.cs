@@ -74,37 +74,6 @@ namespace SocketTool.CommData
             }
         }
 
-        public string GetMessageDesc()
-        {
-            StringBuilder sb = new StringBuilder();
-            bool isFirst = true;
-            foreach (string key in _define.Fld_List.Keys)
-            {
-                FieldDefine fld = _define.Fld_List[key];
-                if (fld.isDispDesc)
-                {
-                    if (isFirst)
-                    {
-                        isFirst = false;
-                        sb.Append("(");
-                    }
-                    else
-                    {
-                        sb.Append(",");
-                    }
-
-                    FldValue fldval = GetFldValue(fld.FldId);
-                    sb.Append(fldval.GetDesc());
-                }
-            }
-            if (isFirst == false)
-            {
-                sb.Append(")");
-            }
-
-            return sb.ToString();
-        }
-
         public byte[] GetData()
         {
             int ofs = 0;
@@ -187,12 +156,6 @@ namespace SocketTool.CommData
                 _fld_id = fld_id;
                 _data = new byte[(int)Math.Ceiling((double)bcd.Length /2)];
                 SetAsBcd(bcd);
-            }
-
-            public string GetDesc()
-            {
-                string desc =JsonDataDef.GetInstance().GetValueDescription(_fld_id, GetAsBcd());
-                return desc;
             }
 
             public byte[] GetAsByte()
