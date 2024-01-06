@@ -19,6 +19,27 @@
 		{ "id":"0101", "name":"ヘルスチェック", "len":  0,"flds":[] },
 		{ "id":"0201", "name":"開始要求", "len": 48,"flds":[] },
 		{ "id":"0202", "name":"系切替", "len": 48,"flds":[{ "id":"active-change", "ofs": 0, "len":2, "disp":1 },] },
+		{ "id":"0301", "name":"通過車両", "len": 48,"flds":[{ "id":"carno", "ofs": 0, "len":4, "disp":1 },] },
+		{ "id":"0302", "name":"車線管理", "len": 80,"flds":[
+				{ "id":"s1cnt", "ofs": 0, "len":2, "disp":0 },
+				{ "id":"s2cnt", "ofs": 2, "len":2, "disp":0 },
+				{ "id":"carno_01", "ofs": 4, "len":4, "disp":1 },
+				{ "id":"carno_02", "ofs": 8, "len":4, "disp":1 },
+				{ "id":"carno_03", "ofs":12, "len":4, "disp":1 },
+				{ "id":"carno_04", "ofs":16, "len":4, "disp":1 },
+				{ "id":"carno_05", "ofs":20, "len":4, "disp":1 },
+				{ "id":"carno_06", "ofs":24, "len":4, "disp":1 },
+				{ "id":"carno_07", "ofs":28, "len":4, "disp":1 },
+				{ "id":"carno_08", "ofs":32, "len":4, "disp":1 },
+				{ "id":"carno_09", "ofs":36, "len":4, "disp":1 },
+				{ "id":"carno_10", "ofs":40, "len":4, "disp":1 },
+				{ "id":"carno_11", "ofs":44, "len":4, "disp":1 },
+				{ "id":"carno_12", "ofs":48, "len":4, "disp":1 },
+				{ "id":"carno_13", "ofs":52, "len":4, "disp":1 },
+				{ "id":"carno_14", "ofs":56, "len":4, "disp":1 },
+				{ "id":"carno_15", "ofs":60, "len":4, "disp":1 },
+			] 
+		},
 		{ "id":"0501", "name":"NP認識", "len": -1, "minlen":4, "flds":[
 				{ "id":"carno", "ofs": 0, "len":4, "disp":1 },
 				{ "id":"image", "ofs": 4, "len":-1 },
@@ -28,7 +49,7 @@
 	"values-def":[
 		{ "id":"active-change", "name":"切替", "values":{"0001":"アクティブ", "0002":"スタンバイ" } },
 		{ "id":"reson-nak", "name":"否定理由", "values":{"0001":"シーケンスエラー", "0009":"その他" } },
-		{ "id":"carno", "name":"車両番号", "format":{ "type":"int", "fmt":"#{0:D}" } },
+		{ "id":"carno", "name":"車両番号", "format":{ "type":"int", "fmt":"#{0:D}" ,"notdisp":0 } },
 		{ "id":"image", "name":"画像", "format":{ "type":"image", "fmt":"/image/{0}.jpg" } },
 	],
 }

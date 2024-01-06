@@ -76,9 +76,14 @@ namespace SocketTool.Config
 
         public string GetValueDescription(string fldid, string val)
         {
-            if (_values_def.ContainsKey(fldid))
+            string valid = fldid;
+            if (valid.Contains("_"))
             {
-                return _values_def[fldid][val];
+                valid = valid.Substring(0, valid.IndexOf("_"));
+            }
+            if (_values_def.ContainsKey(valid))
+            {
+                return _values_def[valid][val];
             }
 
             return "？？？";
@@ -237,8 +242,17 @@ namespace SocketTool.Config
                             if (_format_def["type"].ToString() == "int")
                             {
                                 FldValue fld = new FldValue(val);
+                                int valint = fld.GetAsInt();
+                                if (_format_def.ContainsKey("notdisp"))
+                                {
+                                    int notdisp = _format_def["notdisp"].GetValue<int>();
+                                    if (valint ==notdisp)
+                                    {
+                                        return string.Empty;
+                                    }
+                                }
                                 string fmt = _format_def["fmt"].ToString();
-                                return string.Format(fmt, fld.GetAsInt());
+                                return string.Format(fmt, valint);
                             }
                             if (_format_def["type"].ToString() == "image")
                             {

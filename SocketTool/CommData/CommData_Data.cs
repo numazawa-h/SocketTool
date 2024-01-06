@@ -17,6 +17,8 @@ namespace SocketTool.CommData
         public const string DTYPE_HealthCheck = "0101";         // ヘルスチェック
         public const string DTYPE_Start = "0201";               // 開始要求
         public const string DTYPE_ActiveChange = "0202";        // 系切替通知
+        public const string DTYPE_PASSCAR = "0301";             // 通過車両
+        public const string DTYPE_LANE_ST = "0302";             // 車線管理
         public const string DTYPE_NP = "0501";                  // NP認識
 
 
@@ -67,16 +69,19 @@ namespace SocketTool.CommData
                 FieldDefine fld = _define.Fld_List[key];
                 if (fld.isDispDesc)
                 {
-                    if (isFirst)
-                    {
-                        isFirst = false;
-                        sb.Append("(");
+                    string desc = GetDataDiscription(fld.FldId);
+                    if (desc != string.Empty) {
+                        if (isFirst)
+                        {
+                            isFirst = false;
+                            sb.Append("(");
+                        }
+                        else
+                        {
+                            sb.Append(",");
+                        }
+                        sb.Append(desc);
                     }
-                    else
-                    {
-                        sb.Append(",");
-                    }
-                    sb.Append(GetDataDiscription(fld.FldId));
                 }
             }
             if (isFirst == false)
@@ -87,7 +92,7 @@ namespace SocketTool.CommData
             return sb.ToString();
         }
 
-        public byte[] LoadImage(string fldid, string fnmae)
+        public void LoadImage(string fldid, string fnmae)
         {
             byte[] dat =System.Array.Empty<byte>();
 
@@ -106,7 +111,7 @@ namespace SocketTool.CommData
 
             }
 
-            return dat;
+            AddData(dat);
         }
 
         public void SaveImage(string fldid, string fnmae)

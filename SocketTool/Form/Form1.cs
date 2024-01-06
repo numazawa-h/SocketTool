@@ -230,10 +230,18 @@ namespace SocketTool
 
             CommData_Data msg0501 = new CommData_Data(CommData_Data.DTYPE_NP);
             msg0501.GetFldValue("carno").SetAsInt(123);
-            byte[] image = msg0501.LoadImage("image", "test");
-            msg0501.AddData(image);
+            msg0501.LoadImage("image", "test");
             Send(msg0501);
 
+            CommData_Data msg0301= new CommData_Data(CommData_Data.DTYPE_PASSCAR);
+            msg0301.GetFldValue("carno").SetAsInt(1);
+            Send(msg0301);
+
+            CommData_Data msg0302 = new CommData_Data(CommData_Data.DTYPE_LANE_ST);
+            msg0302.GetFldValue("carno_01").SetAsInt(1);
+            msg0302.GetFldValue("carno_02").SetAsInt(2);
+            msg0302.GetFldValue("carno_03").SetAsInt(3);
+            Send(msg0302);
         }
 
         private void Form1_DragEnter(object sender, DragEventArgs e)
