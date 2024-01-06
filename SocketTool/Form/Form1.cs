@@ -271,7 +271,7 @@ namespace SocketTool
                 string dtype = null;
                 byte[] hed = System.Array.Empty<byte>();
                 byte[] dat = System.Array.Empty<byte>();
-
+                string img_fname = null; 
                 string fname = System.IO.Path.GetFileName(path);
                 if (fname.Substring(4, 1) == "_")
                 {
@@ -295,6 +295,23 @@ namespace SocketTool
                                 if (matchs.Count >0)
                                 {
                                     dat = parse_bcd(matchs[0].Value);
+                                }
+                                matchs = Regex.Matches(lin, @"\[[0-9,a-z,A-Z \-_]*\]");
+                                if (matchs.Count > 1)
+                                {
+                                    switch (dtype)
+                                    {
+                                        case CommData_Data.DTYPE_NP:
+                                            img_fname = matchs[1].Value.Trim();
+                                            img_fname = img_fname.Replace("[", string.Empty);
+                                            img_fname = img_fname.Replace(" ", string.Empty);
+                                            img_fname = img_fname.Replace("]", string.Empty);
+                                            CommData_Data msg0501 = new CommData_Data(CommData_Data.DTYPE_NP, dat);
+                                            msg0501.LoadImage("image", img_fname);
+                                            dat = msg0501.GetData();
+                                            break;
+                                    }
+
                                 }
                                 break;      // 最初の一行だけ処理する
                             }
@@ -355,7 +372,7 @@ namespace SocketTool
             byte[] buf = new byte[byte_size];
 
             int buf_idx = 0;
-            for (int idx = 0; idx < byte_size; idx += 2)
+            for (int idx = 0; idx < bcd.Length; idx += 2)
             {
                 string w = bcd.Substring(idx, 2);
                 buf[buf_idx] = Convert.ToByte(w, 16);
