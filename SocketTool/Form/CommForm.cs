@@ -176,8 +176,7 @@ namespace SocketTool.CommForm
 
             if (data.isActiveMessage())
             {
-                Form1 form = (Form1)this.ParentForm;
-                form.OnActiveReceived(_rescop_no);
+                OnActiveReceived();
             }
 
             if (this.chk_Self_Ack.Checked)
@@ -193,6 +192,31 @@ namespace SocketTool.CommForm
             }
         }
 
+        protected void OnActiveReceived()
+        {
+            Form1 form = (Form1)this.ParentForm;
+            form.OnActiveReceived(_rescop_no);
+        }
+
+        protected  void OnDisconnect()
+        {
+            Form1 form = (Form1)this.ParentForm;
+            form.OnDisconnect(this.RESCOP_NO);
+        }
+
+
+        protected void OnUpdateMsgList()
+        {
+            Form1 form = (Form1)this.ParentForm;
+            form.OnUpdateMsgList();
+        }
+
+        public async void OnRefreshMsgList()
+        {
+            rtx_MsgList.Focus();
+            rtx_MsgList.ScrollToCaret();
+            await Task.Delay(500);
+        }
 
         private void DisplaySendRecvData(CommData_Header header, CommData_Data data, int direction )
         {
@@ -207,11 +231,11 @@ namespace SocketTool.CommForm
             {
                 rtx_MsgList.SelectionBackColor = Color.Cyan;
             }
-            rtx_MsgList.Focus();
 
-            
+
             this.rtx_MsgList.AppendText(GetCMessageDiscription(header, data, direction));
-//          this.rtx_MsgList.AppendText(dump_message(header, data ));
+            //          this.rtx_MsgList.AppendText(dump_message(header, data ));
+            OnUpdateMsgList();
         }
 
         private string GetCMessageDiscription(CommData_Header header, CommData_Data data, int direction)
@@ -344,20 +368,26 @@ namespace SocketTool.CommForm
         }
         private void chk_Remort_Health_CheckedChanged(object sender, EventArgs e)
         {
-            if (chk_Remort_Health.Checked)
+            try
             {
-                int interval = -1;
-                if (int.TryParse(txt_Remort_Health_Interval.Text, out interval))
+                if (chk_Remort_Health.Checked)
                 {
-                    this.timer_health.Interval = interval * 1000;
-                    this.timer_health.Enabled = true;
-                    this.txt_Remort_Health_Interval.Enabled = false;
+                    int interval = -1;
+                    if (int.TryParse(txt_Remort_Health_Interval.Text, out interval))
+                    {
+                        this.timer_health.Interval = interval * 1000;
+                        this.timer_health.Enabled = true;
+                        this.txt_Remort_Health_Interval.Enabled = false;
+                    }
                 }
-            }
-            else
+                else
+                {
+                    this.timer_health.Enabled = false;
+                    this.txt_Remort_Health_Interval.Enabled = true;
+                }
+            }catch(Exception ex)
             {
-                this.timer_health.Enabled = false;
-                this.txt_Remort_Health_Interval.Enabled = true;
+                chk_Remort_Health.Checked = false;
             }
         }
 
@@ -476,8 +506,7 @@ namespace SocketTool.CommForm
             }
             else
             {
-                Form1 form = (Form1)this.ParentForm;
-                form.OnDisconnect(this.RESCOP_NO);
+                OnDisconnect();
 
                 lbl_Remote_Status.Text = "切断";
                 lbl_Remote_Status.ForeColor = Color.Black;
@@ -489,6 +518,14 @@ namespace SocketTool.CommForm
                     await Task.Delay(10);
                     send_socket.Connect(txt_Remort_IpAddress.Text, txt_Remort_PortNo.Text);
                 }
+            }
+        }
+
+        private void txt_Remort_Health_Interval_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if ((e.KeyChar < '0' || '9' < e.KeyChar) && e.KeyChar != '\b' && e.KeyChar != '.')
+            {
+                e.Handled = true;
             }
         }
     }

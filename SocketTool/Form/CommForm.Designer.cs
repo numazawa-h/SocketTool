@@ -119,6 +119,7 @@
             this.txt_Remort_Health_Interval.Name = "txt_Remort_Health_Interval";
             this.txt_Remort_Health_Interval.Size = new System.Drawing.Size(67, 31);
             this.txt_Remort_Health_Interval.TabIndex = 26;
+            this.txt_Remort_Health_Interval.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_Remort_Health_Interval_KeyPress);
             // 
             // chk_Remort_Health
             // 
@@ -277,7 +278,7 @@
             // timer_health
             // 
             this.timer_health.Enabled = true;
-            this.timer_health.Interval = 1000;
+            this.timer_health.Interval = 5000;
             this.timer_health.Tick += new System.EventHandler(this.OnHealthCheckTimer);
             // 
             // CommForm

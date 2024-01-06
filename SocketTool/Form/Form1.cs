@@ -106,6 +106,25 @@ namespace SocketTool
         }
 
         /// <summary>
+        /// メッセージリスト更新時の処理
+        /// </summary>
+        /// <remarks>頻繁にメッセージリストを更新すると画面の入力ができなくなるのでタイマーで一定時間ごとにリフレッシュする</remarks>
+        public void OnUpdateMsgList()
+        {
+            if(Refresh_timer.Enabled == false)
+            {
+                Refresh_timer.Enabled = true;
+            }
+        }
+        private void Refresh_timer_Tick(object sender, EventArgs e)
+        {
+            Refresh_timer.Enabled = false;
+            commForm2.OnRefreshMsgList();
+            commForm1.OnRefreshMsgList();
+        }
+
+
+        /// <summary>
         /// 通常の送信
         /// </summary>
         /// <param name="dtype">データ種別</param>

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -37,6 +38,7 @@
             this.cbx_Remort_Machine = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
+            this.Refresh_timer = new System.Windows.Forms.Timer(this.components);
             this.commForm1 = new SocketTool.CommForm.CommForm();
             this.commForm2 = new SocketTool.CommForm.CommForm();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -150,6 +152,11 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // Refresh_timer
+            // 
+            this.Refresh_timer.Interval = 5000;
+            this.Refresh_timer.Tick += new System.EventHandler(this.Refresh_timer_Tick);
+            // 
             // commForm1
             // 
             this.commForm1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -205,6 +212,7 @@
         private System.Windows.Forms.ComboBox cbx_Self_Machine;
         private CommForm.CommForm commForm1;
         private CommForm.CommForm commForm2;
+        private System.Windows.Forms.Timer Refresh_timer;
     }
 }
 
