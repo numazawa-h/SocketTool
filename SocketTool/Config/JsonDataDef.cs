@@ -194,20 +194,20 @@ namespace SocketTool.Config
 
         public class ValuesDefine
         {
-            string _id;
-            string _name;
+            string _fldid;
+            string _fldname;
 
-            public string FldId { get { return _id; } }
+            public string FldId { get { return _fldid; } }
 
-            public string FldName { get { return _name; } }
+            public string FldName { get { return _fldname; } }
 
             Dictionary<string, string> _values_def = new Dictionary<string, string>();
             JsonObject _format_def = new JsonObject();
 
             public ValuesDefine(JsonObject def)
             {
-                _id = def["id"].ToString();
-                _name = def["name"].ToString();
+                _fldid = def["id"].ToString();
+                _fldname = def["name"].ToString();
 
                 if (def.ContainsKey("values"))
                 {
@@ -240,6 +240,11 @@ namespace SocketTool.Config
                                 string fmt = _format_def["fmt"].ToString();
                                 return string.Format(fmt, fld.GetAsInt());
                             }
+                            if (_format_def["type"].ToString() == "image")
+                            {
+                                string fmt = _format_def["fmt"].ToString();
+                                return string.Format(fmt, val);
+                            }
                         }
                     }
                     return "？？？";
@@ -249,7 +254,6 @@ namespace SocketTool.Config
             {
                 get { return _values_def.Keys.ToArray<string>(); }
             }
-
         }
     }
 }

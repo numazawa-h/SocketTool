@@ -1,9 +1,11 @@
 ﻿using SocketTool.Config;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using static SocketTool.Config.JsonDataDef;
 
 namespace SocketTool.CommData
@@ -17,27 +19,21 @@ namespace SocketTool.CommData
         public const string DTYPE_ActiveChange = "0202";        // 系切替通知
         public const string DTYPE_NP = "0501";                  // NP認識
 
-        string _dtype;
-
-        public string DataType { get { return _dtype; } }
-
 
         public CommData_Data(string dtype) : base()
         {
-            _dtype = dtype;
             base.Init(JsonDataDef.GetInstance().GetMessageDefine(dtype));
         }
 
         public CommData_Data(string dtype, byte[] data) : base()
         {
-            _dtype = dtype;
             base.Init(JsonDataDef.GetInstance().GetMessageDefine(dtype), data);
         }
 
 
         public bool isActiveMessage()
         {
-            if(_dtype == DTYPE_ActiveChange)
+            if(DType == DTYPE_ActiveChange)
             {
                 return GetDataDiscription("active-change") == "アクティブ";
             }
@@ -47,8 +43,8 @@ namespace SocketTool.CommData
 
         public bool isNeadAck()
         {
-            if (_dtype == DTYPE_Ack) return false;
-            if (_dtype == DTYPE_Nak) return false;
+            if (DType == DTYPE_Ack) return false;
+            if (DType == DTYPE_Nak) return false;
             return true;
         }
         public bool isNeadNak()
@@ -91,5 +87,45 @@ namespace SocketTool.CommData
             return sb.ToString();
         }
 
+        public byte[] LoadImage(string fldid, string fnmae)
+        {
+            byte[] dat =System.Array.Empty<byte>();
+
+            string wcd = System.AppDomain.CurrentDomain.BaseDirectory;
+            string path = wcd + Config.JsonDataDef.GetInstance().GetValueDescription(fldid, fnmae);
+            try
+            {
+                using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+                {
+                    dat = new byte[fs.Length];
+                    fs.Read(dat, 0, dat.Length);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return dat;
+        }
+
+        public void SaveImage(string fldid, string fnmae)
+        {
+            byte[] dat = GetFldValue(fldid).GetAsByte();
+            string wcd = System.AppDomain.CurrentDomain.BaseDirectory;
+            string path = wcd + Config.JsonDataDef.GetInstance().GetValueDescription(fldid, fnmae);
+            try
+            {
+                using (var fs = new FileStream(path, FileMode.Create))
+                using (var sw = new BinaryWriter(fs))
+                {
+                    sw.Write(dat);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 }

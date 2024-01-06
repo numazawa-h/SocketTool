@@ -7,11 +7,11 @@
 				{ "id":"seqno","name": "送信通番",    "ofs": 8, "len": 4 },
 				{ "id":"dtype","name": "データ種別",  "ofs":12, "len": 2 },
 				{ "id":"sdatm","name": "送信日時",    "ofs":14, "len": 7 },		// BCD形式
-				{ "id":"dlen", "name": "データ長",    "ofs":22, "len": 2 },
-				{ "id":"alen", "name": "全データ長",  "ofs":24, "len": 4 },
-				{ "id":"bnum", "name": "ブロック番号","ofs":28, "len": 2 },
-				{ "id":"bend", "name": "最終フラグ",  "ofs":30, "len": 2 },
-				{ "id":"bcnt", "name": "ブロック数",  "ofs":32, "len": 2 },
+				{ "id":"dlen", "name": "データ長",    "ofs":22, "len": 4 },
+				{ "id":"alen", "name": "全データ長",  "ofs":26, "len": 8 },
+				{ "id":"bnum", "name": "ブロック番号","ofs":34, "len": 2 },
+				{ "id":"bend", "name": "最終フラグ",  "ofs":36, "len": 2 },
+				{ "id":"bcnt", "name": "ブロック数",  "ofs":38, "len": 2 },
 			]
 		},
 		{ "id":"0001", "name":"肯定応答", "len":  0,"flds":[] },
@@ -29,6 +29,6 @@
 		{ "id":"active-change", "name":"切替", "values":{"0001":"アクティブ", "0002":"スタンバイ" } },
 		{ "id":"reson-nak", "name":"否定理由", "values":{"0001":"シーケンスエラー", "0009":"その他" } },
 		{ "id":"carno", "name":"車両番号", "format":{ "type":"int", "fmt":"#{0:D}" } },
-		{ "id":"image", "name":"画像", "format":{ "type":"imgage", "fmt":"/image/{dtype}_{no}.jpg" } },
+		{ "id":"image", "name":"画像", "format":{ "type":"image", "fmt":"/image/{0}.jpg" } },
 	],
 }

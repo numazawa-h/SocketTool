@@ -22,6 +22,8 @@ namespace SocketTool.CommData
         public string DataType => GetFldValue("dtype").GetAsBcd();
         public DateTime RecvDateTime => GetFldValue("sdatm").GetAsDateTimeBcd();
 
+        public int Block_cnt => GetFldValue("bcnt").GetAsInt();
+        public int Block_num => GetFldValue("bnum").GetAsInt();
 
         public CommData_Header() : base()
         {
@@ -54,10 +56,10 @@ namespace SocketTool.CommData
         {
             this.GetFldValue("dtype").SetAsBcd(dtype);
             this.GetFldValue("dlen").SetAsInt(dlen);
-            this.GetFldValue("alen").SetAsInt(dlen);
-            this.GetFldValue("bnum").SetAsInt(1);
+            this.GetFldValue("alen").SetAsLong(dlen);       // TODO:全データ長はブロック分割前のサイズ？
+            this.GetFldValue("bnum").SetAsInt(bnum);
             this.GetFldValue("bend").SetAsInt((bnum ==bcnt)?1:0);
-            this.GetFldValue("bcnt").SetAsInt(1);
+            this.GetFldValue("bcnt").SetAsInt(bcnt);
             switch (dtype)
             {
                 // ヘルスチェックはシーケンス番号０

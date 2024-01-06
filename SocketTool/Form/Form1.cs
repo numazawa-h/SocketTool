@@ -116,6 +116,7 @@ namespace SocketTool
                 Refresh_timer.Enabled = true;
             }
         }
+
         private void Refresh_timer_Tick(object sender, EventArgs e)
         {
             Refresh_timer.Enabled = false;
@@ -123,6 +124,10 @@ namespace SocketTool
             commForm1.OnRefreshMsgList();
         }
 
+        public void Send(CommData_Data comm_data)
+        {
+            Send(comm_data.DType, comm_data.GetData());
+        }
 
         /// <summary>
         /// 通常の送信
@@ -214,12 +219,6 @@ namespace SocketTool
             tabControl.SelectedIndex = 0;
             Application.DoEvents();
 
-            CommData_Data msg0501 = new CommData_Data(CommData_Data.DTYPE_NP);
-            msg0501.GetFldValue("carno").SetAsInt(123);
-            byte[] image = new byte[] { 1, 2, 3, 4, };
-            msg0501.AddData(image);
-            commForm2.SendData(msg0501);
-
             commForm2.SendData(CommData_Data.DTYPE_HealthCheck, System.Array.Empty<byte>());
             commForm1.SendData(CommData_Data.DTYPE_Start, new byte[48]);
 
@@ -227,6 +226,13 @@ namespace SocketTool
             msg0202.GetFldValue("active-change").SetAsInt(1);
             string fldname = JsonDataDef.GetInstance().GetMessageDefine(CommData_Data.DTYPE_ActiveChange).GetFldName("active-change");
             commForm1.SendData(msg0202);
+            Application.DoEvents();
+
+            CommData_Data msg0501 = new CommData_Data(CommData_Data.DTYPE_NP);
+            msg0501.GetFldValue("carno").SetAsInt(123);
+            byte[] image = msg0501.LoadImage("image", "test");
+            msg0501.AddData(image);
+            Send(msg0501);
 
         }
 

@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static SocketTool.CommData.CommData_Base;
 using static SocketTool.Properties.SocketBase;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
@@ -124,23 +125,43 @@ namespace SocketTool.CommForm
             return 0;
         }
 
+        public void SendData(CommData_Data comm_data)
+        {
+            SendData(comm_data.DType, comm_data.GetData());
+        }
 
         public void SendData(string dtype, byte[] data)
         {
             if (connect_socket != null)
             {
-                commHeader.SetOnSend(dtype, data.Length);
-                connect_socket.Send(commHeader.GetData(), data);
+
+                int max_size = JsonCommDef.GetInstance().Maxdatasize;
+                if (data.Length > max_size)
+                {
+                    int blkcnt = (int)Math.Ceiling((double)data.Length / max_size);
+                    int last_len = data.Length % max_size;
+                    for(int blkno = 0; blkno < blkcnt; blkno++)
+                    {
+                        int datalen = max_size;
+                        if( (blkno + 1) == blkcnt && last_len > 0)
+                        {
+                            datalen = last_len;
+                        }
+                        byte[] buf = new byte[datalen];
+                        Buffer.BlockCopy(data, (max_size * blkno), buf, 0, datalen);
+                        commHeader.SetOnSend(dtype, datalen, (blkno+1), blkcnt);
+                        SendData(commHeader.GetData(), buf);
+                    }
+                }
+                else
+                {
+                    commHeader.SetOnSend(dtype, data.Length);
+                    SendData(commHeader.GetData(), data);
+                }
             }
         }
-        public void SendData(CommData_Data comm_data)
-        {
-            if (connect_socket != null)
-            {
-                commHeader.SetOnSend(comm_data.DataType, comm_data.GetData().Length);
-                connect_socket.Send(commHeader.GetData(), comm_data.GetData());
-            }
-        }
+
+
         public void SendData(byte[] hed, byte[] dat)
         {
             if (connect_socket != null)
@@ -172,6 +193,11 @@ namespace SocketTool.CommForm
             }
             CommData_Header header = new CommData_Header(args.HeadBuff);
             CommData_Data data = new CommData_Data(header.DataType, args.DataBuff);
+
+            byte[] dat = header.GetData();
+            FldValue fld = new FldValue(dat);
+            string hed = fld.GetAsBcd();
+
             DisplaySendRecvData(header, data, 0);
 
             if (data.isActiveMessage())
@@ -247,7 +273,14 @@ namespace SocketTool.CommForm
 
             sb.Append(adjust($"{header.RecvDateTime:MM/dd HH:mm:ss}", 15));
             sb.Append(data.Name);
-            sb.Append(data.GetMsgDiscription());
+            if(header.Block_num == 1)
+            {
+                sb.Append(data.GetMsgDiscription());
+            }
+            else
+            {
+                sb.Append($"({header.Block_num}/{header.Block_cnt})");
+            }
 
             return adjust(sb.ToString(), 80)+"\r\n";
         }

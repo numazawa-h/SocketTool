@@ -26,18 +26,25 @@ namespace SocketTool.Config
 
         }
 
-        string _segment_no=null;
-        string _machine_no=null;
-        int[] _ack_chk = new int[4];
-        int[] _health_interval = new int[4];
-        int[] _connect_chk = new int[4];
+        string _segment_no=null;        // 局番号
+        string _machine_no=null;        // 装置番号
 
+        int[] _ack_chk = new int[4];            // 肯定応答送信
+        int[] _health_interval = new int[4];    // ヘルスチェックインターバル
+        int[] _connect_chk = new int[4];        // 自動接続
+
+        // 初期表示の送信先サーバ名
         string _InitRemortMachineName;
         public string InitRemortMachineName => _InitRemortMachineName;
 
+        // 初期表示の自装置番号
         string _InitSelfMachineName;
         public string InitSelfMachineName => _InitSelfMachineName;
 
+
+        protected int _max_datasize = 1024;
+        public int Maxdatasize => _max_datasize;
+        
 
         protected Dictionary<string, JsonNode> _remort_addr = new  Dictionary<string, JsonNode>();
         protected Dictionary<string, JsonNode> _self_addr = new Dictionary<string, JsonNode>();
@@ -47,6 +54,11 @@ namespace SocketTool.Config
             try
             {
                 base.ReadJson(path);
+
+                if (_json_root.AsObject().ContainsKey("max_datasize"))
+                {
+                    _max_datasize = _json_root.AsObject()["max_datasize"].GetValue<int>();
+                }
 
                 JsonNode initdis = _json_root["initdis"];
                 if(_machine_no == null) _machine_no = initdis["自装置番号"].ToString();
