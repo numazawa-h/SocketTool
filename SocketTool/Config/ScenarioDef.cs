@@ -1,7 +1,11 @@
-﻿using System;
+﻿using SocketTool.CommData;
+using SocketTool.Properties;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Remoting.Messaging;
 using System.Threading;
+using static SocketTool.Properties.SocketBase;
 
 namespace SocketTool.Config
 {
@@ -23,6 +27,9 @@ namespace SocketTool.Config
         private ScenarioDef() 
         {
         }
+
+
+
 
 
         protected List<CommandInit> _on_init_list = new List<CommandInit>();
@@ -82,6 +89,7 @@ namespace SocketTool.Config
         {
             form.OnInitEvent += OnInitHandler;
             form.OnActivChangeEvent += OnActiveHandler;
+            form.OnRecvEvent += OnRecvHandler;
         }
 
         private void OnInitHandler(object sender, EventArgs args)
@@ -98,21 +106,81 @@ namespace SocketTool.Config
                 cmd.Exec((FormMain)sender);
             }
         }
+        private void OnRecvHandler(object sender, RecvEventArgs args)
+        {
+            // Ack Nackの受信は無視する
+            if (args.DType == CommData_Data.DTYPE_Nak || args.DType == CommData_Data.DTYPE_Ack)
+            {
+                return;
+            }
+
+            foreach (OnRecvCmd cmd in _on_recv_list)
+            {
+                if (cmd.isDtypeTarget(args.DType))
+                {
+                    // Ack Nackは受信した系に対して送信する
+                    if(cmd.Dtype == CommData_Data.DTYPE_Nak || cmd.Dtype == CommData_Data.DTYPE_Ack)
+                    {
+                        cmd.SetRescopNo(args.RescopNo);
+                    }
+                    cmd.Exec((FormMain)sender);
+                }
+            }
+        }
 
 
         protected class OnRecvCmd 
-        { 
+        {
+            public string Dtype => _dtype;
             CommandSend _cmd;
-            string _cond;
+            string _dtype;
             int _skip;
             int _times;
 
             public OnRecvCmd(ScenarioRecord snr)
             {
                 _cmd = new CommandSend(snr.Cmd);
-                _cond = snr.Cond;
+                _dtype = snr.Cond;
                 _skip = snr.Skip;
                 _times = snr.Times;
+            }
+
+            public void SetRescopNo(int rescop_no)
+            {
+                _cmd.SetRescopNo(rescop_no);
+            }
+
+            public void Exec(FormMain form)
+            {
+                if(_times == 0)
+                {
+                    return;
+                }
+                if(_skip > 0)
+                {
+                    --_skip;
+                    return;
+                }
+
+                _cmd.Exec(form);
+                --_times;
+            }
+
+            public  bool isDtypeTarget(string dtype) 
+            {
+                bool ret = true;
+                for(int i=0; i< 4; i++)
+                {
+                    string d1 = _dtype.Substring(i,1);
+                    string d2 = dtype.Substring(i, 1);
+                    if(d1 !="*" && d1 != d2)
+                    {
+                        ret = false;
+                        break;
+                    }
+                }
+
+                return ret;
             }
         }
 
@@ -128,22 +196,38 @@ namespace SocketTool.Config
             public ScenarioRecord(string lin)
             {
                 string[] flds = lin.Split('\t');
-                When = flds[0];
-                Cond = flds[1];
+                When = flds[0].Trim();
+                Cond = flds[1].Trim();
                 try
                 {
-                    Skip = int.Parse(flds[2]);
-                    Times = int.Parse(flds[3]);
+                    Skip = int.Parse(flds[2].Trim());
+                    Times = int.Parse(flds[3].Trim());
                 }
                 catch (Exception ex)
                 {
                     Skip = 0;
                     Times = 0;
                 }
-                Cmd = flds[4];
+                Cmd = flds[4].Trim();
             }
         }
 
 
     }
+
+    public class RecvEventArgs : EventArgs
+    {
+        private string _dtype;
+        private int _rescop_no;
+
+        public string DType => _dtype;
+        public int RescopNo => _rescop_no;
+
+        public RecvEventArgs(string dtype, int rescop_no)
+        {
+            _dtype = dtype;
+            _rescop_no = rescop_no;
+        }
+    }
+
 }

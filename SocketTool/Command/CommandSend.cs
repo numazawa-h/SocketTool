@@ -14,6 +14,7 @@ namespace SocketTool
         protected string _dtype =string.Empty;
         protected CommData_Data _data;
         protected Dictionary<string, JsonValue> _values = new Dictionary<string, JsonValue>();
+        protected int _rescop_no = 0;
 
         public CommandSend(string json): base(json)
         {
@@ -29,6 +30,11 @@ namespace SocketTool
                     }
                 }
             }
+        }
+
+        public void SetRescopNo(int rescop_no)
+        {
+            _rescop_no = rescop_no;
         }
 
         public  override void Exec(FormMain form)
@@ -62,7 +68,7 @@ namespace SocketTool
                 }
             }
 
-            form.Send(_dtype, data.GetData());
+            form.Send(_dtype, data.GetData(), _rescop_no);
         }
 
     }

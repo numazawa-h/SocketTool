@@ -202,6 +202,8 @@ namespace SocketTool.CommForm
             {
                 OnActiveReceived();
             }
+            
+            OnReceived(header.DataType);
 
             if (this.chk_Self_Ack.Checked)
             {
@@ -215,6 +217,13 @@ namespace SocketTool.CommForm
                 }
             }
         }
+
+        protected void OnReceived(string dtype)
+        {
+            FormMain form = (FormMain)this.ParentForm;
+            form.OnRecv(dtype, RESCOP_NO);
+        }
+
 
         protected void OnActiveReceived()
         {

@@ -33,6 +33,9 @@ namespace SocketTool
         public event EventHandler OnInitEvent;
         public event EventHandler OnActivChangeEvent;
 
+        public delegate void RecvEventHandler(Object sender, RecvEventArgs args);
+        public event RecvEventHandler OnRecvEvent;
+
 
         public FormMain()
         {
@@ -79,6 +82,13 @@ namespace SocketTool
         public void OnRecvConnect()
         {
             cbx_Remort_Machine.Enabled = false;
+
+        }
+
+        public void OnRecv(string dtype, int rescop_no)
+        {
+            RecvEventArgs args = new RecvEventArgs(dtype, rescop_no);
+            OnRecvEvent?.Invoke(this, args);
 
         }
 
@@ -159,13 +169,24 @@ namespace SocketTool
         /// </summary>
         /// <param name="dtype">データ種別</param>
         /// <param name="dat">データ(バイト配列)</param>
-        public void Send(string dtype, byte[] dat)
+        public void Send(string dtype, byte[] dat, int rescop_no = 0)
         {
-            if(this.active_rescop_no == 1)
+            if (rescop_no == 0)
+            {
+                if (this.active_rescop_no == 1)
+                {
+                    commForm1.SendData(dtype, dat);
+                }
+                if (this.active_rescop_no == 2)
+                {
+                    commForm2.SendData(dtype, dat);
+                }
+            }
+            if (rescop_no == 1)
             {
                 commForm1.SendData(dtype, dat);
             }
-            if (this.active_rescop_no == 2)
+            if (rescop_no == 2)
             {
                 commForm2.SendData(dtype, dat);
             }
@@ -177,15 +198,26 @@ namespace SocketTool
         /// <remarks>異常ヘッダを送信したい時などに使用する</remarks>
         /// <param name="hed">ヘッダ(バイト配列)</param>
         /// <param name="dat">データ(バイト配列)</param>
-        public void Send(byte[]hed, byte[] dat)
+        public void Send(byte[]hed, byte[] dat, int rescop_no =0)
         {
-            if (this.active_rescop_no == 1)
+            if (rescop_no == 0)
+            {
+                if (this.active_rescop_no == 1)
+                {
+                    commForm1.SendData(hed, dat);
+                }
+                if (this.active_rescop_no == 2)
+                {
+                    commForm2.SendData(hed, dat);
+                }
+            }
+            if (rescop_no == 1 )
             {
                 commForm1.SendData(hed, dat);
             }
-            if (this.active_rescop_no == 2)
+            if (rescop_no == 2)
             {
-                commForm2.SendData(hed, dat);
+                commForm1.SendData(hed, dat);
             }
         }
 
@@ -244,7 +276,6 @@ namespace SocketTool
             tabControl.SelectedIndex = 0;
             Application.DoEvents();
 
-            commForm2.SendData(CommData_Data.DTYPE_HealthCheck, System.Array.Empty<byte>());
             commForm1.SendData(CommData_Data.DTYPE_Start, new byte[48]);
 
             CommData_Data msg0202 = new CommData_Data(CommData_Data.DTYPE_ActiveChange);
@@ -256,7 +287,7 @@ namespace SocketTool
             CommData_Data msg0501 = new CommData_Data(CommData_Data.DTYPE_NP);
             msg0501.GetFldValue("carno").SetAsInt(123);
             msg0501.LoadImage("image", "test");
-            Send(msg0501);
+            commForm1.SendData(msg0501);
 
             CommData_Data msg0301= new CommData_Data(CommData_Data.DTYPE_PASSCAR);
             msg0301.GetFldValue("carno").SetAsInt(1);
