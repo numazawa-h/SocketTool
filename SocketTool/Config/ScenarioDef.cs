@@ -29,14 +29,15 @@ namespace SocketTool.Config
         }
 
 
-
-
-
         protected List<CommandInit> _on_init_list = new List<CommandInit>();
         protected List<CommandSend> _on_active_list = new List<CommandSend>();
-
         protected List<OnRecvCmd> _on_recv_list = new List<OnRecvCmd>();
+        protected CommandTimer _commandTimer= null;
 
+        protected int _auto_send_start_interval = 1000;
+        public int AutoSendStartInterval => _auto_send_start_interval;
+        protected int _auto_send_interval = 1000;
+        public int AutoSendInterval => _auto_send_interval;
 
         public void ReadCsvFile(string path)
         {
@@ -57,6 +58,9 @@ namespace SocketTool.Config
                         _on_recv_list.Add(new OnRecvCmd(rec));
                         break;
                     case "OnTimer":
+                        _auto_send_start_interval = rec.Skip;
+                        _auto_send_interval = rec.Times;
+                        _commandTimer = new CommandTimer(rec.Cmd);
                         break;
                 }
             }
@@ -90,6 +94,7 @@ namespace SocketTool.Config
             form.OnInitEvent += OnInitHandler;
             form.OnActivChangeEvent += OnActiveHandler;
             form.OnRecvEvent += OnRecvHandler;
+            form.OnAutoSendEvent += OnTimerHandler;
         }
 
         private void OnInitHandler(object sender, EventArgs args)
@@ -99,6 +104,11 @@ namespace SocketTool.Config
                 cmd.Exec((FormMain)sender);
             }
         }
+        private void OnTimerHandler(object sender, EventArgs args)
+        {
+            _commandTimer.Exec((FormMain)sender);
+        }
+
         private void OnActiveHandler(object sender, EventArgs args)
         {
             foreach (Command cmd in _on_active_list)

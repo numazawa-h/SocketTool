@@ -29,6 +29,7 @@ namespace SocketTool.Config
         string _segment_no=null;        // 局番号
         string _machine_no=null;        // 装置番号
 
+        int _auto_send = 0;                     // 自動送信
         int[] _ack_chk = new int[4];            // 肯定応答送信
         int[] _health_interval = new int[4];    // ヘルスチェックインターバル
         int[] _connect_chk = new int[4];        // 自動接続
@@ -61,6 +62,7 @@ namespace SocketTool.Config
                 }
 
                 JsonNode initdis = _json_root["initdis"];
+                _auto_send = initdis["自動送信"].GetValue<int>();
                 if(_machine_no == null) _machine_no = initdis["自装置番号"].ToString();
                 if(_segment_no == null) _segment_no = initdis["監視制御局番号"].ToString();
                 _ack_chk[0] = initdis["１系"]["受信側"]["肯定応答"].GetValue<int>();
@@ -125,6 +127,11 @@ namespace SocketTool.Config
         public string GetInitSelfMachineName()
         {
             return "料金所＃１L１レーン制御";
+        }
+
+        public bool GetAutoSendChk()
+        {
+            return _auto_send == 1;
         }
 
         public bool GetRecvAckChk(int rescop_no)

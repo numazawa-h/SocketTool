@@ -39,8 +39,14 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.Refresh_timer = new System.Windows.Forms.Timer(this.components);
+            this.chkAutoSend = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txt_AutoSend_start_Interval = new System.Windows.Forms.TextBox();
+            this.AutoSend_timer = new System.Windows.Forms.Timer(this.components);
             this.commForm1 = new SocketTool.CommForm.CommForm();
             this.commForm2 = new SocketTool.CommForm.CommForm();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txt_AutoSend_Interval = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -66,7 +72,7 @@
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.Controls.Add(this.commForm2);
-            this.splitContainer.Size = new System.Drawing.Size(1251, 783);
+            this.splitContainer.Size = new System.Drawing.Size(1251, 763);
             this.splitContainer.SplitterDistance = 620;
             this.splitContainer.TabIndex = 19;
             // 
@@ -97,25 +103,30 @@
             // 
             this.panel2.Controls.Add(this.splitContainer);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(3, 74);
+            this.panel2.Location = new System.Drawing.Point(3, 94);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1251, 783);
+            this.panel2.Size = new System.Drawing.Size(1251, 763);
             this.panel2.TabIndex = 20;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.txt_AutoSend_Interval);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.txt_AutoSend_start_Interval);
+            this.panel1.Controls.Add(this.chkAutoSend);
             this.panel1.Controls.Add(this.cbx_Self_Machine);
             this.panel1.Controls.Add(this.cbx_Remort_Machine);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1251, 71);
+            this.panel1.Size = new System.Drawing.Size(1251, 91);
             this.panel1.TabIndex = 1;
             // 
             // cbx_Self_Machine
             // 
             this.cbx_Self_Machine.FormattingEnabled = true;
-            this.cbx_Self_Machine.Location = new System.Drawing.Point(15, 13);
+            this.cbx_Self_Machine.Location = new System.Drawing.Point(21, 41);
             this.cbx_Self_Machine.Name = "cbx_Self_Machine";
             this.cbx_Self_Machine.Size = new System.Drawing.Size(583, 32);
             this.cbx_Self_Machine.TabIndex = 16;
@@ -124,7 +135,7 @@
             // cbx_Remort_Machine
             // 
             this.cbx_Remort_Machine.FormattingEnabled = true;
-            this.cbx_Remort_Machine.Location = new System.Drawing.Point(626, 13);
+            this.cbx_Remort_Machine.Location = new System.Drawing.Point(634, 41);
             this.cbx_Remort_Machine.Name = "cbx_Remort_Machine";
             this.cbx_Remort_Machine.Size = new System.Drawing.Size(604, 32);
             this.cbx_Remort_Machine.TabIndex = 15;
@@ -157,13 +168,47 @@
             this.Refresh_timer.Interval = 5000;
             this.Refresh_timer.Tick += new System.EventHandler(this.Refresh_timer_Tick);
             // 
+            // chkAutoSend
+            // 
+            this.chkAutoSend.AutoSize = true;
+            this.chkAutoSend.Font = new System.Drawing.Font("MS UI Gothic", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.chkAutoSend.Location = new System.Drawing.Point(31, 8);
+            this.chkAutoSend.Name = "chkAutoSend";
+            this.chkAutoSend.Size = new System.Drawing.Size(130, 27);
+            this.chkAutoSend.TabIndex = 17;
+            this.chkAutoSend.Text = "自動送信";
+            this.chkAutoSend.UseVisualStyleBackColor = true;
+            this.chkAutoSend.CheckedChanged += new System.EventHandler(this.chk_AutoSend_CheckedChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label2.Location = new System.Drawing.Point(276, 10);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(57, 21);
+            this.label2.TabIndex = 29;
+            this.label2.Text = "msec";
+            // 
+            // txt_AutoSend_start_Interval
+            // 
+            this.txt_AutoSend_start_Interval.Location = new System.Drawing.Point(177, 3);
+            this.txt_AutoSend_start_Interval.Name = "txt_AutoSend_start_Interval";
+            this.txt_AutoSend_start_Interval.Size = new System.Drawing.Size(84, 31);
+            this.txt_AutoSend_start_Interval.TabIndex = 28;
+            this.txt_AutoSend_start_Interval.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_Numric_KeyPress);
+            // 
+            // AutoSend_timer
+            // 
+            this.AutoSend_timer.Tick += new System.EventHandler(this.AutoSend_timer_Tick);
+            // 
             // commForm1
             // 
             this.commForm1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.commForm1.Location = new System.Drawing.Point(0, 0);
             this.commForm1.MinimumSize = new System.Drawing.Size(620, 0);
             this.commForm1.Name = "commForm1";
-            this.commForm1.Size = new System.Drawing.Size(620, 783);
+            this.commForm1.Size = new System.Drawing.Size(620, 763);
             this.commForm1.TabIndex = 0;
             // 
             // commForm2
@@ -172,17 +217,35 @@
             this.commForm2.Location = new System.Drawing.Point(0, 0);
             this.commForm2.MinimumSize = new System.Drawing.Size(620, 0);
             this.commForm2.Name = "commForm2";
-            this.commForm2.Size = new System.Drawing.Size(627, 783);
+            this.commForm2.Size = new System.Drawing.Size(627, 763);
             this.commForm2.TabIndex = 0;
             // 
-            // Form1
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label1.Location = new System.Drawing.Point(438, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(57, 21);
+            this.label1.TabIndex = 31;
+            this.label1.Text = "msec";
+            // 
+            // txt_AutoSend_Interval
+            // 
+            this.txt_AutoSend_Interval.Location = new System.Drawing.Point(339, 3);
+            this.txt_AutoSend_Interval.Name = "txt_AutoSend_Interval";
+            this.txt_AutoSend_Interval.Size = new System.Drawing.Size(84, 31);
+            this.txt_AutoSend_Interval.TabIndex = 30;
+            this.txt_AutoSend_Interval.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_Numric_KeyPress);
+            // 
+            // FormMain
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1273, 907);
             this.Controls.Add(this.tabControl);
-            this.Name = "Form1";
+            this.Name = "FormMain";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
@@ -195,6 +258,7 @@
             this.tabPage1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -213,6 +277,12 @@
         private CommForm.CommForm commForm1;
         private CommForm.CommForm commForm2;
         private System.Windows.Forms.Timer Refresh_timer;
+        private System.Windows.Forms.CheckBox chkAutoSend;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txt_AutoSend_start_Interval;
+        private System.Windows.Forms.Timer AutoSend_timer;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txt_AutoSend_Interval;
     }
 }
 

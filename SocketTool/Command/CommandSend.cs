@@ -9,24 +9,34 @@ using System.Threading.Tasks;
 
 namespace SocketTool
 {
-    public class CommandSend: Command
+    public class CommandSend : Command
     {
-        protected string _dtype =string.Empty;
+        protected string _dtype = string.Empty;
         protected CommData_Data _data;
         protected Dictionary<string, JsonValue> _values = new Dictionary<string, JsonValue>();
         protected int _rescop_no = 0;
 
-        public CommandSend(string json): base(json)
+        public CommandSend(string json) : base(json)
         {
-            if (_cmd_def["cmd"].ToString() == "send")
+            Init(_cmd_def);
+        }
+
+        public CommandSend(JsonNode node)
+        {
+            Init(node);
+        }
+
+        private void Init(JsonNode node)
+        {
+            if (node["cmd"].ToString() == "send")
             {
-                _dtype = _cmd_def["dtype"].ToString();
-                if (_cmd_def.AsObject().ContainsKey("values"))
+                _dtype = node["dtype"].ToString();
+                if (node.AsObject().ContainsKey("values"))
                 {
-                    foreach (KeyValuePair<string, JsonNode> pair  in (JsonObject)_cmd_def["values"])
+                    foreach (KeyValuePair<string, JsonNode> pair in (JsonObject)node["values"])
                     {
                         string key = pair.Key.ToString();
-                        _values.Add(key, (JsonValue)pair.Value.AsValue() );
+                        _values.Add(key, (JsonValue)pair.Value.AsValue());
                     }
                 }
             }

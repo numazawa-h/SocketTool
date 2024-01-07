@@ -80,6 +80,7 @@
     <Compile Include="Command\Command.cs" />
     <Compile Include="Command\CommandInit.cs" />
     <Compile Include="Command\CommandSend.cs" />
+    <Compile Include="Command\CommandTimer.cs" />
     <Compile Include="CommData\CommData_Data.cs" />
     <Compile Include="CommData\CommData_Base.cs" />
     <Compile Include="CommData\CommData_Header.cs" />

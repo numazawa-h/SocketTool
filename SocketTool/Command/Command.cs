@@ -28,6 +28,11 @@ namespace SocketTool
             _cmd_def = JsonNode.Parse(json, null, _options);
         }
 
+        public Command()
+        {
+        }
+
+
         public virtual void  Exec(FormMain form)
         {
             

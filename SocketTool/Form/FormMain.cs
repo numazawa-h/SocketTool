@@ -32,7 +32,7 @@ namespace SocketTool
 
         public event EventHandler OnInitEvent;
         public event EventHandler OnActivChangeEvent;
-
+        public event EventHandler OnAutoSendEvent;
         public delegate void RecvEventHandler(Object sender, RecvEventArgs args);
         public event RecvEventHandler OnRecvEvent;
 
@@ -43,7 +43,7 @@ namespace SocketTool
             back_color = this.BackColor;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private async void Form1_Load(object sender, EventArgs e)
         {
             this.commForm1.Init(1);
             this.commForm2.Init(2);
@@ -66,6 +66,12 @@ namespace SocketTool
             ScenarioDef.GetInstance().OnInit(this);
             OnInitEvent?.Invoke(this, EventArgs.Empty);
 
+
+            this.txt_AutoSend_start_Interval.Text = ScenarioDef.GetInstance().AutoSendStartInterval.ToString();
+            this.txt_AutoSend_Interval.Text = ScenarioDef.GetInstance().AutoSendInterval.ToString();
+
+            await Task.Delay(500);
+            this.chkAutoSend.Checked = JsonCommDef.GetInstance().GetAutoSendChk();
         }
 
 
@@ -221,6 +227,63 @@ namespace SocketTool
             }
         }
 
+
+        private void chk_AutoSend_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkAutoSend.Checked)
+                {
+                    int interval = -1;
+                    if (int.TryParse(txt_AutoSend_start_Interval.Text, out interval))
+                    {
+                        this.AutoSend_timer.Tag = "start";
+                        this.AutoSend_timer.Interval = interval;
+                        this.AutoSend_timer.Enabled = true;
+                        this.txt_AutoSend_start_Interval.Enabled = false;
+                        this.txt_AutoSend_Interval.Enabled = false;
+                    }
+                }
+                else
+                {
+                    this.AutoSend_timer.Enabled = false;
+                    this.txt_AutoSend_start_Interval.Enabled = true;
+                    this.txt_AutoSend_Interval.Enabled = true;
+                }
+            }
+            catch (Exception)
+            {
+                chkAutoSend.Checked = false;
+            }
+        }
+        private void AutoSend_timer_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkAutoSend.Checked)
+                {
+                    if (this.AutoSend_timer.Tag != null)
+                    {
+                        int interval = int.Parse(txt_AutoSend_Interval.Text);
+                        this.AutoSend_timer.Tag = null;
+                        this.AutoSend_timer.Interval = interval;
+                    }
+                    OnAutoSendEvent?.Invoke(this, EventArgs.Empty);
+                }
+                else
+                {
+                    this.AutoSend_timer.Enabled = false;
+                    this.txt_AutoSend_start_Interval.Enabled = true;
+                    this.txt_AutoSend_Interval.Enabled = true;
+                }
+            }
+            catch (Exception)
+            {
+                chkAutoSend.Checked = false;
+            }
+        }
+
+
         private void cbx_Remort_Machine_SelectedIndexChanged(object sender, EventArgs e)
         {
             string addr1 = JsonCommDef.GetInstance().GetRemoteIp(cbx_Remort_Machine.Text, 1);
@@ -299,6 +362,16 @@ namespace SocketTool
             msg0302.GetFldValue("carno_03").SetAsInt(3);
             Send(msg0302);
         }
+
+
+        private void txt_Numric_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if ((e.KeyChar < '0' || '9' < e.KeyChar) && e.KeyChar != '\b' && e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+        }
+
 
         private void Form1_DragEnter(object sender, DragEventArgs e)
         {
@@ -441,6 +514,7 @@ namespace SocketTool
 
             return buf;
         }
+
     }
 
 
