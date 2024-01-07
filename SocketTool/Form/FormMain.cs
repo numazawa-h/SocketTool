@@ -23,13 +23,13 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace SocketTool
 {
-    public partial class Form1 : Form
+    public partial class FormMain : Form
     {
         Color back_color;       // アクティブ側の色を戻す為に保存しておく
 
-        private int active_rescop_no = 0;
+        private int active_rescop_no = 0;   // アクティブ側の系番号
 
-        public Form1()
+        public FormMain()
         {
             InitializeComponent();
             back_color = this.BackColor;
@@ -55,6 +55,16 @@ namespace SocketTool
             cbx_Self_Machine.Text = JsonCommDef.GetInstance().InitSelfMachineName;
         }
 
+
+        public void SetCarNo(int carno)
+        {
+            // TODO
+        }
+
+        private void OnException(Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
 
         public void OnRecvConnect()
         {
@@ -188,7 +198,7 @@ namespace SocketTool
             int ret2 = this.commForm2.OnSelfMachineChange(addr, port2, src);
             if (ret1 == -1 || ret2 == -1)
             {
-                MessageBox.Show("接続中に対象装置を変更することはできません");
+                OnException(new Exception("接続中に対象装置を変更することはできません"));
             }
         }
 
@@ -317,9 +327,9 @@ namespace SocketTool
                             }
                         }
                     }
-                    catch (Exception )
+                    catch (Exception ex)
                     {
-
+                        this.OnException(new Exception($"{path}読み込みで例外" + ex.Message));
                     }
                 }
                 else
@@ -339,10 +349,14 @@ namespace SocketTool
                                 }
                             }
                         }
+                        if (file_ext == ".csv")
+                        {
+                            ScenarioDef.GetInstance().Run(this, path);
+                        }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-
+                        this.OnException(new Exception($"{path}読み込みで例外" + ex.Message));
                     }
                 }
                 if (dtype != null)

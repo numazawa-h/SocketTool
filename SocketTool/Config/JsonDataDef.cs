@@ -73,6 +73,10 @@ namespace SocketTool.Config
             return _message_def[dtype];
         }
 
+        public void SetMessageDump(bool sw) 
+        {
+            _message_dump = sw;
+        }
 
         public string GetValueDescription(string fldid, string val)
         {
@@ -88,7 +92,6 @@ namespace SocketTool.Config
 
             return "？？？";
         }
-
 
 
         public class CommMessageDefine

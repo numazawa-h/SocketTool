@@ -1,0 +1,6 @@
+OnInit				{ "cmd":"init", "values":{"carno":1, "dump":1 } }
+OnRecv		1000	1000	{"cmd":"send", "dtype":"0501",  "values":{"carno":2, "image":"バウハウス",}}
+OnRecv	 ****	 1	 1	 {"cmd":"send", "dtype":"0202", "values":{"active-change":1,},}
+OnRecv	 ****	 1	 1	 {"cmd":"send", "dtype":"0002", "values":{"reson-nak":"0001",},}
+OnTimer		1000	1000	{"cmd":"send", "dtype":"0001", }
+OnInit				{ "cmd":"init", "values":{"carno":1, "dump":0 } }

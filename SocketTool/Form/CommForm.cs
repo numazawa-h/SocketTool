@@ -220,20 +220,20 @@ namespace SocketTool.CommForm
 
         protected void OnActiveReceived()
         {
-            Form1 form = (Form1)this.ParentForm;
+            FormMain form = (FormMain)this.ParentForm;
             form.OnActiveReceived(_rescop_no);
         }
 
         protected  void OnDisconnect()
         {
-            Form1 form = (Form1)this.ParentForm;
+            FormMain form = (FormMain)this.ParentForm;
             form.OnDisconnect(this.RESCOP_NO);
         }
 
 
         protected void OnUpdateMsgList()
         {
-            Form1 form = (Form1)this.ParentForm;
+            FormMain form = (FormMain)this.ParentForm;
             form.OnUpdateMsgList();
         }
 
@@ -438,17 +438,22 @@ namespace SocketTool.CommForm
                 this.Invoke(new ThreadExceptionEventHandler(OnExceptionHandler), new object[] { sender, args });
                 return;
             }
+            OnException(args.Exception);
+        }
+
+        private void OnException(Exception ex)
+        {
             this.statusStrip.Items.Clear();
-            if (args.Exception.Message.Length > 30)
+            if (ex.Message.Length > 30)
             {
-                this.statusStrip.Items.Add("！");
+                this.statusStrip.Items.Add("！");        // ステータスバーに入りきれない長さだと表示されないので"！"を必ず表示する
                 this.statusStrip.Items[0].ForeColor = Color.Red;
-                this.statusStrip.Items.Add(args.Exception.Message.Substring(0, Math.Min(50, args.Exception.Message.Length))+"..");
+                this.statusStrip.Items.Add(ex.Message.Substring(0, Math.Min(50, ex.Message.Length)) + "..");
                 this.statusStrip.Items[1].ForeColor = Color.Red;
             }
             else
             {
-                this.statusStrip.Items.Add(args.Exception.Message);
+                this.statusStrip.Items.Add(ex.Message);
                 this.statusStrip.Items[0].ForeColor = Color.Red;
             }
             Application.DoEvents();
