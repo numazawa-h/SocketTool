@@ -83,7 +83,6 @@
     <Compile Include="CommData\CommData_Data.cs" />
     <Compile Include="CommData\CommData_Base.cs" />
     <Compile Include="CommData\CommData_Header.cs" />
-    <Compile Include="CommData\CommData_Np.cs" />
     <Compile Include="Config\JsonDataDef.cs" />
     <Compile Include="Config\ScenarioDef.cs" />
     <Compile Include="Socket\ClientSocket.cs" />
