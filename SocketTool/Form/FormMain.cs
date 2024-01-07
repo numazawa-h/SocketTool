@@ -29,6 +29,11 @@ namespace SocketTool
 
         private int active_rescop_no = 0;   // アクティブ側の系番号
 
+
+        public event EventHandler OnInitEvent;
+        public event EventHandler OnActivChangeEvent;
+
+
         public FormMain()
         {
             InitializeComponent();
@@ -53,6 +58,11 @@ namespace SocketTool
                 cbx_Self_Machine.Items.Add(name);
             }
             cbx_Self_Machine.Text = JsonCommDef.GetInstance().InitSelfMachineName;
+
+            // シナリオセットアップ
+            ScenarioDef.GetInstance().OnInit(this);
+            OnInitEvent?.Invoke(this, EventArgs.Empty);
+
         }
 
 
@@ -85,12 +95,17 @@ namespace SocketTool
                 commForm1.BackColor = Color.MistyRose;
                 commForm2.BackColor = back_color;
                 active_rescop_no = rescop_no;
+
+                OnActivChangeEvent?.Invoke(this, EventArgs.Empty);
+
             }
             if (rescop_no == 2)
             {
                 commForm1.BackColor = back_color;
                 commForm2.BackColor = Color.MistyRose;
                 active_rescop_no = rescop_no;
+
+                OnActivChangeEvent?.Invoke(this, EventArgs.Empty);
             }
         }
 

@@ -97,8 +97,6 @@ namespace SocketTool.CommForm
             this.chk_Remort_Health.Checked = interval2 > 0;
             this.txt_Remort_Health_Interval.Text = interval2.ToString();
             this.chk_Remort_AutoConnect.Checked = Config.JsonCommDef.GetInstance().GetSendConnectChk(rescop_no);
-
-
         }
 
         public int OnSelfMachineChange(string iaddress, string portno, string mashine_code)
