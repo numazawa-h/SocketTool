@@ -169,26 +169,29 @@ namespace SocketTool.CommForm
         }
 
 
-        private void OnSendDatahandler(object sender, CommDataEventArgs args)
+        private async void OnSendDatahandler(object sender, CommDataEventArgs args)
         {
             if (this.InvokeRequired)
             {
                 this.Invoke(new CommDataHandler(OnSendDatahandler), new object[] { sender, args });
                 return;
             }
+            await Task.Delay(500);
+
             CommData_Header header = new CommData_Header(args.HeadBuff);
             CommData_Data data = new CommData_Data(header.DataType, args.DataBuff);
-
             DisplaySendRecvData(header, data, 1);
         }
 
-        private void OnRecvDatahandler(object sender, CommDataEventArgs args)
+        private async void OnRecvDatahandler(object sender, CommDataEventArgs args)
         {
             if (this.InvokeRequired)
             {
                 this.Invoke(new CommDataHandler(OnRecvDatahandler), new object[] { sender, args });
                 return;
             }
+            await Task.Delay(500);
+
             CommData_Header header = new CommData_Header(args.HeadBuff);
             CommData_Data data = new CommData_Data(header.DataType, args.DataBuff);
 
@@ -218,21 +221,24 @@ namespace SocketTool.CommForm
             }
         }
 
-        protected void OnReceived(string dtype)
+        protected async void OnReceived(string dtype)
         {
+            await Task.Delay(200);
             FormMain form = (FormMain)this.ParentForm;
             form.OnRecv(dtype, RESCOP_NO);
         }
 
 
-        protected void OnActiveReceived()
+        protected async void OnActiveReceived()
         {
+            await Task.Delay(200);
             FormMain form = (FormMain)this.ParentForm;
             form.OnActiveReceived(_rescop_no);
         }
 
-        protected  void OnDisconnect()
+        protected async void OnDisconnect()
         {
+            await Task.Delay(200);
             FormMain form = (FormMain)this.ParentForm;
             form.OnDisconnect(this.RESCOP_NO);
         }
@@ -244,11 +250,10 @@ namespace SocketTool.CommForm
             form.OnUpdateMsgList();
         }
 
-        public async void OnRefreshMsgList()
+        public void OnRefreshMsgList()
         {
             rtx_MsgList.Focus();
             rtx_MsgList.ScrollToCaret();
-            await Task.Delay(500);
         }
 
         private void DisplaySendRecvData(CommData_Header header, CommData_Data data, int direction )
@@ -360,20 +365,18 @@ namespace SocketTool.CommForm
             {
                 if (accept_socket == null)
                 {
-                    await Task.Delay(500);
-
                     lbl_Self_Status.Text = "接続待ち...";
                     lbl_Self_Status.ForeColor = Color.DeepPink;
                     Application.DoEvents();
+                    await Task.Delay(200);
 
-                    recv_socket.Listen(txt_Self_IpAddress.Text, txt_Self_PortNo.Text);
+                    recv_socket.Listen(txt_Self_IpAddress.Text, txt_Self_PortNo.Text);      // TODO:
                 }
             }
             else
             {
                 lbl_Self_Status.Text = "切断";
                 lbl_Self_Status.ForeColor = Color.Black;
-                Application.DoEvents();
 
                 recv_socket.StopListen();
                 accept_socket?.Stop();
@@ -386,19 +389,17 @@ namespace SocketTool.CommForm
             this.statusStrip.Items.Clear();
             if (this.chk_Remort_AutoConnect.Checked)
             {
-                await Task.Delay(1000);
-
                 this.lbl_Remote_Status.Text = "接続中...";
                 lbl_Remote_Status.ForeColor = Color.DeepPink;
                 Application.DoEvents();
+                await Task.Delay(200);
 
-                send_socket.Connect(txt_Remort_IpAddress.Text, txt_Remort_PortNo.Text);
+                send_socket.Connect(txt_Remort_IpAddress.Text, txt_Remort_PortNo.Text);     // TODO:
             }
             else
             {
                 lbl_Remote_Status.Text = "切断";
                 lbl_Remote_Status.ForeColor = Color.Black;
-                Application.DoEvents();
 
                 connect_socket?.Stop();
                 connect_socket = null;
@@ -438,13 +439,14 @@ namespace SocketTool.CommForm
             }
         }
 
-        private void OnExceptionHandler(object sender, ThreadExceptionEventArgs args)
+        private async void OnExceptionHandler(object sender, ThreadExceptionEventArgs args)
         {
             if (this.InvokeRequired)
             {
                 this.Invoke(new ThreadExceptionEventHandler(OnExceptionHandler), new object[] { sender, args });
                 return;
             }
+            await Task.Delay(500);
             OnException(args.Exception);
         }
 
@@ -463,7 +465,6 @@ namespace SocketTool.CommForm
                 this.statusStrip.Items.Add(ex.Message);
                 this.statusStrip.Items[0].ForeColor = Color.Red;
             }
-            Application.DoEvents();
         }
 
         private void OnFailListenHandler(object sender, EventArgs args)
@@ -495,7 +496,8 @@ namespace SocketTool.CommForm
                 lbl_Remote_Status.ForeColor = Color.DeepPink;
                 Application.DoEvents();
                 await Task.Delay(500);
-                send_socket.Connect(txt_Remort_IpAddress.Text, txt_Remort_PortNo.Text);
+
+                send_socket.Connect(txt_Remort_IpAddress.Text, txt_Remort_PortNo.Text);     // TODO
             }
         }
 
@@ -543,8 +545,9 @@ namespace SocketTool.CommForm
                 {
                     lbl_Self_Status.Text = "接続待ち...";
                     lbl_Self_Status.ForeColor = Color.DeepPink;
-                    await Task.Delay(10);
-                    recv_socket.Listen(txt_Self_IpAddress.Text, txt_Self_PortNo.Text);
+                    await Task.Delay(500);
+
+                    recv_socket.Listen(txt_Self_IpAddress.Text, txt_Self_PortNo.Text);      // TODO
                 }
             }
             else

@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -99,7 +101,7 @@ namespace SocketTool
                     else
                     {
                         _this.onRecv();
-                        _this._head_recv_cnt = -1; 
+                        _this._head_recv_cnt = -1;
                         _this._data_recv_cnt = -1;
                         _this._data_size = 0;
                     }
@@ -122,11 +124,9 @@ namespace SocketTool
             }
 
             int rcnt = _soc.Receive(_head, _head_recv_cnt, _head_size - _head_recv_cnt, SocketFlags.None);
-            if (rcnt == 0)
+            if (rcnt <= 0)
             {
-                // 切断処理
-                _soc_base.OnDisConnect(this);
-                return;
+                throw new Exception("受信ソケット切断");
             }
             _head_recv_cnt += rcnt;
         }
@@ -152,11 +152,9 @@ namespace SocketTool
             }
 
             int rcnt = _soc.Receive(_data, _data_recv_cnt, _data_size - _data_recv_cnt, SocketFlags.None);
-            if (rcnt == 0)
+            if (rcnt <= 0)
             {
-                // 切断処理
-                _soc_base.OnDisConnect(this);
-                return;
+                throw new Exception("受信ソケット切断");
             }
             _data_recv_cnt += rcnt;
         }
@@ -190,6 +188,11 @@ namespace SocketTool
 
          private void onRecv()
         {
+            byte[] h = new byte[_head.Length];
+            byte[] d = new byte[_data.Length];
+
+            Buffer.BlockCopy(_head, 0, h, 0, _head.Length);
+            Buffer.BlockCopy(_data, 0, d, 0, _data.Length);
             _soc_base.OnRecv(this, _head, _data);
         }
 

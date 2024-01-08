@@ -13,6 +13,9 @@ namespace SocketTool
 {
     internal class ClientSocket: SocketBase
     {
+        AutoResetEvent _wait_connect = new AutoResetEvent(false);
+        Socket _connect;
+
         public event EventHandler OnFailConnectEvent;
 
 
@@ -21,7 +24,7 @@ namespace SocketTool
 
         }
 
-        public void Connect(string iaddr, string no)
+        public async void Connect(string iaddr, string no)
         {
             try
             {
@@ -39,11 +42,21 @@ namespace SocketTool
                 checkParam();
 
                 Socket socket = new Socket(this._ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+                _wait_connect.Reset();
                 socket.BeginConnect(_remoteEP,  new AsyncCallback(ConnectCallback), socket);
-
-
+                await Task.Delay(1000);
+                if (_wait_connect.WaitOne(500) == false)
+                {
+                    throw new Exception("接続待ちタイムアウト");
+                }
+                if (_connect == null)
+                {
+                    throw new Exception("コネクト失敗");
+                }
+                OnConnect(_connect);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 OnFailConnect();
                 OnException(ex); 
@@ -54,14 +67,15 @@ namespace SocketTool
         {
             try
             {
-                Socket socket = (Socket)ar.AsyncState;
-                socket.EndConnect(ar);
-                OnConnect(socket);
+                _connect = (Socket)ar.AsyncState;
+                _connect.EndConnect(ar);
             }
             catch (Exception ex)
             {
-                OnFailConnect();
-                OnException(ex);
+                _connect = null;
+            }
+            finally {
+                _wait_connect.Set();
             }
         }
 

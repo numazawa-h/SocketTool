@@ -91,8 +91,9 @@ namespace SocketTool
 
         }
 
-        public void OnRecv(string dtype, int rescop_no)
+        public async void OnRecv(string dtype, int rescop_no)
         {
+            await Task.Delay(200);
             RecvEventArgs args = new RecvEventArgs(dtype, rescop_no);
             OnRecvEvent?.Invoke(this, args);
 
@@ -101,9 +102,10 @@ namespace SocketTool
         /// <summary>
         /// 系切替通知(アクティブ)を受信した時の処理
         /// </summary>
-        /// <param name="rescop_no">系( 1..１系アクティブ、2..２系アクティブ、0..両系スタンバイ)</param>
-        public void OnActiveReceived(int rescop_no)
+        /// <param name="rescop_no">系( 1..１系アクティブ、2..２系アクティブ)</param>
+        public async void OnActiveReceived(int rescop_no)
         {
+            await Task.Delay(200);
             this.active_rescop_no = 0;
 
             if (rescop_no == 1)
@@ -127,9 +129,9 @@ namespace SocketTool
 
 
         /// <summary>
-        /// 系切替通知(アクティブ)を受信した時の処理
+        /// 切断した時の処理
         /// </summary>
-        /// <param name="rescop_no">系( 1..１系アクティブ、2..２系アクティブ、0..両系スタンバイ)</param>
+        /// <param name="rescop_no">系( 1..１系切断、2..２系切断)</param>
         public void OnDisconnect(int rescop_no)
         {
             if(rescop_no == this.active_rescop_no)
@@ -392,7 +394,7 @@ namespace SocketTool
             }
         }
 
-        private void Form1_DragDrop(object sender, DragEventArgs e)
+        private async void Form1_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             foreach( string path in files)
@@ -470,6 +472,7 @@ namespace SocketTool
                         }
                         if (file_ext == ".csv")
                         {
+                            await Task.Delay(500);
                             ScenarioDef.GetInstance().Run(this, path);
                         }
                     }

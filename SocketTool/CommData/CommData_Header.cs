@@ -55,7 +55,7 @@ namespace SocketTool.CommData
         {
             this.GetFldValue("dtype").SetAsBcd(dtype);
             this.GetFldValue("dlen").SetAsInt(dlen);
-            this.GetFldValue("alen").SetAsLong(dlen);       // TODO:全データ長はブロック分割前のサイズ？
+            this.GetFldValue("alen").SetAsLong(dlen);       // TODO:全データ長はブロック分割前のサイズ
             this.GetFldValue("bnum").SetAsInt(bnum);
             this.GetFldValue("bend").SetAsInt((bnum ==bcnt)?1:0);
             this.GetFldValue("bcnt").SetAsInt(bcnt);

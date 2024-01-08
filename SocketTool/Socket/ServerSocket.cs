@@ -13,13 +13,17 @@ namespace SocketTool
 {
     internal class ServerSocket: SocketBase
     {
+        AutoResetEvent _wait_accept_  = new AutoResetEvent(false);
+
         Socket _listner;
+        Socket _connect;
         public event EventHandler OnFailListenEvent;
 
 
         public ServerSocket( int headsize, int datalen_ofs, int datalen_len) : base(headsize, datalen_ofs, datalen_len) 
         {
             _listner = null;
+            _connect = null;
         }
 
         public override int checkParam()
@@ -34,7 +38,7 @@ namespace SocketTool
             return 0;
         }
 
-        public void Listen(string iaddr, string no)
+        public async void Listen(string iaddr, string no)
         {
             try
             {
@@ -57,7 +61,19 @@ namespace SocketTool
                     _listner.Bind(_remoteEP);
                 }
                 _listner.Listen(0);
+
+                _wait_accept_.Reset();
                 _listner.BeginAccept(new AsyncCallback(AcceptCallback), null);
+                await Task.Delay(1000);
+                if(_wait_accept_.WaitOne(500) == false)
+                {
+                    throw new Exception("接続待ちタイムアウト");
+                }
+                if (_connect == null)
+                {
+                    throw new Exception("アクセプト失敗");
+                }
+                OnAccept(_connect);
             }
             catch (Exception ex)
             {
@@ -71,18 +87,21 @@ namespace SocketTool
         {
             if(_listner == null) 
             {
+                _wait_accept_.Set();
                 return;
             }
             try
             {
-                Socket socket = _listner.EndAccept(ar);
-                OnAccept(socket);
+                _connect = _listner.EndAccept(ar);
             }
-            catch (System.ObjectDisposedException ex)
+            catch (Exception )
             {
-                OnException(ex);
+                _connect = null;
             }
-
+            finally 
+            {
+                _wait_accept_.Set(); 
+            }
         }
 
 
