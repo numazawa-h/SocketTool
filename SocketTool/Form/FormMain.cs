@@ -279,8 +279,12 @@ namespace SocketTool
             string dst1 = JsonCommDef.GetInstance().GetRemoteMachineCode(cbx_Remort_Machine.Text, 1);
             string dst2 = JsonCommDef.GetInstance().GetRemoteMachineCode(cbx_Remort_Machine.Text, 2);
 
-            this.commForm1.OnRemortMachineChange(addr1, port1, dst1);
-            this.commForm2.OnRemortMachineChange(addr2, port2, dst2);
+            int ret1 = this.commForm1.OnRemortMachineChange(addr1, port1, dst1);
+            int ret2 = this.commForm2.OnRemortMachineChange(addr2, port2, dst2);
+            if (ret1 == -1 || ret2 == -1)
+            {
+                OnException(new Exception("接続中に対象装置を変更することはできません"));
+            }
         }
 
         private void cbx_Self_Machine_SelectedIndexChanged(object sender, EventArgs e)
