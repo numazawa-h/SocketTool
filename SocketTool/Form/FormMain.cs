@@ -67,11 +67,11 @@ namespace SocketTool
             OnInitEvent?.Invoke(this, EventArgs.Empty);
 
 
-            this.txt_AutoSend_start_Interval.Text = ScenarioDef.GetInstance().AutoSendStartInterval.ToString();
-            this.txt_AutoSend_Interval.Text = ScenarioDef.GetInstance().AutoSendInterval.ToString();
+            this.txt_auto_send_startInterval.Text = ScenarioDef.GetInstance().AutoSendStartInterval.ToString();
+            this.txt_auto_send_interval.Text = ScenarioDef.GetInstance().AutoSendInterval.ToString();
 
             await Task.Delay(500);
-            this.chkAutoSend.Checked = JsonCommDef.GetInstance().GetAutoSendChk();
+            this.chk_auto_send.Checked = JsonCommDef.GetInstance().GetAutoSendChk();
         }
 
 
@@ -233,39 +233,39 @@ namespace SocketTool
         {
             try
             {
-                if (chkAutoSend.Checked)
+                if (chk_auto_send.Checked)
                 {
                     int interval = -1;
-                    if (int.TryParse(txt_AutoSend_start_Interval.Text, out interval))
+                    if (int.TryParse(txt_auto_send_startInterval.Text, out interval))
                     {
                         this.AutoSend_timer.Tag = "start";
                         this.AutoSend_timer.Interval = interval;
                         this.AutoSend_timer.Enabled = true;
-                        this.txt_AutoSend_start_Interval.Enabled = false;
-                        this.txt_AutoSend_Interval.Enabled = false;
+                        this.txt_auto_send_startInterval.Enabled = false;
+                        this.txt_auto_send_interval.Enabled = false;
                     }
                 }
                 else
                 {
                     this.AutoSend_timer.Enabled = false;
-                    this.txt_AutoSend_start_Interval.Enabled = true;
-                    this.txt_AutoSend_Interval.Enabled = true;
+                    this.txt_auto_send_startInterval.Enabled = true;
+                    this.txt_auto_send_interval.Enabled = true;
                 }
             }
             catch (Exception)
             {
-                chkAutoSend.Checked = false;
+                chk_auto_send.Checked = false;
             }
         }
         private void AutoSend_timer_Tick(object sender, EventArgs e)
         {
             try
             {
-                if (chkAutoSend.Checked)
+                if (chk_auto_send.Checked)
                 {
                     if (this.AutoSend_timer.Tag != null)
                     {
-                        int interval = int.Parse(txt_AutoSend_Interval.Text);
+                        int interval = int.Parse(txt_auto_send_interval.Text);
                         this.AutoSend_timer.Tag = null;
                         this.AutoSend_timer.Interval = interval;
                     }
@@ -274,13 +274,13 @@ namespace SocketTool
                 else
                 {
                     this.AutoSend_timer.Enabled = false;
-                    this.txt_AutoSend_start_Interval.Enabled = true;
-                    this.txt_AutoSend_Interval.Enabled = true;
+                    this.txt_auto_send_startInterval.Enabled = true;
+                    this.txt_auto_send_interval.Enabled = true;
                 }
             }
             catch (Exception)
             {
-                chkAutoSend.Checked = false;
+                chk_auto_send.Checked = false;
             }
         }
 

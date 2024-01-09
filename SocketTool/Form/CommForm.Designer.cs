@@ -76,9 +76,10 @@
             this.grp_Comm.Controls.Add(this.txt_Self_PortNo);
             this.grp_Comm.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grp_Comm.Location = new System.Drawing.Point(0, 0);
+            this.grp_Comm.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.grp_Comm.Name = "grp_Comm";
-            this.grp_Comm.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.grp_Comm.Size = new System.Drawing.Size(620, 207);
+            this.grp_Comm.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.grp_Comm.Size = new System.Drawing.Size(286, 104);
             this.grp_Comm.TabIndex = 19;
             this.grp_Comm.TabStop = false;
             this.grp_Comm.Text = "２系";
@@ -87,9 +88,10 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label4.Location = new System.Drawing.Point(16, 40);
+            this.label4.Location = new System.Drawing.Point(7, 20);
+            this.label4.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(73, 21);
+            this.label4.Size = new System.Drawing.Size(38, 11);
             this.label4.TabIndex = 29;
             this.label4.Text = "受信側";
             // 
@@ -97,9 +99,10 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label3.Location = new System.Drawing.Point(16, 130);
+            this.label3.Location = new System.Drawing.Point(7, 65);
+            this.label3.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(73, 21);
+            this.label3.Size = new System.Drawing.Size(38, 11);
             this.label3.TabIndex = 28;
             this.label3.Text = "送信側";
             // 
@@ -107,17 +110,19 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label2.Location = new System.Drawing.Point(412, 128);
+            this.label2.Location = new System.Drawing.Point(190, 64);
+            this.label2.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(31, 21);
+            this.label2.Size = new System.Drawing.Size(16, 11);
             this.label2.TabIndex = 27;
             this.label2.Text = "秒";
             // 
             // txt_Remort_Health_Interval
             // 
-            this.txt_Remort_Health_Interval.Location = new System.Drawing.Point(339, 121);
+            this.txt_Remort_Health_Interval.Location = new System.Drawing.Point(156, 60);
+            this.txt_Remort_Health_Interval.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.txt_Remort_Health_Interval.Name = "txt_Remort_Health_Interval";
-            this.txt_Remort_Health_Interval.Size = new System.Drawing.Size(67, 31);
+            this.txt_Remort_Health_Interval.Size = new System.Drawing.Size(33, 19);
             this.txt_Remort_Health_Interval.TabIndex = 26;
             this.txt_Remort_Health_Interval.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_Remort_Health_Interval_KeyPress);
             // 
@@ -125,9 +130,10 @@
             // 
             this.chk_Remort_Health.AutoSize = true;
             this.chk_Remort_Health.Font = new System.Drawing.Font("ＭＳ ゴシック", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.chk_Remort_Health.Location = new System.Drawing.Point(115, 126);
+            this.chk_Remort_Health.Location = new System.Drawing.Point(53, 63);
+            this.chk_Remort_Health.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.chk_Remort_Health.Name = "chk_Remort_Health";
-            this.chk_Remort_Health.Size = new System.Drawing.Size(196, 27);
+            this.chk_Remort_Health.Size = new System.Drawing.Size(108, 15);
             this.chk_Remort_Health.TabIndex = 25;
             this.chk_Remort_Health.Text = "ヘルスチェック";
             this.chk_Remort_Health.UseVisualStyleBackColor = true;
@@ -137,9 +143,10 @@
             // 
             this.chk_Self_Ack.AutoSize = true;
             this.chk_Self_Ack.Font = new System.Drawing.Font("ＭＳ ゴシック", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.chk_Self_Ack.Location = new System.Drawing.Point(115, 31);
+            this.chk_Self_Ack.Location = new System.Drawing.Point(53, 16);
+            this.chk_Self_Ack.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.chk_Self_Ack.Name = "chk_Self_Ack";
-            this.chk_Self_Ack.Size = new System.Drawing.Size(130, 27);
+            this.chk_Self_Ack.Size = new System.Drawing.Size(72, 15);
             this.chk_Self_Ack.TabIndex = 20;
             this.chk_Self_Ack.Text = "肯定応答";
             this.chk_Self_Ack.UseVisualStyleBackColor = true;
@@ -148,9 +155,10 @@
             // 
             this.lbl_Remote_Status.AutoSize = true;
             this.lbl_Remote_Status.Font = new System.Drawing.Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.lbl_Remote_Status.Location = new System.Drawing.Point(382, 169);
+            this.lbl_Remote_Status.Location = new System.Drawing.Point(176, 84);
+            this.lbl_Remote_Status.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.lbl_Remote_Status.Name = "lbl_Remote_Status";
-            this.lbl_Remote_Status.Size = new System.Drawing.Size(52, 21);
+            this.lbl_Remote_Status.Size = new System.Drawing.Size(27, 11);
             this.lbl_Remote_Status.TabIndex = 19;
             this.lbl_Remote_Status.Text = "切断";
             // 
@@ -158,9 +166,10 @@
             // 
             this.lbl_Self_Status.AutoSize = true;
             this.lbl_Self_Status.Font = new System.Drawing.Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.lbl_Self_Status.Location = new System.Drawing.Point(382, 77);
+            this.lbl_Self_Status.Location = new System.Drawing.Point(176, 38);
+            this.lbl_Self_Status.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.lbl_Self_Status.Name = "lbl_Self_Status";
-            this.lbl_Self_Status.Size = new System.Drawing.Size(52, 21);
+            this.lbl_Self_Status.Size = new System.Drawing.Size(27, 11);
             this.lbl_Self_Status.TabIndex = 18;
             this.lbl_Self_Status.Text = "切断";
             // 
@@ -168,9 +177,10 @@
             // 
             this.chk_Remort_AutoConnect.AutoSize = true;
             this.chk_Remort_AutoConnect.Font = new System.Drawing.Font("MS UI Gothic", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.chk_Remort_AutoConnect.Location = new System.Drawing.Point(498, 165);
+            this.chk_Remort_AutoConnect.Location = new System.Drawing.Point(230, 82);
+            this.chk_Remort_AutoConnect.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.chk_Remort_AutoConnect.Name = "chk_Remort_AutoConnect";
-            this.chk_Remort_AutoConnect.Size = new System.Drawing.Size(86, 27);
+            this.chk_Remort_AutoConnect.Size = new System.Drawing.Size(46, 15);
             this.chk_Remort_AutoConnect.TabIndex = 16;
             this.chk_Remort_AutoConnect.Text = "接続";
             this.chk_Remort_AutoConnect.UseVisualStyleBackColor = true;
@@ -178,35 +188,33 @@
             // 
             // txt_Self_IpAddress
             // 
-            this.txt_Self_IpAddress.Location = new System.Drawing.Point(20, 71);
-            this.txt_Self_IpAddress.Margin = new System.Windows.Forms.Padding(6);
+            this.txt_Self_IpAddress.Location = new System.Drawing.Point(9, 36);
             this.txt_Self_IpAddress.Name = "txt_Self_IpAddress";
-            this.txt_Self_IpAddress.Size = new System.Drawing.Size(212, 31);
+            this.txt_Self_IpAddress.Size = new System.Drawing.Size(100, 19);
             this.txt_Self_IpAddress.TabIndex = 7;
             // 
             // txt_Remort_IpAddress
             // 
-            this.txt_Remort_IpAddress.Location = new System.Drawing.Point(20, 165);
-            this.txt_Remort_IpAddress.Margin = new System.Windows.Forms.Padding(6);
+            this.txt_Remort_IpAddress.Location = new System.Drawing.Point(9, 82);
             this.txt_Remort_IpAddress.Name = "txt_Remort_IpAddress";
-            this.txt_Remort_IpAddress.Size = new System.Drawing.Size(212, 31);
+            this.txt_Remort_IpAddress.Size = new System.Drawing.Size(100, 19);
             this.txt_Remort_IpAddress.TabIndex = 10;
             // 
             // txt_Remort_PortNo
             // 
-            this.txt_Remort_PortNo.Location = new System.Drawing.Point(244, 165);
-            this.txt_Remort_PortNo.Margin = new System.Windows.Forms.Padding(6);
+            this.txt_Remort_PortNo.Location = new System.Drawing.Point(113, 82);
             this.txt_Remort_PortNo.Name = "txt_Remort_PortNo";
-            this.txt_Remort_PortNo.Size = new System.Drawing.Size(130, 31);
+            this.txt_Remort_PortNo.Size = new System.Drawing.Size(62, 19);
             this.txt_Remort_PortNo.TabIndex = 9;
             // 
             // chk_Self_AutoConnect
             // 
             this.chk_Self_AutoConnect.AutoSize = true;
             this.chk_Self_AutoConnect.Font = new System.Drawing.Font("ＭＳ ゴシック", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.chk_Self_AutoConnect.Location = new System.Drawing.Point(498, 73);
+            this.chk_Self_AutoConnect.Location = new System.Drawing.Point(230, 36);
+            this.chk_Self_AutoConnect.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.chk_Self_AutoConnect.Name = "chk_Self_AutoConnect";
-            this.chk_Self_AutoConnect.Size = new System.Drawing.Size(86, 27);
+            this.chk_Self_AutoConnect.Size = new System.Drawing.Size(48, 15);
             this.chk_Self_AutoConnect.TabIndex = 15;
             this.chk_Self_AutoConnect.Text = "接続";
             this.chk_Self_AutoConnect.UseVisualStyleBackColor = true;
@@ -214,10 +222,9 @@
             // 
             // txt_Self_PortNo
             // 
-            this.txt_Self_PortNo.Location = new System.Drawing.Point(244, 71);
-            this.txt_Self_PortNo.Margin = new System.Windows.Forms.Padding(6);
+            this.txt_Self_PortNo.Location = new System.Drawing.Point(113, 36);
             this.txt_Self_PortNo.Name = "txt_Self_PortNo";
-            this.txt_Self_PortNo.Size = new System.Drawing.Size(130, 31);
+            this.txt_Self_PortNo.Size = new System.Drawing.Size(62, 19);
             this.txt_Self_PortNo.TabIndex = 6;
             // 
             // panel1
@@ -227,26 +234,28 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(620, 207);
+            this.panel1.Size = new System.Drawing.Size(286, 104);
             this.panel1.TabIndex = 20;
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.rtx_MsgList);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 207);
+            this.panel2.Location = new System.Drawing.Point(0, 104);
+            this.panel2.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Padding = new System.Windows.Forms.Padding(20, 5, 20, 10);
-            this.panel2.Size = new System.Drawing.Size(620, 586);
+            this.panel2.Padding = new System.Windows.Forms.Padding(9, 2, 9, 5);
+            this.panel2.Size = new System.Drawing.Size(286, 292);
             this.panel2.TabIndex = 21;
             // 
             // rtx_MsgList
             // 
             this.rtx_MsgList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtx_MsgList.Font = new System.Drawing.Font("ＭＳ ゴシック", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.rtx_MsgList.Location = new System.Drawing.Point(20, 5);
+            this.rtx_MsgList.Location = new System.Drawing.Point(9, 2);
+            this.rtx_MsgList.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.rtx_MsgList.Name = "rtx_MsgList";
-            this.rtx_MsgList.Size = new System.Drawing.Size(580, 571);
+            this.rtx_MsgList.Size = new System.Drawing.Size(268, 285);
             this.rtx_MsgList.TabIndex = 13;
             this.rtx_MsgList.Text = "";
             // 
@@ -254,9 +263,10 @@
             // 
             this.panel3.Controls.Add(this.statusStrip);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel3.Location = new System.Drawing.Point(0, 746);
+            this.panel3.Location = new System.Drawing.Point(0, 372);
+            this.panel3.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(620, 47);
+            this.panel3.Size = new System.Drawing.Size(286, 24);
             this.panel3.TabIndex = 23;
             // 
             // statusStrip
@@ -264,16 +274,17 @@
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 25);
+            this.statusStrip.Location = new System.Drawing.Point(0, 2);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(620, 22);
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(0, 0, 6, 0);
+            this.statusStrip.Size = new System.Drawing.Size(286, 22);
             this.statusStrip.TabIndex = 23;
             this.statusStrip.Text = "statusStrip1";
             // 
             // toolStripStatusLabel
             // 
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 12);
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
             // 
             // timer_health
             // 
@@ -283,14 +294,15 @@
             // 
             // CommForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.MinimumSize = new System.Drawing.Size(620, 0);
+            this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.MinimumSize = new System.Drawing.Size(286, 0);
             this.Name = "CommForm";
-            this.Size = new System.Drawing.Size(620, 793);
+            this.Size = new System.Drawing.Size(286, 396);
             this.Load += new System.EventHandler(this.CommForm_Load);
             this.grp_Comm.ResumeLayout(false);
             this.grp_Comm.PerformLayout();
