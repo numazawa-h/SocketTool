@@ -66,6 +66,7 @@ namespace SocketTool.CommForm
                     this.grp_Comm.Text = "？？？系"; break;
             }
 
+            // GridViewセットアップ
             Font font = new Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             dataGridView.Columns[0].DefaultCellStyle.Font = font;
             dataGridView.Columns[1].DefaultCellStyle.Font = font;
