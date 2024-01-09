@@ -59,6 +59,7 @@ namespace SocketTool
             }
             catch (Exception e)
             {
+                Log.Error("送信中に例外発生", e);
                 _soc_base.OnException(e);
             }
         }

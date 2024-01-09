@@ -27,7 +27,10 @@ namespace SocketTool.CommForm
         SocketSendRecv accept_socket = null;
         SocketSendRecv connect_socket = null;
 
+        int _datagridview_maxraw = 256;
         Color _back_color;
+
+        private Object Owner;
 
         int _rescop_no = 0;
 
@@ -51,8 +54,9 @@ namespace SocketTool.CommForm
         {
         }
 
-        public void Init(int rescop_no)
+        public void Init(int rescop_no, object formMain)
         {
+            this.Owner = formMain;
             this._rescop_no = rescop_no;
             switch (this.RESCOP_NO)
             {
@@ -62,7 +66,13 @@ namespace SocketTool.CommForm
                     this.grp_Comm.Text = "？？？系"; break;
             }
 
-            
+            Font font = new Font("MS UI Gothic", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            dataGridView.Columns[0].DefaultCellStyle.Font = font;
+            dataGridView.Columns[1].DefaultCellStyle.Font = font;
+            dataGridView.Columns[2].DefaultCellStyle.Font = font;
+            dataGridView.Columns[2].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
+
             // ヘッダ情報セットアップ
             commHeader = new CommData_Header();
             int head_len = commHeader.commMessageDefine.Length;
@@ -179,7 +189,7 @@ namespace SocketTool.CommForm
             CommData_Header header = new CommData_Header(args.HeadBuff);
             CommData_Data data = new CommData_Data(header.DataType, args.DataBuff);
 
-            DisplaySendRecvData(header, data, 1);
+            DisplaySendRecvData(header, data, 1, sender);
         }
 
         private void OnRecvDatahandler(object sender, CommDataEventArgs args)
@@ -196,7 +206,7 @@ namespace SocketTool.CommForm
             FldValue fld = new FldValue(dat);
             string hed = fld.GetAsBcd();
 
-            DisplaySendRecvData(header, data, 0);
+            DisplaySendRecvData(header, data, 0, sender);
 
             if (data.isActiveMessage())
             {
@@ -237,41 +247,85 @@ namespace SocketTool.CommForm
             form.OnDisconnect(this.RESCOP_NO);
         }
 
-
-        protected void OnUpdateMsgList()
+        public void SetAckNotDisplay(bool notdisp)
         {
-            FormMain form = (FormMain)this.ParentForm;
-            form.OnUpdateMsgList();
+            _SetAckNotDisplay = notdisp;
         }
 
-        public async void OnRefreshMsgList()
+        public void SetScrollOn(bool scrollon)
         {
-            rtx_MsgList.Focus();
-            rtx_MsgList.ScrollToCaret();
-            await Task.Delay(500);
+            _SetScrollOn = scrollon;
         }
+        private bool _SetAckNotDisplay = false;
+        private bool _SetScrollOn = false;
 
-        private void DisplaySendRecvData(CommData_Header header, CommData_Data data, int direction )
+        private void DisplaySendRecvData(CommData_Header header, CommData_Data data, int direction, Object sender )
         {
+            string PA = "";
+            string RS = "";
 
-            rtx_MsgList.SelectionStart = rtx_MsgList.Text.Length;
-            rtx_MsgList.SelectionLength = 0;
-            if(direction == 0)
+            
+            if (sender is ServerSocket)
             {
-                rtx_MsgList.SelectionBackColor = Color.White;
+                PA = "P";       // パッシブ(受信側ポート)
             }
             else
             {
-                rtx_MsgList.SelectionBackColor = Color.Cyan;
+                PA = "A";       // アクティブ(送信側ポート)
             }
-
-
-            this.rtx_MsgList.AppendText(GetCMessageDiscription(header, data, direction));
-            if (JsonDataDef.GetInstance().isMessage_Dump)
+            if (direction == 0)
             {
-                this.rtx_MsgList.AppendText(dump_message(header, data ));
+                RS = "R";       // Receive
             }
-            OnUpdateMsgList();
+            else
+            {
+                RS = "S";       // Send
+            }
+            Color backcolor = Color.White;
+            switch (PA + RS)
+            {
+                case "AS":
+                    backcolor = Color.LightCyan;
+                    break;
+                case "PR":
+                    backcolor = Color.Ivory;
+                    break;
+                default:
+                    backcolor = Color.White;
+                    break;
+            }
+            if (header.DataType == CommData.CommData_Data.DTYPE_HealthCheck)
+            {
+                backcolor = Color.White;
+            }
+            if (header.DataType == CommData.CommData_Data.DTYPE_Ack)
+            {
+                if (_SetAckNotDisplay) return;
+                backcolor = Color.Gray;
+            }
+            if (header.DataType == CommData.CommData_Data.DTYPE_Nak)
+            {
+                backcolor = Color.Plum;
+            }
+
+            if (_SetScrollOn && dataGridView.Rows.Count >= _datagridview_maxraw)
+            {
+                dataGridView.Rows.RemoveAt(0);
+            }
+
+            int raw = dataGridView.Rows.Add();
+            dataGridView[0, raw].Value = $"{header.RecvDateTime:HH:mm:ss}";
+            dataGridView[1, raw].Value = $"{PA}{RS}";
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append(GetCMessageDiscription(header, data, direction));
+            sb.Append("\r\n");
+            sb.Append(dump_message(header, data));
+            dataGridView[2, raw].Value = sb.ToString();
+            dataGridView.Rows[raw].DefaultCellStyle.BackColor = backcolor;
+
+            if(_SetScrollOn) dataGridView.FirstDisplayedScrollingRowIndex = raw;
+
         }
 
         private string GetCMessageDiscription(CommData_Header header, CommData_Data data, int direction)
@@ -571,6 +625,16 @@ namespace SocketTool.CommForm
                 e.Handled = true;
             }
         }
+
+        private void CommForm_DragEnter(object sender, DragEventArgs e)
+        {
+            ((FormMain)Owner).FormMain_DragEnter(sender, e);
+        }
+        private void CommForm_DragDrop(object sender, DragEventArgs e)
+        {
+            ((FormMain)Owner).FormMain_DragDrop(sender, e);
+        }
+
     }
 }
 

@@ -45,8 +45,11 @@ namespace SocketTool
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            this.commForm1.Init(1);
-            this.commForm2.Init(2);
+            chk_Ack_Not_Display.Checked = true;
+            chk_Scroll.Checked = true;
+
+            this.commForm1.Init(1, this);
+            this.commForm2.Init(2, this);
 
             this.cbx_Remort_Machine.Items.Clear();
             foreach (string name in JsonCommDef.GetInstance().GetRemoteMachineList())
@@ -147,28 +150,10 @@ namespace SocketTool
             }
         }
 
-        /// <summary>
-        /// メッセージリスト更新時の処理
-        /// </summary>
-        /// <remarks>頻繁にメッセージリストを更新すると画面の入力ができなくなるのでタイマーで一定時間ごとにリフレッシュする</remarks>
-        public void OnUpdateMsgList()
-        {
-            if(Refresh_timer.Enabled == false)
-            {
-                Refresh_timer.Enabled = true;
-            }
-        }
 
-        private void Refresh_timer_Tick(object sender, EventArgs e)
+        public void Send(CommData_Data comm_data, int rescop_no = 0)
         {
-            Refresh_timer.Enabled = false;
-            commForm2.OnRefreshMsgList();
-            commForm1.OnRefreshMsgList();
-        }
-
-        public void Send(CommData_Data comm_data)
-        {
-            Send(comm_data.DType, comm_data.GetData());
+            Send(comm_data.DType, comm_data.GetData(), rescop_no);
         }
 
         /// <summary>
@@ -374,7 +359,7 @@ namespace SocketTool
         }
 
 
-        private void Form1_DragEnter(object sender, DragEventArgs e)
+        public void FormMain_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
@@ -393,7 +378,7 @@ namespace SocketTool
             }
         }
 
-        private void Form1_DragDrop(object sender, DragEventArgs e)
+        public void FormMain_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             foreach( string path in files)
@@ -516,6 +501,17 @@ namespace SocketTool
             return buf;
         }
 
+        private void chk_Ack_Not_Display_CheckedChanged(object sender, EventArgs e)
+        {
+            commForm1.SetAckNotDisplay(chk_Ack_Not_Display.Checked);
+            commForm2.SetAckNotDisplay(chk_Ack_Not_Display.Checked);
+        }
+
+        private void chk_Scroll_CheckedChanged(object sender, EventArgs e)
+        {
+            commForm1.SetScrollOn(chk_Scroll.Checked);
+            commForm2.SetScrollOn(chk_Scroll.Checked);
+        }
     }
 
 

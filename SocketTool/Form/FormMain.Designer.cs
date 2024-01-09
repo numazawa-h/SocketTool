@@ -30,10 +30,13 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
+            this.commForm1 = new SocketTool.CommForm.CommForm();
+            this.commForm2 = new SocketTool.CommForm.CommForm();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chk_auto_response = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txt_auto_send_interval = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -45,9 +48,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.Refresh_timer = new System.Windows.Forms.Timer(this.components);
             this.AutoSend_timer = new System.Windows.Forms.Timer(this.components);
-            this.chk_auto_response = new System.Windows.Forms.CheckBox();
-            this.commForm1 = new SocketTool.CommForm.CommForm();
-            this.commForm2 = new SocketTool.CommForm.CommForm();
+            this.chk_Ack_Not_Display = new System.Windows.Forms.CheckBox();
+            this.chk_Scroll = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -78,6 +80,26 @@
             this.splitContainer.SplitterDistance = 286;
             this.splitContainer.SplitterWidth = 2;
             this.splitContainer.TabIndex = 19;
+            // 
+            // commForm1
+            // 
+            this.commForm1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.commForm1.Location = new System.Drawing.Point(0, 0);
+            this.commForm1.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
+            this.commForm1.MinimumSize = new System.Drawing.Size(286, 0);
+            this.commForm1.Name = "commForm1";
+            this.commForm1.Size = new System.Drawing.Size(286, 378);
+            this.commForm1.TabIndex = 0;
+            // 
+            // commForm2
+            // 
+            this.commForm2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.commForm2.Location = new System.Drawing.Point(0, 0);
+            this.commForm2.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
+            this.commForm2.MinimumSize = new System.Drawing.Size(286, 0);
+            this.commForm2.Name = "commForm2";
+            this.commForm2.Size = new System.Drawing.Size(290, 378);
+            this.commForm2.TabIndex = 0;
             // 
             // tabControl
             // 
@@ -116,6 +138,8 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.chk_Scroll);
+            this.panel1.Controls.Add(this.chk_Ack_Not_Display);
             this.panel1.Controls.Add(this.chk_auto_response);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.txt_auto_send_interval);
@@ -130,6 +154,18 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(578, 46);
             this.panel1.TabIndex = 1;
+            // 
+            // chk_auto_response
+            // 
+            this.chk_auto_response.AutoSize = true;
+            this.chk_auto_response.Font = new System.Drawing.Font("MS UI Gothic", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.chk_auto_response.Location = new System.Drawing.Point(256, 4);
+            this.chk_auto_response.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.chk_auto_response.Name = "chk_auto_response";
+            this.chk_auto_response.Size = new System.Drawing.Size(68, 15);
+            this.chk_auto_response.TabIndex = 32;
+            this.chk_auto_response.Text = "自動応答";
+            this.chk_auto_response.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -231,43 +267,36 @@
             // Refresh_timer
             // 
             this.Refresh_timer.Interval = 5000;
-            this.Refresh_timer.Tick += new System.EventHandler(this.Refresh_timer_Tick);
             // 
             // AutoSend_timer
             // 
             this.AutoSend_timer.Tick += new System.EventHandler(this.AutoSend_timer_Tick);
             // 
-            // chk_auto_response
+            // chk_Ack_Not_Display
             // 
-            this.chk_auto_response.AutoSize = true;
-            this.chk_auto_response.Font = new System.Drawing.Font("MS UI Gothic", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.chk_auto_response.Location = new System.Drawing.Point(256, 4);
-            this.chk_auto_response.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.chk_auto_response.Name = "chk_auto_response";
-            this.chk_auto_response.Size = new System.Drawing.Size(68, 15);
-            this.chk_auto_response.TabIndex = 32;
-            this.chk_auto_response.Text = "自動応答";
-            this.chk_auto_response.UseVisualStyleBackColor = true;
+            this.chk_Ack_Not_Display.AutoSize = true;
+            this.chk_Ack_Not_Display.Font = new System.Drawing.Font("MS UI Gothic", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.chk_Ack_Not_Display.Location = new System.Drawing.Point(384, 2);
+            this.chk_Ack_Not_Display.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.chk_Ack_Not_Display.Name = "chk_Ack_Not_Display";
+            this.chk_Ack_Not_Display.Size = new System.Drawing.Size(101, 15);
+            this.chk_Ack_Not_Display.TabIndex = 33;
+            this.chk_Ack_Not_Display.Text = "肯定応答非表示";
+            this.chk_Ack_Not_Display.UseVisualStyleBackColor = true;
+            this.chk_Ack_Not_Display.CheckedChanged += new System.EventHandler(this.chk_Ack_Not_Display_CheckedChanged);
             // 
-            // commForm1
+            // chk_Scroll
             // 
-            this.commForm1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.commForm1.Location = new System.Drawing.Point(0, 0);
-            this.commForm1.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
-            this.commForm1.MinimumSize = new System.Drawing.Size(286, 0);
-            this.commForm1.Name = "commForm1";
-            this.commForm1.Size = new System.Drawing.Size(286, 378);
-            this.commForm1.TabIndex = 0;
-            // 
-            // commForm2
-            // 
-            this.commForm2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.commForm2.Location = new System.Drawing.Point(0, 0);
-            this.commForm2.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
-            this.commForm2.MinimumSize = new System.Drawing.Size(286, 0);
-            this.commForm2.Name = "commForm2";
-            this.commForm2.Size = new System.Drawing.Size(290, 378);
-            this.commForm2.TabIndex = 0;
+            this.chk_Scroll.AutoSize = true;
+            this.chk_Scroll.Font = new System.Drawing.Font("MS UI Gothic", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.chk_Scroll.Location = new System.Drawing.Point(496, 1);
+            this.chk_Scroll.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.chk_Scroll.Name = "chk_Scroll";
+            this.chk_Scroll.Size = new System.Drawing.Size(66, 15);
+            this.chk_Scroll.TabIndex = 34;
+            this.chk_Scroll.Text = "スクロール";
+            this.chk_Scroll.UseVisualStyleBackColor = true;
+            this.chk_Scroll.CheckedChanged += new System.EventHandler(this.chk_Scroll_CheckedChanged);
             // 
             // FormMain
             // 
@@ -280,8 +309,8 @@
             this.Name = "FormMain";
             this.Text = "RESCOP対向シミュレータ";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
-            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.FormMain_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.FormMain_DragEnter);
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
@@ -316,6 +345,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txt_auto_send_interval;
         private System.Windows.Forms.CheckBox chk_auto_response;
+        private System.Windows.Forms.CheckBox chk_Scroll;
+        private System.Windows.Forms.CheckBox chk_Ack_Not_Display;
     }
 }
 

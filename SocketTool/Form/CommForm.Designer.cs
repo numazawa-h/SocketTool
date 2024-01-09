@@ -46,16 +46,20 @@
             this.txt_Self_PortNo = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.rtx_MsgList = new System.Windows.Forms.RichTextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.timer_health = new System.Windows.Forms.Timer(this.components);
+            this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.grp_Comm.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.statusStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // grp_Comm
@@ -83,6 +87,8 @@
             this.grp_Comm.TabIndex = 19;
             this.grp_Comm.TabStop = false;
             this.grp_Comm.Text = "２系";
+            this.grp_Comm.DragDrop += new System.Windows.Forms.DragEventHandler(this.CommForm_DragDrop);
+            this.grp_Comm.DragEnter += new System.Windows.Forms.DragEventHandler(this.CommForm_DragEnter);
             // 
             // label4
             // 
@@ -239,7 +245,7 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.rtx_MsgList);
+            this.panel2.Controls.Add(this.dataGridView);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 104);
             this.panel2.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
@@ -247,17 +253,6 @@
             this.panel2.Padding = new System.Windows.Forms.Padding(9, 2, 9, 5);
             this.panel2.Size = new System.Drawing.Size(286, 292);
             this.panel2.TabIndex = 21;
-            // 
-            // rtx_MsgList
-            // 
-            this.rtx_MsgList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtx_MsgList.Font = new System.Drawing.Font("ＭＳ ゴシック", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.rtx_MsgList.Location = new System.Drawing.Point(9, 2);
-            this.rtx_MsgList.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.rtx_MsgList.Name = "rtx_MsgList";
-            this.rtx_MsgList.Size = new System.Drawing.Size(268, 285);
-            this.rtx_MsgList.TabIndex = 13;
-            this.rtx_MsgList.Text = "";
             // 
             // panel3
             // 
@@ -284,13 +279,67 @@
             // toolStripStatusLabel
             // 
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 0);
             // 
             // timer_health
             // 
             this.timer_health.Enabled = true;
             this.timer_health.Interval = 5000;
             this.timer_health.Tick += new System.EventHandler(this.OnHealthCheckTimer);
+            // 
+            // dataGridView
+            // 
+            this.dataGridView.AllowDrop = true;
+            this.dataGridView.AllowUserToAddRows = false;
+            this.dataGridView.AllowUserToDeleteRows = false;
+            this.dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView.CausesValidation = false;
+            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView.ColumnHeadersVisible = false;
+            this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column3});
+            this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView.Location = new System.Drawing.Point(9, 2);
+            this.dataGridView.Name = "dataGridView";
+            this.dataGridView.ReadOnly = true;
+            this.dataGridView.RowHeadersVisible = false;
+            this.dataGridView.RowTemplate.Height = 21;
+            this.dataGridView.Size = new System.Drawing.Size(268, 285);
+            this.dataGridView.TabIndex = 0;
+            this.dataGridView.DragDrop += new System.Windows.Forms.DragEventHandler(this.CommForm_DragDrop);
+            this.dataGridView.DragEnter += new System.Windows.Forms.DragEventHandler(this.CommForm_DragEnter);
+            // 
+            // Column1
+            // 
+            this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Column1.HeaderText = "Column1";
+            this.Column1.MaxInputLength = 10;
+            this.Column1.MinimumWidth = 50;
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column1.Width = 50;
+            // 
+            // Column2
+            // 
+            this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Column2.HeaderText = "Column2";
+            this.Column2.MinimumWidth = 20;
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column2.Width = 20;
+            // 
+            // Column3
+            // 
+            this.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column3.HeaderText = "Column3";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
             // 
             // CommForm
             // 
@@ -304,6 +353,8 @@
             this.Name = "CommForm";
             this.Size = new System.Drawing.Size(286, 396);
             this.Load += new System.EventHandler(this.CommForm_Load);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.CommForm_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.CommForm_DragEnter);
             this.grp_Comm.ResumeLayout(false);
             this.grp_Comm.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -312,6 +363,7 @@
             this.panel3.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -329,7 +381,6 @@
         private System.Windows.Forms.TextBox txt_Self_PortNo;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.RichTextBox rtx_MsgList;
         private System.Windows.Forms.CheckBox chk_Self_Ack;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txt_Remort_Health_Interval;
@@ -340,5 +391,9 @@
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
         private System.Windows.Forms.Timer timer_health;
+        private System.Windows.Forms.DataGridView dataGridView;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
     }
 }
