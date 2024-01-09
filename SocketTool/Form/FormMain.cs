@@ -45,11 +45,15 @@ namespace SocketTool
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            chk_Ack_Not_Display.Checked = true;
-            chk_Scroll.Checked = true;
-
             this.commForm1.Init(1, this);
             this.commForm2.Init(2, this);
+
+            this.chk_auto_send.Checked = JsonCommDef.GetInstance().AutoSend_is_on;
+            this.txt_auto_send_startInterval.Text = JsonCommDef.GetInstance().AutoSendStartInterval.ToString().Trim();
+            this.txt_auto_send_interval.Text = JsonCommDef.GetInstance().AutoSendInterval.ToString().Trim();
+            chk_auto_response.Checked = JsonCommDef.GetInstance().AutoResponse_is_on;
+            chk_Ack_Not_Display.Checked = JsonCommDef.GetInstance().AckNotDisplay_is_on;
+            chk_Scroll.Checked = JsonCommDef.GetInstance().Scroll_is_on;
 
             this.cbx_Remort_Machine.Items.Clear();
             foreach (string name in JsonCommDef.GetInstance().GetRemoteMachineList())
@@ -70,11 +74,7 @@ namespace SocketTool
             OnInitEvent?.Invoke(this, EventArgs.Empty);
 
 
-            this.txt_auto_send_startInterval.Text = ScenarioDef.GetInstance().AutoSendStartInterval.ToString();
-            this.txt_auto_send_interval.Text = ScenarioDef.GetInstance().AutoSendInterval.ToString();
 
-            await Task.Delay(500);
-            this.chk_auto_send.Checked = JsonCommDef.GetInstance().GetAutoSendChk();
         }
 
 
