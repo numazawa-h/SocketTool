@@ -108,7 +108,8 @@ namespace SocketTool.CommData
             }
             catch (Exception ex)
             {
-
+                Log.Error("イメージファイル読み込みで例外発生", ex);
+                dat = System.Array.Empty<byte>();
             }
 
             AddData(dat);
@@ -129,7 +130,7 @@ namespace SocketTool.CommData
             }
             catch (Exception ex)
             {
-
+                Log.Error("イメージファイル書き込みで例外発生", ex);
             }
         }
     }

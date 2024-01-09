@@ -17,6 +17,8 @@ namespace SocketTool
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            Log.Init();
+            Log.Info("Application Started****************************");
 
             string ScenarioDef_name = "ScenarioDef.csv";
 

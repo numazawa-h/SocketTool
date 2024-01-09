@@ -82,6 +82,7 @@ namespace SocketTool
 
         private void OnException(Exception ex)
         {
+            Log.Warn(ex.ToString());
             MessageBox.Show(ex.Message);
         }
 
