@@ -240,6 +240,15 @@ namespace SocketTool.CommData
 
                 return val;
             }
+            public DateTime GetAsDateWTimeBcd()
+            {
+                DateTime val;
+                string dt = GetAsBcd();
+                string datm = dt.Substring(0, 8) + dt.Substring(10, 6);
+                val = DateTime.ParseExact(datm, "yyyyMMddHHmmss", null);
+                return val;
+            }
+
 
 
             private void FillData(byte val)
@@ -314,8 +323,7 @@ namespace SocketTool.CommData
             public void SetAsStringAsc(string val)
             {
                 byte[] dat = System.Text.Encoding.ASCII.GetBytes(val);
-
-                FillData(0);
+                                FillData(0);
                 Buffer.BlockCopy(dat, 0, _data, 0, Math.Min(_data.Length, dat.Length));
                 _owner?.SetFldValue(_fld_id, _data);
                 return;
@@ -323,7 +331,10 @@ namespace SocketTool.CommData
 
             public void SetAsDateWTimeBcd(DateTime val)
             {
-                string dat = string.Format("{0:yyyyMMdd}{1:D1}{2:HHmmss}", val, val.DayOfWeek, val);
+                string d = val.ToString("yyyyMMdd");
+                string t = val.ToString("HHmmss");
+                string w = ((byte)val.DayOfWeek).ToString("D2");
+                string dat = d + w + t;
 
                 SetAsBcd(dat);
                 return;

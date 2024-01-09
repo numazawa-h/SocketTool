@@ -20,7 +20,7 @@ namespace SocketTool.CommData
 
 
         public string DataType => GetFldValue("dtype").GetAsBcd();
-        public DateTime RecvDateTime => GetFldValue("sdatm").GetAsDateTimeBcd();
+        public DateTime RecvDateTime => GetFldValue("hdatm").GetAsDateWTimeBcd();
 
         public int Block_cnt => GetFldValue("bcnt").GetAsInt();
         public int Block_num => GetFldValue("bnum").GetAsInt();
