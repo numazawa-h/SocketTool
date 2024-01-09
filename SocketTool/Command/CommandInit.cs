@@ -38,10 +38,6 @@ namespace SocketTool
                     case "carno":
                         form.SetCarNo(val.GetValue<int>());
                         break;
-                    case "dump":
-                        bool sw = val.GetValue<int>() == 1;
-                        JsonDataDef.GetInstance().SetMessageDump(sw);
-                        break;
                 }
             }
             Application.DoEvents();

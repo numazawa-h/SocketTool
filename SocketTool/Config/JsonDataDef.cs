@@ -25,10 +25,6 @@ namespace SocketTool.Config
         {
         }
 
-        // 画面のメッセージリストにダンプを表示するか否か
-        private bool _message_dump = false;
-        public bool isMessage_Dump { get { return _message_dump; } }
-
         // 通信メッセージ定義
         protected Dictionary<string, CommMessageDefine> _message_def = new Dictionary<string, CommMessageDefine>();
 
@@ -42,14 +38,6 @@ namespace SocketTool.Config
             {
                 int ret = base.ReadJson(path);
 
-                if (_json_root.AsObject().ContainsKey("message-dump"))
-                {
-                    _message_dump = (_json_root["message-dump"].GetValue<int>() == 1);
-                }
-                else
-                {
-                    _message_dump = false;
-                }
                 _values_def.Clear();
                 foreach (JsonObject def in _json_root["values-def"].AsArray())
                 {
@@ -72,11 +60,6 @@ namespace SocketTool.Config
         public CommMessageDefine GetMessageDefine(string dtype)
         {
             return _message_def[dtype];
-        }
-
-        public void SetMessageDump(bool sw) 
-        {
-            _message_dump = sw;
         }
 
         public string GetValueDescription(string fldid, string val)

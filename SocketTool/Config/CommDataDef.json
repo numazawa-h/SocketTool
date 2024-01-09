@@ -1,5 +1,4 @@
 {
-  "message-dump":0,
   "message-def":[
 		{ "id":"head", "name":"ヘッダ", "len": 48,"flds":[
 				{ "id":"dst",  "name": "送信先",      "ofs": 0, "len": 4 },
@@ -17,11 +16,10 @@
 		},
 		{ "id":"0001", "name":"肯定応答", "len":  0,"flds":[] },
 		{ "id":"0002", "name":"否定応答", "len": 48,"flds":[{ "id":"reson-nak", "ofs": 0, "len":4 },] },
-		{ "id":"0101", "name":"ヘルスチェック", "len":  0,"flds":[] },
-		{ "id":"0201", "name":"開始要求", "len": 48,"flds":[] },
-		{ "id":"0202", "name":"系切替", "len": 48,"flds":[{ "id":"active-change", "ofs": 0, "len":2, "disp":1 },] },
-		{ "id":"0301", "name":"通過車両", "len": 48,"flds":[{ "id":"carno", "ofs": 0, "len":4, "disp":1 },] },
-		{ "id":"0302", "name":"車線管理", "len": 80,"flds":[
+		{ "id":"0101", "name":"開始要求", "len": 48,"flds":[] },
+		{ "id":"0103", "name":"ヘルスチェック", "len":  0,"flds":[] },
+		{ "id":"0201", "name":"系切替", "len": 48,"flds":[{ "id":"active-change", "ofs": 0, "len":2, "disp":1 },] },
+		{ "id":"0301", "name":"車線管理", "len": 80,"flds":[
 				{ "id":"s1cnt", "ofs": 0, "len":2, "disp":0 },
 				{ "id":"s2cnt", "ofs": 2, "len":2, "disp":0 },
 				{ "id":"carno_01", "ofs": 4, "len":4, "disp":1 },
@@ -41,8 +39,14 @@
 				{ "id":"carno_15", "ofs":60, "len":4, "disp":1 },
 			] 
 		},
-		{ "id":"0501", "name":"NP認識", "len": -1, "minlen":4, "flds":[
+		{ "id":"0303", "name":"通過車両", "len": 48,"flds":[{ "id":"carno", "ofs": 0, "len":4, "disp":1 },] },
+		{ "id":"0304", "name":"NP認識", "len": -1, "minlen":4, "flds":[
 				{ "id":"carno", "ofs": 0, "len":4, "disp":1 },
+				{ "id":"image", "ofs": 4, "len":-1 },
+			] 
+		},
+		{ "id":"0306", "name":"立入画像", "len": -1, "minlen":4, "flds":[
+				{ "id":"entertype", "ofs": 0, "len":4, "disp":1 },
 				{ "id":"image", "ofs": 4, "len":-1 },
 			] 
 		},
@@ -51,7 +55,7 @@
 		{ "id":"active-change", "name":"切替", "values":{"0001":"アクティブ", "0002":"スタンバイ" } },
 		{ "id":"reson-nak", "name":"否定理由", "values":{"0001":"シーケンスエラー", "0009":"その他" } },
 		{ "id":"carno", "name":"車両番号", "format":{ "type":"int", "fmt":"#{0:D}" ,"notdisp":0 } },
-		{ "id":"hdatm", "name":"ヘッダ日時", "format":{ "type":"datetime", "fmt":"{0:yyyyMMdd}{1:D1}{2:HHmmss}" } },   // 1:は曜日(0..日曜、1..月曜)
+		{ "id":"hdatm", "name":"ヘッダ日時", "format":{ "type":"datewtime", "fmt":"{0:yyyyMMdd}{1:D1}{2:HHmmss}" } },   // 1:は曜日(0..日曜、1..月曜)
 		{ "id":"sdatm", "name":"送信日時", "format":{ "type":"datetime", "fmt":"yyyyMMddHHmmss" } },
 		{ "id":"mch-lane", "name":"レーン装置", "format":{ "type":"mchno", "fmt":"{0:X2}{1:X1}{2:X1}", "mch":"61" } },
 		{ "id":"mch-intp", "name":"インタ子機", "format":{ "type":"mchno", "fmt":"{0:X2}{1:X1}{2:X1}", "mch":"62" } },
