@@ -321,6 +321,13 @@ namespace SocketTool.CommData
                 return;
             }
 
+            public void SetAsDateWTimeBcd(DateTime val)
+            {
+                string dat = string.Format("{0:yyyyMMdd}{1:D1}{2:HHmmss}", val, val.DayOfWeek, val);
+
+                SetAsBcd(dat);
+                return;
+            }
             public void SetAsDateTimeBcd(DateTime val)
             {
                 string dat = val.ToString("yyyyMMddHHmmss");

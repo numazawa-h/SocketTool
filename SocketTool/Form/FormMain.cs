@@ -329,11 +329,11 @@ namespace SocketTool
             tabControl.SelectedIndex = 0;
             Application.DoEvents();
 
-            commForm1.SendData(CommData_Data.DTYPE_Start, new byte[48]);
+            commForm1.SendData(CommData_Data.DTYPE_STA, new byte[48]);
 
-            CommData_Data msg0202 = new CommData_Data(CommData_Data.DTYPE_ActiveChange);
+            CommData_Data msg0202 = new CommData_Data(CommData_Data.DTYPE_ACT_CHANGE);
             msg0202.GetFldValue("active-change").SetAsInt(1);
-            string fldname = JsonDataDef.GetInstance().GetMessageDefine(CommData_Data.DTYPE_ActiveChange).GetFldName("active-change");
+            string fldname = JsonDataDef.GetInstance().GetMessageDefine(CommData_Data.DTYPE_ACT_CHANGE).GetFldName("active-change");
             commForm1.SendData(msg0202);
             Application.DoEvents();
 
@@ -438,7 +438,7 @@ namespace SocketTool
                     }
                     catch (Exception ex)
                     {
-                        this.OnException(new Exception($"{path}読み込みで例外" + ex.Message));
+                        this.OnException(new Exception($"ドラッグドロップ'{path}'読み込みで例外" + ex.Message));
                     }
                 }
                 else
@@ -458,14 +458,14 @@ namespace SocketTool
                                 }
                             }
                         }
-                        if (file_ext == ".csv")
+                        else
                         {
                             ScenarioDef.GetInstance().Run(this, path);
                         }
                     }
                     catch (Exception ex)
                     {
-                        this.OnException(new Exception($"{path}読み込みで例外" + ex.Message));
+                        this.OnException(new Exception($"ドラッグドロップ'{path}'読み込みで例外" + ex.Message));
                     }
                 }
                 if (dtype != null)

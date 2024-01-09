@@ -39,30 +39,38 @@ namespace SocketTool.Config
         protected int _auto_send_interval = 1000;
         public int AutoSendInterval => _auto_send_interval;
 
-        public void ReadCsvFile(string path)
+        public void ReadJson(string path)
         {
-            _on_recv_list.Clear();
-
-            foreach (string lin in File.ReadLines(path))
+            try
             {
-                ScenarioRecord rec = new ScenarioRecord(lin);
-                switch (rec.When)
-                {
-                    case "OnInit":
-                        _on_init_list.Add(new CommandInit(rec.Cmd));
-                        break;
-                    case "OnActive":
-                        _on_active_list.Add(new CommandSend(rec.Cmd));
-                        break;
-                    case "OnRecv":
-                        _on_recv_list.Add(new OnRecvCmd(rec));
-                        break;
-                    case "OnTimer":
-                        _auto_send_start_interval = rec.Skip;
-                        _auto_send_interval = rec.Times;
-                        _commandTimer = new CommandTimer(rec.Cmd);
-                        break;
-                }
+                _on_recv_list.Clear();
+
+                // TODO: CSVからJSONに変更する
+                //foreach (string lin in File.ReadLines(path))
+                //{
+                //    ScenarioRecord rec = new ScenarioRecord(lin);
+                //    switch (rec.When)
+                //    {
+                //        case "OnInit":
+                //            _on_init_list.Add(new CommandInit(rec.Cmd));
+                //            break;
+                //        case "OnActive":
+                //            _on_active_list.Add(new CommandSend(rec.Cmd));
+                //            break;
+                //        case "OnRecv":
+                //            _on_recv_list.Add(new OnRecvCmd(rec));
+                //            break;
+                //        case "OnTimer":
+                //            _auto_send_start_interval = rec.Skip;
+                //            _auto_send_interval = rec.Times;
+                //            _commandTimer = new CommandTimer(rec.Cmd);
+                //            break;
+                //    }
+                //}
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"ScenarioDef読み込み失敗{path}({ex.Message})");
             }
         }
 

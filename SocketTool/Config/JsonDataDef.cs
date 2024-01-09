@@ -62,8 +62,9 @@ namespace SocketTool.Config
                     _message_def.Add(node["id"].ToString(), new CommMessageDefine(node) );
                 }
             }
-            catch (Exception ex)            {
-                throw new Exception($"JsonDataDef読み込み失敗{path}({ex.Message})"); ;
+            catch (Exception ex)            
+            {
+                throw new Exception($"JsonDataDef読み込み失敗{path}({ex.Message})");
             }
             return 0;
         }

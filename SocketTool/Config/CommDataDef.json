@@ -5,13 +5,14 @@
 				{ "id":"dst",  "name": "送信先",      "ofs": 0, "len": 4 },
 				{ "id":"src",  "name": "送信元",      "ofs": 4, "len": 4 },
 				{ "id":"seqno","name": "送信通番",    "ofs": 8, "len": 4 },
-				{ "id":"dtype","name": "データ種別",  "ofs":12, "len": 2 },
-				{ "id":"sdatm","name": "送信日時",    "ofs":14, "len": 7 },		// BCD形式
-				{ "id":"dlen", "name": "データ長",    "ofs":22, "len": 4 },
-				{ "id":"alen", "name": "全データ長",  "ofs":26, "len": 8 },
-				{ "id":"bnum", "name": "ブロック番号","ofs":34, "len": 2 },
-				{ "id":"bend", "name": "最終フラグ",  "ofs":36, "len": 2 },
-				{ "id":"bcnt", "name": "ブロック数",  "ofs":38, "len": 2 },
+				{ "id":"hdatm","name": "送信日時",    "ofs":12, "len": 8 },		// BCD形式(曜日を含む８バイト)
+				{ "id":"dtype","name": "データ種別",  "ofs":20, "len": 2 },
+				{ "id":"dlen", "name": "データ長",    "ofs":22, "len": 2 },
+				{ "id":"dcnt", "name": "データ数",    "ofs":24, "len": 2 },
+				{ "id":"alen", "name": "全データ長",  "ofs":26, "len": 4 },
+				{ "id":"bnum", "name": "ブロック番号","ofs":30, "len": 2 },
+				{ "id":"bend", "name": "最終フラグ",  "ofs":32, "len": 2 },
+				{ "id":"bcnt", "name": "ブロック数",  "ofs":34, "len": 2 },
 			]
 		},
 		{ "id":"0001", "name":"肯定応答", "len":  0,"flds":[] },
@@ -50,6 +51,14 @@
 		{ "id":"active-change", "name":"切替", "values":{"0001":"アクティブ", "0002":"スタンバイ" } },
 		{ "id":"reson-nak", "name":"否定理由", "values":{"0001":"シーケンスエラー", "0009":"その他" } },
 		{ "id":"carno", "name":"車両番号", "format":{ "type":"int", "fmt":"#{0:D}" ,"notdisp":0 } },
+		{ "id":"hdatm", "name":"ヘッダ日時", "format":{ "type":"datetime", "fmt":"{0:yyyyMMdd}{1:D1}{2:HHmmss}" } },   // 1:は曜日(0..日曜、1..月曜)
+		{ "id":"sdatm", "name":"送信日時", "format":{ "type":"datetime", "fmt":"yyyyMMddHHmmss" } },
+		{ "id":"mch-lane", "name":"レーン装置", "format":{ "type":"mchno", "fmt":"{0:X2}{1:X1}{2:X1}", "mch":"61" } },
+		{ "id":"mch-intp", "name":"インタ子機", "format":{ "type":"mchno", "fmt":"{0:X2}{1:X1}{2:X1}", "mch":"62" } },
+		{ "id":"mch-op1", "name":"レーン操作", "format":{ "type":"mchno", "fmt":"{0:X1}{1:X2}{2:X1}", "mch":"51" } },
+		{ "id":"mch-op2", "name":"インタ操作", "format":{ "type":"mchno", "fmt":"{0:X1}{1:X2}{2:X1}", "mch":"52" } },
+		{ "id":"mch-op3", "name":"カメラ連動", "format":{ "type":"mchno", "fmt":"{0:X1}{1:X2}{2:X1}", "mch":"53" } },
+		{ "id":"mch-op4", "name":"カメラ操作", "format":{ "type":"mchno", "fmt":"{0:X1}{1:X2}{2:X1}", "mch":"54" } },
 		{ "id":"image", "name":"画像", "format":{ "type":"image", "fmt":"/image/{0}.jpg" } },
 	],
 }

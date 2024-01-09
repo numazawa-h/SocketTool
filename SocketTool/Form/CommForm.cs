@@ -148,6 +148,7 @@ namespace SocketTool.CommForm
                 if (data.Length > max_size)
                 {
                     int blkcnt = (int)Math.Ceiling((double)data.Length / max_size);
+                    int alen = data.Length;
                     int last_len = data.Length % max_size;
                     for(int blkno = 0; blkno < blkcnt; blkno++)
                     {
@@ -158,13 +159,14 @@ namespace SocketTool.CommForm
                         }
                         byte[] buf = new byte[datalen];
                         Buffer.BlockCopy(data, (max_size * blkno), buf, 0, datalen);
-                        commHeader.SetOnSend(dtype, datalen, (blkno+1), blkcnt);
+                        commHeader.SetOnSend(dtype, alen, datalen, (blkno+1), blkcnt);
                         SendData(commHeader.GetData(), buf);
                     }
                 }
                 else
                 {
-                    commHeader.SetOnSend(dtype, data.Length);
+                    // TODO:dcntの処理(蓄積データなど複数レコードのデータ)
+                    commHeader.SetOnSend(dtype, data.Length, data.Length);
                     SendData(commHeader.GetData(), data);
                 }
             }
@@ -295,7 +297,7 @@ namespace SocketTool.CommForm
                     backcolor = Color.White;
                     break;
             }
-            if (header.DataType == CommData.CommData_Data.DTYPE_HealthCheck)
+            if (header.DataType == CommData.CommData_Data.DTYPE_HEALTH_CHK)
             {
                 backcolor = Color.White;
             }
@@ -489,7 +491,7 @@ namespace SocketTool.CommForm
         {
             if (this.chk_Remort_Health.Checked)
             {
-                SendData(CommData_Data.DTYPE_HealthCheck, System.Array.Empty<byte>());
+                SendData(CommData_Data.DTYPE_HEALTH_CHK, System.Array.Empty<byte>());
             }
         }
 

@@ -20,7 +20,7 @@ namespace SocketTool
             Log.Init();
             Log.Info("Application Started****************************");
 
-            string ScenarioDef_name = "ScenarioDef.csv";
+            string ScenarioDef_name = "ScenarioDef.txt";
 
             try
             {
@@ -41,7 +41,7 @@ namespace SocketTool
                 string wcd = System.AppDomain.CurrentDomain.BaseDirectory;
                 JsonCommDef.GetInstance().ReadJson(wcd + "config\\CommDef.json");
                 JsonDataDef.GetInstance().ReadJson(wcd + "config\\CommDataDef.json");
-                ScenarioDef.GetInstance().ReadCsvFile(wcd + $"config\\{ScenarioDef_name}");
+                ScenarioDef.GetInstance().ReadJson(wcd + $"config\\{ScenarioDef_name}");
             }
             catch (Exception ex)
             {

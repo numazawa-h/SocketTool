@@ -14,12 +14,15 @@ namespace SocketTool.CommData
     {
         public const string DTYPE_Ack = "0001";                 // 肯定応答
         public const string DTYPE_Nak = "0002";                 // 否定応答
-        public const string DTYPE_HealthCheck = "0101";         // ヘルスチェック
-        public const string DTYPE_Start = "0201";               // 開始要求
-        public const string DTYPE_ActiveChange = "0202";        // 系切替通知
-        public const string DTYPE_PASSCAR = "0301";             // 通過車両
-        public const string DTYPE_LANE_ST = "0302";             // 車線管理
-        public const string DTYPE_NP = "0501";                  // NP認識
+        public const string DTYPE_STA = "0101";                 // 開始要求
+        public const string DTYPE_HEALTH_CHK = "0103";          // ヘルスチェック
+        public const string DTYPE_ACT_CHANGE = "0201";          // 系切替通知
+        public const string DTYPE_LANE_ST = "0301";             // 車線管理
+        public const string DTYPE_PASSCAR = "0303";             // 通過車両
+        public const string DTYPE_PASSCAR_KEEP = "8303";        // 通過車両(蓄積)
+        public const string DTYPE_NP = "0304";                  // NP認識
+        public const string DTYPE_ENTER = "0306";               // 立ち入り画像
+        public const string DTYPE_MOV_CUT = "0307";             // 動画切り出し
 
 
         public CommData_Data(string dtype) : base()
@@ -35,7 +38,7 @@ namespace SocketTool.CommData
 
         public bool isActiveMessage()
         {
-            if(DType == DTYPE_ActiveChange)
+            if(DType == DTYPE_ACT_CHANGE)
             {
                 return GetDataDiscription("active-change") == "アクティブ";
             }
