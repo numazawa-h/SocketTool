@@ -1,5 +1,0 @@
-OnInit				{ "cmd":"init", "values":{"dump":0, } }
-OnActive				{"cmd":"send", "dtype":"0201", }
-OnActive				{"cmd":"send", "dtype":"0101", }
-OnRecv	 ****	 2	 1	 {"cmd":"send", "dtype":"0002", "values":{"reson-nak":"0002",},}
-OnTimer		5000	2000	[{"cmd":"send", "dtype":"0001", },]

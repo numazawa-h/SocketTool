@@ -1,0 +1,20 @@
+{
+  "Commands":[
+  	{ "cmd":"send", "dtype":"0201", },		// whenがなければ読み込んだ時実行(ドラッグドロップにも使用できる)
+	
+	// 系切り替えの自動送信
+  	{ "when":"Actv", "cmd":"send", "dtype":"0201", },
+  	{ "when":"Actv", "cmd":"send", "dtype":"0201", "values":{"dump":0, } },
+  	
+  	// 自動応答
+  	{ "when":"Recv", "rdtype":"****" "skip":2, "times":1, "cmd":[
+  			{ "cmd":"send", "dtype":"0002", "values":{"reson-nak":"0002",} },
+  	  ] 
+  	},
+  	// タイマーによる自動送信
+  	{ "when":"Time", "start":5000, "interval":1000, "cmd":[
+  			{ "cmd":"send", "dtype":"0201", "values":{"reson-nak":"0002",} },
+  	  ] 
+  	},
+  ],
+
