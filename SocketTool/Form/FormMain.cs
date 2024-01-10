@@ -268,6 +268,17 @@ namespace SocketTool
                 chk_auto_send.Checked = false;
             }
         }
+        private void chk_Ack_Not_Display_CheckedChanged(object sender, EventArgs e)
+        {
+            commForm1.SetAckNotDisplay(chk_Ack_Not_Display.Checked);
+            commForm2.SetAckNotDisplay(chk_Ack_Not_Display.Checked);
+        }
+
+        private void chk_Scroll_CheckedChanged(object sender, EventArgs e)
+        {
+            commForm1.SetScrollOn(chk_Scroll.Checked);
+            commForm2.SetScrollOn(chk_Scroll.Checked);
+        }
 
 
         private void cbx_Remort_Machine_SelectedIndexChanged(object sender, EventArgs e)
@@ -505,17 +516,6 @@ namespace SocketTool
             return buf;
         }
 
-        private void chk_Ack_Not_Display_CheckedChanged(object sender, EventArgs e)
-        {
-            commForm1.SetAckNotDisplay(chk_Ack_Not_Display.Checked);
-            commForm2.SetAckNotDisplay(chk_Ack_Not_Display.Checked);
-        }
-
-        private void chk_Scroll_CheckedChanged(object sender, EventArgs e)
-        {
-            commForm1.SetScrollOn(chk_Scroll.Checked);
-            commForm2.SetScrollOn(chk_Scroll.Checked);
-        }
     }
 
 
