@@ -95,12 +95,17 @@ namespace SocketTool.CommData
             return sb.ToString();
         }
 
-        public void LoadImage(string fldid, string fnmae)
+        /// <summary>
+        /// 画像データ読み込み
+        /// </summary>
+        /// <param name="fldid"></param>
+        /// <param name="fpath">画像fileの実行ディレクトリからの相対パス</param>
+        public void LoadImage(string fldid, string fpath)
         {
             byte[] dat =System.Array.Empty<byte>();
 
             string wcd = System.AppDomain.CurrentDomain.BaseDirectory;
-            string path = wcd + Config.JsonDataDef.GetInstance().GetValueDescription(fldid, fnmae);
+            string path = wcd + Config.JsonDataDef.GetInstance().GetValueDescription(fldid, fpath);
             try
             {
                 using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
@@ -118,11 +123,11 @@ namespace SocketTool.CommData
             AddData(dat);
         }
 
-        public void SaveImage(string fldid, string fnmae)
+        public void SaveImage(string fldid, string fpath)
         {
             byte[] dat = GetFldValue(fldid).GetAsByte();
             string wcd = System.AppDomain.CurrentDomain.BaseDirectory;
-            string path = wcd + Config.JsonDataDef.GetInstance().GetValueDescription(fldid, fnmae);
+            string path = wcd + Config.JsonDataDef.GetInstance().GetValueDescription(fldid, fpath);
             try
             {
                 using (var fs = new FileStream(path, FileMode.Create))

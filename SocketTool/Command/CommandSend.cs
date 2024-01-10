@@ -62,6 +62,7 @@ namespace SocketTool
 
                 if (key == "image")
                 {
+                    // imageタイプの時は、valにファイル名を設定しておく
                     data.LoadImage("image", val.ToString());
                 }
                 else
@@ -73,6 +74,7 @@ namespace SocketTool
                     }
                     else
                     {
+                        // TODO: 追加したvalueタイプに未対応
                         data.GetFldValue(key).SetAsBcd(val.ToString());
                     }
                 }
