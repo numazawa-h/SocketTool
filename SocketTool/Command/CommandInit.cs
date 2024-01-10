@@ -15,7 +15,7 @@ namespace SocketTool
 
         public CommandInit(string json) : base(json)
         {
-            if (_cmd_def["cmd"].ToString() == "init")
+            if (_cmd_def["cmd"].ToString() == "set")
             {
                 if (_cmd_def.AsObject().ContainsKey("values"))
                 {
@@ -40,7 +40,6 @@ namespace SocketTool
                         break;
                 }
             }
-            Application.DoEvents();
         }
     }
 }

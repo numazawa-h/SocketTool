@@ -2,6 +2,9 @@
   "Commands":[
   	{ "cmd":"send", "dtype":"0201", },		// whenがなければ読み込んだ時実行(ドラッグドロップにも使用できる)
 	
+	// 初期化時
+	{ "when":"Init",  "cmd":"set", "values":{"carno":0, } }	// 通行車両番号の開始番号
+	
 	// 系切り替えの自動送信
   	{ "when":"Actv", "cmd":"send", "dtype":"0201", },
   	{ "when":"Actv", "cmd":"send", "dtype":"0201", "values":{"dump":0, } },
