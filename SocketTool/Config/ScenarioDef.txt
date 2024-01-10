@@ -14,6 +14,11 @@
   			{ "cmd":"send", "dtype":"0002", "values":{"reson-nak":"0002",} },
   	  ] 
   	},
+  	{ "when":"Recv", "rdtype":"****" "skip":2, "times":1, "cmd":[
+			{"cmd":"send", "dtype":"0201", "values":{"active-change":1,},}
+			{"cmd":"send", "dtype":"0304", "values":{"carno":2, "image":"test",}}  	  ] 
+  	},
+
   	// タイマーによる自動送信
   	{ "when":"Time", "start":5000, "interval":1000, "cmd":[
   			{ "cmd":"send", "dtype":"0201", "values":{"reson-nak":"0002",} },
